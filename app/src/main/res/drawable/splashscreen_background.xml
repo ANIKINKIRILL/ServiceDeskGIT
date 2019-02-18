@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:drawable="@color/kfuDefaultColor"/>
+
+    <item>
+        <bitmap
+            android:gravity="center"
+            android:src="@drawable/kfu_emblema"/>
+    </item>
+
+</layer-list>
