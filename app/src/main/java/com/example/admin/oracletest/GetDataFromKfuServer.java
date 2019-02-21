@@ -11,6 +11,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 
+import javax.net.ssl.HttpsURLConnection;
+
 /**
  * Класс для асинхроного получения данных с сервера кфу
  */
@@ -33,6 +35,7 @@ public class GetDataFromKfuServer extends AsyncTask<AsyncTaskArguments, Void, As
 
             //Создаем поток для чтения
             InputStream inputStream = connection.getInputStream();
+
             //Создаем буффер
             StringBuffer stringBuffer = new StringBuffer();
             //Создаем reader, указывая кодировку cp1251, для поддержки кириллицы

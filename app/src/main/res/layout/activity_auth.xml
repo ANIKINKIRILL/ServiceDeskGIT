@@ -49,6 +49,7 @@
         android:layout_height="wrap_content" />
 
     <EditText
+        android:inputType="textPassword"
         android:textColor="@android:color/white"
         android:padding="15dp"
         android:textColorHint="@android:color/white"

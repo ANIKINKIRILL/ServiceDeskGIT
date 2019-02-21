@@ -1,0 +1,19 @@
+package com.example.admin.oracletest;
+
+import android.app.Application;
+import android.content.Context;
+
+public class DirectoryServiceDesk extends Application {
+    private static Context context;
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        DirectoryServiceDesk.context = getApplicationContext();
+    }
+
+    public static Context GetAppContext(){
+        return context;
+    }
+
+}

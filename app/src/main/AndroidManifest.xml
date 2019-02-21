@@ -5,6 +5,7 @@
     <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
+        android:name=".DirectoryServiceDesk"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -34,6 +35,14 @@
             android:name=".Activity.ForgetPasswordActivity">
             <intent-filter>
                 <action android:name="android.intent.action.ForgetPassword"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".Activity.MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MainActivity"/>
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </activity>

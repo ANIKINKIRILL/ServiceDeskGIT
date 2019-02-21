@@ -1,22 +1,20 @@
 package com.example.admin.oracletest.Activity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.admin.oracletest.Callback;
 import com.example.admin.oracletest.Models.User;
 import com.example.admin.oracletest.R;
 
-import org.json.JSONException;
-import org.json.JSONObject;
 
 /**
  * Активити для вхдода в систему ServiceDesk
@@ -30,11 +28,26 @@ public class AuthActivity extends AppCompatActivity {
     private EditText loginEditText, passwordEditText;
     private Button loginButton, forgotPasswordButton;
 
+    // vars
+    private static final String USER_LOGIN = "user_login";
+    private static final String USER_PASSWORD = "user_password";
+    public static final String SETTINGS = "settings";
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_auth);
         init();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        SharedPreferences settingsSP = getSharedPreferences(SETTINGS, MODE_PRIVATE);
+        String userLogin = settingsSP.getString(USER_LOGIN, "");
+        String userPassword = settingsSP.getString(USER_PASSWORD, "");
+        loginEditText.setText(userLogin);
+        passwordEditText.setText(userPassword);
     }
 
     /**
@@ -48,7 +61,6 @@ public class AuthActivity extends AppCompatActivity {
 
         loginButton.setOnClickListener(loginOnClickListener);
         forgotPasswordButton.setOnClickListener(forgotPasswordOnClickListener);
-
     }
 
     /**
@@ -60,23 +72,14 @@ public class AuthActivity extends AppCompatActivity {
         public void onClick(View v) {
             String p_login = loginEditText.getText().toString();
             String p_password = passwordEditText.getText().toString();
-            final int hash_password = p_password.hashCode();
             User.authenticate(p_login, p_password, new Callback() {
                 @Override
                 public void execute(Object data) {
-                    try {
-                        JSONObject jsonObject = new JSONObject(data.toString());
-                        String password = jsonObject.getString("password");
-                        String p_password_hashcode = jsonObject.getString("p_password_hashcode");
-                        if(password.equals(p_password_hashcode)){
-                            //авторизация прошла успешно, переходим на главное меню
-                        }else{
-                            //авторизация прошла неуспешно
-                        }
-                        Log.d(TAG, "execute: " + hash_password);
-                    } catch (JSONException e) {
-                        Log.d(TAG, "JSONException: " + e.getMessage());
-                        e.printStackTrace();
+                    boolean successful = (boolean)data;
+                    if(successful){
+                        Toast.makeText(AuthActivity.this, "Вы вошли в свой профиль", Toast.LENGTH_SHORT).show();
+                    }else{
+                        Toast.makeText(AuthActivity.this, "Извините, неверный логин или пароль", Toast.LENGTH_SHORT).show();
                     }
                 }
             });
