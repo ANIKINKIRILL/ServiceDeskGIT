@@ -28,11 +28,16 @@ public class ForgetPasswordActivity extends AppCompatActivity {
         init();
     }
 
+    /**
+     * Инициализация
+     */
+
     private void init(){
         ActionBar actionBar = getSupportActionBar();
         actionBar.setHomeButtonEnabled(true);
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.kfuDefaultColor)));
+        actionBar.setElevation(0);
     }
 
     @Override

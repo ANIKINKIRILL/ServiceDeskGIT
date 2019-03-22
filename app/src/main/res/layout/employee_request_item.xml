@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    app:cardCornerRadius="10dp"
+    android:layout_width="match_parent"
+    app:cardElevation="3dp"
+    android:layout_margin="10dp"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:padding="10dp"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/requestCode"
+            tools:text="Номер заявки: №09-561"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/requestDateOfRegistration"
+            tools:text="Регистрация: 18.03.2019 14:56"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/requestDateOfRealization"
+            tools:text="Дедлайн: 22.03.2019 12.00"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/requestZaavitel"
+            tools:text="Заявитель: Нурутдинов Султан Хамитович"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/requestBuildingKfu_Name"
+            tools:text="Адрес: ул. Профессора Нужина 1/37"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/requestBody"
+            tools:text="Описание: Настройка прав доступа учетной записи. Прошупредоставить доступ с правами администратора на имя Сулманова Рината в систему ServiceDesk."
+            android:gravity="fill"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+</android.support.v7.widget.CardView>
+

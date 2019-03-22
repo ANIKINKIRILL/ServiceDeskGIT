@@ -24,7 +24,8 @@
 
         <activity
             android:name=".Activity.AuthActivity"
-            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar">
+            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"
+            android:windowSoftInputMode="stateAlwaysHidden">
             <intent-filter>
                 <action android:name="android.intent.action.AuthActivity"/>
                 <category android:name="android.intent.category.DEFAULT"/>

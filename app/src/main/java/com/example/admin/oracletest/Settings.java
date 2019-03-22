@@ -12,10 +12,13 @@ import android.util.Log;
 
 public class Settings {
 
+    // Logs
     private static final String TAG = "Settings";
 
+    // vars
     private static String USER_PASSWORD = "user_password";
     private static String USER_LOGIN = "user_login";
+    private static String USER_ID = "user_id";
     private static final String SETTINGS = "settings";
     private static SharedPreferences sharedPreferences;
 
@@ -33,6 +36,16 @@ public class Settings {
     public static void setUserPassword(String userPassword) {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString(USER_PASSWORD, userPassword);
+        editor.apply();
+    }
+
+    public static String getUserId() {
+        return sharedPreferences.getString(USER_ID, "");
+    }
+
+    public static void setUserId(String userId) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(USER_ID, userId);
         editor.apply();
     }
 

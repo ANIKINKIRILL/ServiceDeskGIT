@@ -3,21 +3,20 @@ package com.example.admin.oracletest;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.example.admin.oracletest.Data.AsyncTaskArguments;
+
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLConnection;
-
-import javax.net.ssl.HttpsURLConnection;
 
 /**
  * Класс для асинхроного получения данных с сервера кфу
  */
 public class GetDataFromKfuServer extends AsyncTask<AsyncTaskArguments, Void, AsyncTaskArguments> {
 
+    // Logs
     private static final String TAG = "GetDataFromKfuServer";
 
     @Override

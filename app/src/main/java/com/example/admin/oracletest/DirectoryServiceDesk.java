@@ -3,6 +3,10 @@ package com.example.admin.oracletest;
 import android.app.Application;
 import android.content.Context;
 
+/**
+ * Класс Приложения
+ */
+
 public class DirectoryServiceDesk extends Application {
     private static Context context;
 

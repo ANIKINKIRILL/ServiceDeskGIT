@@ -1,13 +1,9 @@
 package com.example.admin.oracletest.Models;
 
 
-import android.util.Log;
-
-import com.example.admin.oracletest.AsyncTaskArguments;
+import com.example.admin.oracletest.Data.AsyncTaskArguments;
 import com.example.admin.oracletest.Callback;
 import com.example.admin.oracletest.GetDataFromKfuServer;
-
-import javax.xml.parsers.ParserConfigurationException;
 
 /**
  * Класс для работы с сервером КФУ
@@ -15,6 +11,7 @@ import javax.xml.parsers.ParserConfigurationException;
 
 public class ServerKFU {
 
+    // Logs
     private static final String TAG = "ServerKFU";
 
     /**
@@ -23,9 +20,35 @@ public class ServerKFU {
     public static String ip = "portal-dis.kpfu.ru";
 
 
+    /**
+     * Авторизация пользователя
+     *
+     * @param p_login              Логин пользователья
+     * @param p_password           Пароль пользователья
+     * @param callback           Функция, которая вызывается после получения данных
+     */
+
     public static void authenticateUser(String p_login, String p_password, Callback callback) {
         // создаем аддрес обращения к серверу
         String url = createUrl("PORTAL_PG_MOBILE", "authentication", "p_login=" + p_login, "p_pass=" + p_password);
+        // создаем задачу
+        GetDataFromKfuServer server = new GetDataFromKfuServer();
+        // аргументы для задачи
+        AsyncTaskArguments asyncTaskArguments = new AsyncTaskArguments();
+        asyncTaskArguments.Data = url;
+        asyncTaskArguments.Callback = callback;
+        server.execute(asyncTaskArguments);
+    }
+
+    /**
+     * Получить заявки исполнителя
+     * @param callback      Callback, который вернется после получения заявок на исполнителя
+     * @param u_id          id исполнителя
+     */
+
+    public static void get_requests(String u_id, Callback callback){
+        // создаем аддрес обращения к серверу
+        String url = createUrl("SERVICEDESK_MOBILE", "get_employee_requests", "u_id=" + u_id);
         // создаем задачу
         GetDataFromKfuServer server = new GetDataFromKfuServer();
         // аргументы для задачи

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/allRequests"
+        android:title="Все заявки"
+        android:icon="@drawable/ic_apps_black"/>
+
+    <item
+        android:id="@+id/myRequests"
+        android:title="Мои заявки"
+        android:icon="@drawable/ic_person_black"/>
+
+    <item
+        android:id="@+id/addRequest"
+        android:title="Добавить"
+        android:icon="@drawable/ic_add_black"/>
+
+    <item
+        android:id="@+id/search"
+        android:title="Поиск"
+        android:icon="@drawable/ic_search_black"/>
+
+    <item
+        android:id="@+id/settings"
+        android:title="Настройки"
+        android:icon="@drawable/ic_settings_black"/>
+
+</menu>

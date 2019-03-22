@@ -13,6 +13,7 @@ public class SplashScreenActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // Мы не устанавливаем xml при создании активити, а делаем это заранее в styles
         // Переходим на активити входа в систему, при этом убераем SplashActivity со стека
         Intent intent = new Intent(this, AuthActivity.class);
         startActivity(intent);

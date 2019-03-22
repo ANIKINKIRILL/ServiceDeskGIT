@@ -1,14 +1,21 @@
 package com.example.admin.oracletest.Activity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.admin.oracletest.Callback;
@@ -22,6 +29,7 @@ import com.example.admin.oracletest.R;
 
 public class AuthActivity extends AppCompatActivity {
 
+    // Logs
     private static final String TAG = "AuthActivity";
 
     // widgets
@@ -51,7 +59,7 @@ public class AuthActivity extends AppCompatActivity {
     }
 
     /**
-     * Находим елементы, устанавлеваем слушатели
+     * Инициализация
      */
     private void init(){
         loginEditText = findViewById(R.id.login);
@@ -63,8 +71,9 @@ public class AuthActivity extends AppCompatActivity {
         forgotPasswordButton.setOnClickListener(forgotPasswordOnClickListener);
     }
 
+
     /**
-     * Слушатель для авторизации
+     * Button.OnClickListener для авторизации пользователья
      */
 
     Button.OnClickListener loginOnClickListener = new View.OnClickListener() {
@@ -77,6 +86,10 @@ public class AuthActivity extends AppCompatActivity {
                 public void execute(Object data) {
                     boolean successful = (boolean)data;
                     if(successful){
+                        Intent intent = new Intent(AuthActivity.this, MainActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(intent);
+                        finish();
                         Toast.makeText(AuthActivity.this, "Вы вошли в свой профиль", Toast.LENGTH_SHORT).show();
                     }else{
                         Toast.makeText(AuthActivity.this, "Извините, неверный логин или пароль", Toast.LENGTH_SHORT).show();
@@ -87,7 +100,7 @@ public class AuthActivity extends AppCompatActivity {
     };
 
     /**
-     * Слушатель, если пользователь забыл пароль
+     * Button.OnClickListener, если пользователь забыл пароль
      */
 
     Button.OnClickListener forgotPasswordOnClickListener = new View.OnClickListener() {
