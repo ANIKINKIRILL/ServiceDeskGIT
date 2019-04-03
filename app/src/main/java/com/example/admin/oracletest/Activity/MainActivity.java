@@ -64,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
      */
 
     private void setLaunchFragment(){
-        doFragmentTransaction(new AllRequestsFragment(), "Все заявки");
+        doFragmentTransaction(new AllRequestsFragment(), getString(R.string.allRequests));
     }
 
     /**
@@ -76,26 +76,26 @@ public class MainActivity extends AppCompatActivity {
         public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
             switch (menuItem.getItemId()){
                 case R.id.allRequests:{
-                    doFragmentTransaction(new AllRequestsFragment(), "Все заявки");
+                    doFragmentTransaction(new AllRequestsFragment(), getString(R.string.allRequests));
                     break;
                 }
                 case R.id.myRequests:{
-                    doFragmentTransaction(new MyRequestsFragment(), "Мои заявки");
+                    doFragmentTransaction(new MyRequestsFragment(), getString(R.string.myRequests));
                     break;
                 }
                 case R.id.addRequest:{
                     actionBar.setElevation(0);
-                    actionBar.setTitle("Добавить");
+                    actionBar.setTitle(getString(R.string.addRequest));
                     break;
                 }
                 case R.id.search:{
                     actionBar.setElevation(0);
-                    actionBar.setTitle("Поиск");
+                    actionBar.setTitle(getString(R.string.search));
                     break;
                 }
                 case R.id.settings:{
                     actionBar.setElevation(0);
-                    actionBar.setTitle("Настройки");
+                    actionBar.setTitle(getString(R.string.settings));
                     break;
                 }
             }

@@ -1,5 +1,8 @@
 package com.example.admin.oracletest.Fragment;
 
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
+import android.drm.ProcessedData;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -32,6 +35,7 @@ public class MyRequestsFragment extends Fragment {
 
     // Виджеты
     private RecyclerView recyclerView;
+    private ProgressDialog progressDialog;
 
     @Nullable
     @Override
@@ -58,6 +62,10 @@ public class MyRequestsFragment extends Fragment {
      */
 
     private void get_employee_requests(Callback callback, String u_id){
+        // Показать загрузочное окно
+        progressDialog = new ProgressDialog(getContext());
+        progressDialog.setMessage(getContext().getResources().getString(R.string.loadingText));
+        progressDialog.show();
         User.get_requests(u_id, callback);
     }
 
@@ -71,13 +79,15 @@ public class MyRequestsFragment extends Fragment {
             ArrayList<EmployeeRequest> requests = (ArrayList) data;
             Log.d(TAG, "employee_requests: " + requests.size());
             if(requests.size() == 0){
-                // Перенаправляем пользователя на фрагмент с сообщением что у него нет заявок
-                doFragmentTransaction(new EmployeeDoesNotHaveRequestsFragment());
+                progressDialog.dismiss();
+                AlertDialog.Builder alertDialog = new AlertDialog.Builder(getContext());
+                alertDialog.setMessage(getContext().getResources().getString(R.string.noRequestsText));
             }else{
                 // Создаем адаптер и RecyclerView для отображения заявок
                 EmployeeRequestsRecyclerViewAdapter adapter = new EmployeeRequestsRecyclerViewAdapter(requests, getContext());
                 recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
                 recyclerView.setAdapter(adapter);
+                progressDialog.dismiss();
             }
         }
     };

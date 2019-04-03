@@ -102,12 +102,12 @@ public class User {
                         String info = employeeRequests.getJSONObject(i).getString("info");
                         JSONObject building_kfu = employeeRequests.getJSONObject(i).getJSONObject("building_kfu");
                         String building_kfu_name = building_kfu.getString("name");
-                        int room_number = employeeRequests.getJSONObject(i).getInt("room_num");
+                        String room_number = employeeRequests.getJSONObject(i).getString("room_num");
                         JSONObject status = employeeRequests.getJSONObject(i).getJSONObject("status");
                         String status_name = status.getString("status_name");
                         String color = status.getString("color");
                         String descr = status.getString("descr");
-                        String image = status.getString("image_path");
+                        String image = "";
                         int cod = employeeRequests.getJSONObject(i).getInt("cod");
                         EmployeeRequest request = new EmployeeRequest(
                                 id, image, request_date, date_of_realization, declarant_fio,

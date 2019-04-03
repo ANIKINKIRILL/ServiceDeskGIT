@@ -28,7 +28,7 @@ public class EmployeeRequestsRecyclerViewAdapter extends RecyclerView.Adapter<Em
 
     public static class ViewHolder extends RecyclerView.ViewHolder{
         private TextView requestCode,requestDateOfRegistration,requestDateOfRealization,
-                requestZaavitel,requestBuildingKfu_Name,requestBody;
+                requestZaavitel,requestBuildingKfu_Name;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             requestCode = itemView.findViewById(R.id.requestCode);
@@ -36,7 +36,6 @@ public class EmployeeRequestsRecyclerViewAdapter extends RecyclerView.Adapter<Em
             requestDateOfRealization = itemView.findViewById(R.id.requestDateOfRealization);
             requestZaavitel = itemView.findViewById(R.id.requestZaavitel);
             requestBuildingKfu_Name = itemView.findViewById(R.id.requestBuildingKfu_Name);
-            requestBody = itemView.findViewById(R.id.requestBody);
         }
     }
 
@@ -53,12 +52,11 @@ public class EmployeeRequestsRecyclerViewAdapter extends RecyclerView.Adapter<Em
         // Получаем EmployeeRequest
         EmployeeRequest request = requests.get(i);
         // Извлекаем данные заявки и устанавливаем их в виджеты
-        viewHolder.requestCode.setText("Номер заявки: " + Integer.toString(request.getCod()));
-        viewHolder.requestDateOfRegistration.setText("Регистрация: " + request.getRequest_date());
-        viewHolder.requestDateOfRealization.setText("Дедлайн: " + request.getDate_of_realization());
-        viewHolder.requestZaavitel.setText("Заявитель: " + request.getDeclarant_fio());
-        viewHolder.requestBuildingKfu_Name.setText("Адрес: " + request.getBuilding_kfu_name());
-        viewHolder.requestBody.setText("Описание: " + request.getInfo());
+        viewHolder.requestCode.setText(String.format("%s: %s", context.getString(R.string.requestNumber), Integer.toString(request.getCod())));
+        viewHolder.requestDateOfRegistration.setText(String.format("%s: %s", context.getString(R.string.date_of_reg), request.getRequest_date()));
+        viewHolder.requestDateOfRealization.setText(String.format("%s: %s", context.getString(R.string.date_of_realization), request.getDate_of_realization()));
+        viewHolder.requestZaavitel.setText(String.format("%s: %s", context.getString(R.string.zaavitel), request.getDeclarant_fio()));
+        viewHolder.requestBuildingKfu_Name.setText(String.format("%s: %s", context.getString(R.string.building_kfu_name), request.getBuilding_kfu_name()));
     }
 
     @Override

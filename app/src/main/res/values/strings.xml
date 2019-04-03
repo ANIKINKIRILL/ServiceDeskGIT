@@ -4,6 +4,17 @@
     <string name="loginHintText">Введите логин и пароль от личного кабинета КФУ</string>
     <string name="forgetPasswordText">Если вы забыли пароль, обратитесь в диспетчерскую службу ИЦТИС КФУ по телефону 123-45-67</string>
     <string name="noRequestsText">У вас нет заявок</string>
+    <string name="loadingText">Загрузка...</string>
+    <string name="allRequests">Все заявки</string>
+    <string name="myRequests">Мои заявки</string>
+    <string name="addRequest">Добавить</string>
+    <string name="search">Поиск</string>
+    <string name="settingsText">Настроки</string>
+    <string name="requestNumber">Номер заявки</string>
+    <string name="date_of_reg">Регистрация</string>
+    <string name="date_of_realization">Дедлайн</string>
+    <string name="zaavitel">Заявитель</string>
+    <string name="building_kfu_name">Адрес</string>
 
     <string name="settings">settings</string>
     <string name="user_login">user_login</string>

@@ -1,6 +1,7 @@
 package com.example.admin.oracletest.Activity;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -81,11 +82,15 @@ public class AuthActivity extends AppCompatActivity {
         public void onClick(View v) {
             String p_login = loginEditText.getText().toString();
             String p_password = passwordEditText.getText().toString();
+            final ProgressDialog progressDialog = new ProgressDialog(AuthActivity.this);
+            progressDialog.setMessage("Заходим в Ваш профлиь...");
+            progressDialog.show();
             User.authenticate(p_login, p_password, new Callback() {
                 @Override
                 public void execute(Object data) {
                     boolean successful = (boolean)data;
                     if(successful){
+                        progressDialog.dismiss();
                         Intent intent = new Intent(AuthActivity.this, MainActivity.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         startActivity(intent);

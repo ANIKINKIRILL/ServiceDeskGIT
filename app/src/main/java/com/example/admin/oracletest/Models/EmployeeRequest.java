@@ -12,7 +12,7 @@ public class EmployeeRequest {
     private String declarant_fio;
     private String post;
     private String building_kfu_name;
-    private int room_number;
+    private String room_number;
     private String descr;
     private String status_name;
     private String color;
@@ -24,7 +24,7 @@ public class EmployeeRequest {
 
     public EmployeeRequest(int id, String image, String request_date, String date_of_realization,
                            String declarant_fio, String post, String building_kfu_name,
-                           int room_number, String descr, String status_name, String color, String phone, int cod, String info) {
+                           String room_number, String descr, String status_name, String color, String phone, int cod, String info) {
         this.id = id;
         this.image = image;
         this.request_date = request_date;
@@ -113,11 +113,11 @@ public class EmployeeRequest {
         this.building_kfu_name = building_kfu_name;
     }
 
-    public int getRoom_number() {
+    public String getRoom_number() {
         return room_number;
     }
 
-    public void setRoom_number(int room_number) {
+    public void setRoom_number(String room_number) {
         this.room_number = room_number;
     }
 
