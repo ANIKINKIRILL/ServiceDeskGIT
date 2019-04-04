@@ -48,6 +48,14 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name=".Activity.DetailRequestActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.DetailRequestActivity"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
+
     </application>
 
 </manifest>

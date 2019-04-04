@@ -2,12 +2,10 @@ package com.example.admin.oracletest.Fragment;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.drm.ProcessedData;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -17,7 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.admin.oracletest.Callback;
-import com.example.admin.oracletest.EmployeeRequestsRecyclerViewAdapter;
+import com.example.admin.oracletest.Utils.EmployeeRequestsRecyclerViewAdapter;
 import com.example.admin.oracletest.Models.EmployeeRequest;
 import com.example.admin.oracletest.Models.User;
 import com.example.admin.oracletest.R;
@@ -83,11 +81,11 @@ public class MyRequestsFragment extends Fragment {
                 AlertDialog.Builder alertDialog = new AlertDialog.Builder(getContext());
                 alertDialog.setMessage(getContext().getResources().getString(R.string.noRequestsText));
             }else{
+                progressDialog.dismiss();
                 // Создаем адаптер и RecyclerView для отображения заявок
                 EmployeeRequestsRecyclerViewAdapter adapter = new EmployeeRequestsRecyclerViewAdapter(requests, getContext());
                 recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
                 recyclerView.setAdapter(adapter);
-                progressDialog.dismiss();
             }
         }
     };

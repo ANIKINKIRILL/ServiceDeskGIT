@@ -16,11 +16,14 @@ public class Settings {
     private static final String TAG = "Settings";
 
     // vars
-    private static String USER_PASSWORD = "user_password";
-    private static String USER_LOGIN = "user_login";
-    private static String USER_ID = "user_id";
-    private static final String SETTINGS = "settings";
-    private static SharedPreferences sharedPreferences;
+    public static String USER_PASSWORD = "user_password";
+    public static String USER_LOGIN = "user_login";
+    public static String USER_ID = "user_id";
+    public static String USER_FIRST_NAME = "user_firstname";
+    public static String USER_MIDDLE_NAME = "user_middlename";
+    public static String USER_LAST_NAME = "user_lastname";
+    public static final String SETTINGS = "settings";
+    public static SharedPreferences sharedPreferences;
 
     static {
         Context context = DirectoryServiceDesk.GetAppContext();
@@ -37,6 +40,36 @@ public class Settings {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString(USER_PASSWORD, userPassword);
         editor.apply();
+    }
+
+    public static void setUserFirstName(String firstName){
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(USER_FIRST_NAME, firstName);
+        editor.apply();
+    }
+
+    public static void setUserMiddleName(String middleName){
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(USER_MIDDLE_NAME, middleName);
+        editor.apply();
+    }
+
+    public static void setUserLastName(String lastName){
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(USER_LAST_NAME, lastName);
+        editor.apply();
+    }
+
+    public static String getUserFirstName() {
+        return sharedPreferences.getString(USER_FIRST_NAME, "");
+    }
+
+    public static String getUserMiddleName() {
+        return sharedPreferences.getString(USER_MIDDLE_NAME, "");
+    }
+
+    public static String getUserLastName() {
+        return sharedPreferences.getString(USER_LAST_NAME, "");
     }
 
     public static String getUserId() {

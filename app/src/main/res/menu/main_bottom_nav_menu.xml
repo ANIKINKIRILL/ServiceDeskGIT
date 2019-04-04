@@ -12,9 +12,9 @@
         android:icon="@drawable/ic_person_black"/>
 
     <item
-        android:id="@+id/addRequest"
-        android:title="Добавить"
-        android:icon="@drawable/ic_add_black"/>
+        android:id="@+id/map"
+        android:title="Карта"
+        android:icon="@drawable/ic_language"/>
 
     <item
         android:id="@+id/search"

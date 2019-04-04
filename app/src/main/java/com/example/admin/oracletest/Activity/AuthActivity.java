@@ -83,7 +83,7 @@ public class AuthActivity extends AppCompatActivity {
             String p_login = loginEditText.getText().toString();
             String p_password = passwordEditText.getText().toString();
             final ProgressDialog progressDialog = new ProgressDialog(AuthActivity.this);
-            progressDialog.setMessage("Заходим в Ваш профлиь...");
+            progressDialog.setMessage("Заходим в Ваш профиль...");
             progressDialog.show();
             User.authenticate(p_login, p_password, new Callback() {
                 @Override

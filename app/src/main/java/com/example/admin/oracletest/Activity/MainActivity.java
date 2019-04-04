@@ -1,5 +1,6 @@
 package com.example.admin.oracletest.Activity;
 
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -57,6 +58,8 @@ public class MainActivity extends AppCompatActivity {
 
     private void initActionBar(){
         actionBar = getSupportActionBar();
+        actionBar.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.kfuDefaultColor)));
+        actionBar.setElevation(0);
     }
 
     /**
@@ -83,9 +86,9 @@ public class MainActivity extends AppCompatActivity {
                     doFragmentTransaction(new MyRequestsFragment(), getString(R.string.myRequests));
                     break;
                 }
-                case R.id.addRequest:{
+                case R.id.map:{
                     actionBar.setElevation(0);
-                    actionBar.setTitle(getString(R.string.addRequest));
+                    actionBar.setTitle(getString(R.string.map));
                     break;
                 }
                 case R.id.search:{
@@ -95,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
                 }
                 case R.id.settings:{
                     actionBar.setElevation(0);
-                    actionBar.setTitle(getString(R.string.settings));
+                    actionBar.setTitle(getString(R.string.settingsText));
                     break;
                 }
             }

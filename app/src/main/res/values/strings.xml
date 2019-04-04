@@ -7,14 +7,21 @@
     <string name="loadingText">Загрузка...</string>
     <string name="allRequests">Все заявки</string>
     <string name="myRequests">Мои заявки</string>
-    <string name="addRequest">Добавить</string>
+    <string name="map">Карта</string>
     <string name="search">Поиск</string>
     <string name="settingsText">Настроки</string>
     <string name="requestNumber">Номер заявки</string>
     <string name="date_of_reg">Регистрация</string>
     <string name="date_of_realization">Дедлайн</string>
     <string name="zaavitel">Заявитель</string>
+    <string name="post">Должнотсь</string>
+    <string name="roomNumber">Кабинет</string>
+    <string name="body">Текст заявки</string>
+    <string name="phone">Телефон</string>
     <string name="building_kfu_name">Адрес</string>
+    <string name="dummyText">Текст заявки: Настройка прав доступа учетной записи. Прошу предоставить доступ с правами администратора на имя Сулейманова Рината в систему ServiceDesk.</string>
+    <string name="delay_request">Продлить</string>
+    <string name="complete_request">Завершить</string>
 
     <string name="settings">settings</string>
     <string name="user_login">user_login</string>

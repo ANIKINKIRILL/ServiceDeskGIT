@@ -28,6 +28,9 @@ public class User {
     private static Callback externalCallbackGetRequests;
     private static int user_id;
     private static ArrayList<EmployeeRequest> requests = new ArrayList<>();
+    private static String firstname;
+    private static String lastname;
+    private static String middlename;
 
 
     /**
@@ -44,6 +47,7 @@ public class User {
         User.password = password;
         ServerKFU.authenticateUser(login, password, mAuthenticateCallback);
     }
+
     /**
      * Callback который вызыиться после получения данных на background thread
      */
@@ -56,6 +60,9 @@ public class User {
                 boolean successful = jsonObject.getBoolean("successful");
                 if(successful){
                     user_id = jsonObject.getInt("user_id");
+                    firstname = jsonObject.getString("firstname");
+                    lastname = jsonObject.getString("lastname");
+                    middlename = jsonObject.getString("middlename");
                     isAuthorized = true;
                     saveInformation();
                     externalCallbackAuth.execute(true);
@@ -137,6 +144,9 @@ public class User {
         Settings.setUserLogin(login);
         Settings.setUserPassword(password);
         Settings.setUserId(Integer.toString(user_id));
+        Settings.setUserFirstName(firstname);
+        Settings.setUserMiddleName(middlename);
+        Settings.setUserLastName(lastname);
     }
 
 }
