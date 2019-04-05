@@ -16,6 +16,7 @@ import android.widget.FrameLayout;
 
 import com.example.admin.oracletest.Fragment.AllRequestsFragment;
 import com.example.admin.oracletest.Fragment.MyRequestsFragment;
+import com.example.admin.oracletest.Fragment.SettingsFragment;
 import com.example.admin.oracletest.R;
 import com.example.admin.oracletest.Settings;
 
@@ -97,8 +98,7 @@ public class MainActivity extends AppCompatActivity {
                     break;
                 }
                 case R.id.settings:{
-                    actionBar.setElevation(0);
-                    actionBar.setTitle(getString(R.string.settingsText));
+                    doFragmentTransaction(new SettingsFragment(), getString(R.string.settingsText));
                     break;
                 }
             }

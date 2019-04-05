@@ -3,7 +3,7 @@
 
     <string name="loginHintText">Введите логин и пароль от личного кабинета КФУ</string>
     <string name="forgetPasswordText">Если вы забыли пароль, обратитесь в диспетчерскую службу ИЦТИС КФУ по телефону 123-45-67</string>
-    <string name="noRequestsText">У вас нет заявок</string>
+    <string name="noRequestsText">У Вас нет заявок</string>
     <string name="loadingText">Загрузка...</string>
     <string name="allRequests">Все заявки</string>
     <string name="myRequests">Мои заявки</string>
@@ -22,6 +22,8 @@
     <string name="dummyText">Текст заявки: Настройка прав доступа учетной записи. Прошу предоставить доступ с правами администратора на имя Сулейманова Рината в систему ServiceDesk.</string>
     <string name="delay_request">Продлить</string>
     <string name="complete_request">Завершить</string>
+    <string name="exit">Выйти</string>
+    <string name="ok_button">ОК</string>
 
     <string name="settings">settings</string>
     <string name="user_login">user_login</string>

@@ -2,6 +2,7 @@ package com.example.admin.oracletest.Fragment;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -35,11 +36,15 @@ public class MyRequestsFragment extends Fragment {
     private RecyclerView recyclerView;
     private ProgressDialog progressDialog;
 
+    // Переменные
+    private Context context;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_myrequests, container, false);
         init(view);
+        context = container.getContext().getApplicationContext();
         get_employee_requests(mGetEmployeeRequestsCallback, Settings.getUserId());
         return view;
     }
@@ -62,7 +67,7 @@ public class MyRequestsFragment extends Fragment {
     private void get_employee_requests(Callback callback, String u_id){
         // Показать загрузочное окно
         progressDialog = new ProgressDialog(getContext());
-        progressDialog.setMessage(getContext().getResources().getString(R.string.loadingText));
+        progressDialog.setMessage(context.getString(R.string.loadingText));
         progressDialog.show();
         User.get_requests(u_id, callback);
     }
@@ -79,12 +84,15 @@ public class MyRequestsFragment extends Fragment {
             if(requests.size() == 0){
                 progressDialog.dismiss();
                 AlertDialog.Builder alertDialog = new AlertDialog.Builder(getContext());
-                alertDialog.setMessage(getContext().getResources().getString(R.string.noRequestsText));
+                alertDialog.setTitle(context.getString(R.string.myRequests));
+                alertDialog.setMessage(context.getString(R.string.noRequestsText));
+                alertDialog.setPositiveButton(context.getText(R.string.ok_button), (dialog, which) -> dialog.dismiss());
+                alertDialog.show();
             }else{
                 progressDialog.dismiss();
                 // Создаем адаптер и RecyclerView для отображения заявок
-                EmployeeRequestsRecyclerViewAdapter adapter = new EmployeeRequestsRecyclerViewAdapter(requests, getContext());
-                recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+                EmployeeRequestsRecyclerViewAdapter adapter = new EmployeeRequestsRecyclerViewAdapter(requests, context);
+                recyclerView.setLayoutManager(new LinearLayoutManager(context));
                 recyclerView.setAdapter(adapter);
             }
         }

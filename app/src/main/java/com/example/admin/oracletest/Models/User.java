@@ -149,4 +149,18 @@ public class User {
         Settings.setUserLastName(lastname);
     }
 
+    /**
+     * Выход пользователя
+     */
+
+    public static void exit(){
+        isAuthorized = false;
+        Settings.setUserFirstName("");
+        Settings.setUserMiddleName("");
+        Settings.setUserLastName("");
+        Settings.setUserId("");
+        Settings.setUserLogin("");
+        Settings.setUserPassword("");
+    }
+
 }
