@@ -8,6 +8,8 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.admin.oracletest.R;
@@ -23,6 +25,7 @@ public class DetailRequestActivity extends AppCompatActivity {
     private TextView requestCode, requestDateOfRegistration, requestDateOfRealization,
             requestZaavitel, zaavitelPost, zaavitelBuildingKfu, zaavitelBuildingKfuRoomNumber,
             zaavitelContact, zaavitelPhone, requestBody, employeeData;
+    private Button delayRequestButton, completeRequestButton;
 
     // Переменные
     private String cod, date_of_reg, date_of_realization, zaavitel, post,
@@ -58,6 +61,14 @@ public class DetailRequestActivity extends AppCompatActivity {
         zaavitelPhone = findViewById(R.id.zaavitelPhone);
         requestBody = findViewById(R.id.requestBody);
         employeeData = findViewById(R.id.employeeData);
+        completeRequestButton = findViewById(R.id.completeRequestButton);
+        delayRequestButton = findViewById(R.id.delayRequestButton);
+
+        completeRequestButton.setOnClickListener((view)-> {
+            Intent intent = new Intent(this, DescriptionDoneJobActivity.class);
+            intent.putExtra(getString(R.string.requestNumber), cod);
+            startActivity(intent);
+        });
     }
 
     /**

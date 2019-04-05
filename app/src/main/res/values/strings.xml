@@ -24,6 +24,7 @@
     <string name="complete_request">Завершить</string>
     <string name="exit">Выйти</string>
     <string name="ok_button">ОК</string>
+    <string name="description_done_job">Описание выполненных работ:</string>
 
     <string name="settings">settings</string>
     <string name="user_login">user_login</string>

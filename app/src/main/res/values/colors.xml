@@ -5,5 +5,6 @@
     <color name="colorAccent">#FF4081</color>
 
     <color name="kfuDefaultColor">#00549f</color>
+    <color name="lightGrayColor">#59d8d8d9</color>
 
 </resources>

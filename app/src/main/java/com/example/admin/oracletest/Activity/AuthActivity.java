@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.admin.oracletest.Callback;
@@ -27,7 +28,8 @@ public class AuthActivity extends AppCompatActivity {
 
     // widgets
     private EditText loginEditText, passwordEditText;
-    private Button loginButton, forgotPasswordButton;
+    private Button loginButton;
+    private TextView forgotPasswordButton;
 
     // vars
     private static final String USER_LOGIN = "user_login";
