@@ -34,22 +34,9 @@ public class ServerKFU {
      *
      * @param p_login              Логин пользователья
      * @param p_password           Пароль пользователья
-     * @param callback           Функция, которая вызывается после получения данных
      */
 
-    public static void authenticateUser(String p_login, String p_password, Callback callback) {
-        // создаем аддрес обращения к серверу
-        String url = createUrl("PORTAL_PG_MOBILE", "authentication", "p_login=" + p_login, "p_pass=" + p_password);
-        // создаем задачу
-        GetDataFromKfuServer server = new GetDataFromKfuServer();
-        // аргументы для задачи
-        AsyncTaskArguments asyncTaskArguments = new AsyncTaskArguments();
-        asyncTaskArguments.Data = url;
-        asyncTaskArguments.Callback = callback;
-        server.execute(asyncTaskArguments);
-    }
-
-    public static String authenticateUserRxJava(String p_login, String p_password){
+    public static String authenticateUser(String p_login, String p_password){
         String resultJson = "";
         try {
             //Создаем объект URL передавая в консруктор наш url

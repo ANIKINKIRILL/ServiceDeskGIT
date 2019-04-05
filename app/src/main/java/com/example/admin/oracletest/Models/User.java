@@ -1,7 +1,11 @@
 package com.example.admin.oracletest.Models;
 
+import android.content.Intent;
 import android.util.Log;
+import android.widget.Toast;
 
+import com.example.admin.oracletest.Activity.AuthActivity;
+import com.example.admin.oracletest.Activity.MainActivity;
 import com.example.admin.oracletest.Callback;
 import com.example.admin.oracletest.Settings;
 
@@ -10,6 +14,13 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.concurrent.Callable;
+
+import io.reactivex.Observable;
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 /**
     * Класс пользователя
@@ -24,7 +35,6 @@ public class User {
     private static boolean isAuthorized; // Авторизован ли пользователь
     private static String login;
     private static String password;
-    private static Callback externalCallbackAuth;
     private static Callback externalCallbackGetRequests;
     private static int user_id;
     private static ArrayList<EmployeeRequest> requests = new ArrayList<>();
@@ -38,42 +48,70 @@ public class User {
         *
         * @param login              Логин пользователья
         * @param password           Пароль пользователья
-        * @param callback           Функция, которая вызывается после получения данных
      */
 
     public static void authenticate(String login, String password, Callback callback){
-        externalCallbackAuth = callback;
         User.login = login;
         User.password = password;
-        ServerKFU.authenticateUser(login, password, mAuthenticateCallback);
+        // Создаем observable object, который вернет json
+        Observable<String> authObservable = Observable.fromCallable(()-> ServerKFU.authenticateUser(login, password))
+        // Весь процесс просиходит на Background Thread
+        .subscribeOn(Schedulers.io())
+        // Вывод данных будет на UI Thread
+        .observeOn(AndroidSchedulers.mainThread());
+        // Подписываем observer, чтобы на любое изменение
+        // UI был обновленным
+        authObservable.subscribe(new Observer<String>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+
+            }
+
+            @Override
+            public void onNext(String s) {
+                makeOutAuthenticationJson(s, callback);
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+        });
     }
 
     /**
-     * Callback который вызыиться после получения данных на background thread
+     * Разбираем JSON, который вернется после получения ответа с Сервера
+     * с данными вошёл ли пользователь в систему или вход завершен ошибкой
+     *
+     * @param data          JSON
+     * @param callback      callback, который будет возвращатьс на AuthActivity полсе
+     *                      того как получили результат
      */
 
-    private static Callback mAuthenticateCallback = new Callback() {
-        @Override
-        public void execute(Object data) {
-            try {
-                JSONObject jsonObject = new JSONObject(data.toString());
-                boolean successful = jsonObject.getBoolean("successful");
-                if(successful){
-                    user_id = jsonObject.getInt("user_id");
-                    firstname = jsonObject.getString("firstname");
-                    lastname = jsonObject.getString("lastname");
-                    middlename = jsonObject.getString("middlename");
-                    isAuthorized = true;
-                    saveInformation();
-                    externalCallbackAuth.execute(true);
-                }else{
-                    externalCallbackAuth.execute(false);
-                }
-            } catch (JSONException e) {
-                e.printStackTrace();
+    private static void makeOutAuthenticationJson(Object data, Callback callback){
+        try {
+            JSONObject jsonObject = new JSONObject(data.toString());
+            boolean successful = jsonObject.getBoolean("successful");
+            if(successful){
+                user_id = jsonObject.getInt("user_id");
+                firstname = jsonObject.getString("firstname");
+                lastname = jsonObject.getString("lastname");
+                middlename = jsonObject.getString("middlename");
+                isAuthorized = true;
+                saveInformation();
+                callback.execute(true);
+            }else{
+                callback.execute(false);
             }
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
-    };
+    }
 
     /**
      * Получить заявки исполнителя

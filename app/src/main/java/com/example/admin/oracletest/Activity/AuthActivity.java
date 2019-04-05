@@ -53,14 +53,6 @@ public class AuthActivity extends AppCompatActivity {
     private static final String USER_PASSWORD = "user_password";
     public static final String SETTINGS = "settings";
 
-    private static boolean isAuthorized; // Авторизован ли пользователь
-    private static String login;
-    private static String password;
-    private static int user_id;
-    private static String firstname;
-    private static String lastname;
-    private static String middlename;
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -104,56 +96,19 @@ public class AuthActivity extends AppCompatActivity {
             progressDialog = new ProgressDialog(AuthActivity.this);
             progressDialog.setMessage("Заходим в Ваш профиль...");
             progressDialog.show();
-            /*
-            User.authenticate(p_login, p_password, new Callback() {
-                @Override
-                public void execute(Object data) {
-                    boolean successful = (boolean)data;
-                    if(successful){
-                        progressDialog.dismiss();
-                        Intent intent = new Intent(AuthActivity.this, MainActivity.class);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        startActivity(intent);
-                        finish();
-                        Toast.makeText(AuthActivity.this, "Вы вошли в свой профиль", Toast.LENGTH_SHORT).show();
-                    }else{
-                        Toast.makeText(AuthActivity.this, "Извините, неверный логин или пароль", Toast.LENGTH_SHORT).show();
-                    }
+            User.authenticate(p_login, p_password, (data -> {
+                boolean successful = (boolean)data;
+                if(successful){
+                    progressDialog.dismiss();
+                    Intent intent = new Intent(AuthActivity.this, MainActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
+                    finish();
+                }else{
+                    Toast.makeText(AuthActivity.this, "Неверный логин или пароль", Toast.LENGTH_SHORT).show();
+                    progressDialog.dismiss();   
                 }
-            });
-            */
-
-            Observable<String> authObservable = Observable.fromCallable(new Callable<String>() {
-                @Override
-                public String call() throws Exception {
-                    Log.d(TAG, "call authObservable thread: " + Thread.currentThread().getName());
-                    return ServerKFU.authenticateUserRxJava(p_login, p_password);
-                }
-            }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
-
-            authObservable.subscribe(new Observer<String>() {
-                @Override
-                public void onSubscribe(Disposable d) {
-
-                }
-
-                @Override
-                public void onNext(String s) {
-                    makeOutJson(s);
-                }
-
-                @Override
-                public void onError(Throwable e) {
-
-                }
-
-                @Override
-                public void onComplete() {
-
-                }
-            });
-
-
+            }));
         }
     };
 
@@ -168,42 +123,4 @@ public class AuthActivity extends AppCompatActivity {
             startActivity(intent);
         }
     };
-
-    private void makeOutJson(Object data){
-        try {
-            JSONObject jsonObject = new JSONObject(data.toString());
-            boolean successful = jsonObject.getBoolean("successful");
-            if(successful){
-                progressDialog.dismiss();
-                user_id = jsonObject.getInt("user_id");
-                firstname = jsonObject.getString("firstname");
-                lastname = jsonObject.getString("lastname");
-                middlename = jsonObject.getString("middlename");
-                isAuthorized = true;
-                saveInformation();
-                Intent intent = new Intent(AuthActivity.this, MainActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(intent);
-                finish();
-            }else{
-                Toast.makeText(AuthActivity.this, "Извините, неверный логин или пароль", Toast.LENGTH_SHORT).show();
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * Сохранение логина пароля пользователя в настройках
-     */
-
-    private static void saveInformation(){
-        Settings.setUserLogin(login);
-        Settings.setUserPassword(password);
-        Settings.setUserId(Integer.toString(user_id));
-        Settings.setUserFirstName(firstname);
-        Settings.setUserMiddleName(middlename);
-        Settings.setUserLastName(lastname);
-    }
-
 }
