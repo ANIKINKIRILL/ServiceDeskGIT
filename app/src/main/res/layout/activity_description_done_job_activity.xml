@@ -23,7 +23,6 @@
         android:background="@color/lightGrayColor"
         android:layout_weight="70"
         android:layout_width="match_parent"
-        android:layout_margin="5dp"
         android:hint="Не более 2000 символов"
         android:gravity="top"
         android:layout_height="0dp" />
@@ -33,7 +32,6 @@
         android:textColor="@android:color/white"
         android:layout_weight="10"
         android:background="@color/kfuDefaultColor"
-        android:padding="15dp"
         android:text="Дальше"
         android:layout_width="match_parent"
         android:layout_height="0dp" />

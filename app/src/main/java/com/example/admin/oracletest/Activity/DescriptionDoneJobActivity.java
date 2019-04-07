@@ -1,5 +1,6 @@
 package com.example.admin.oracletest.Activity;
 
+import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -8,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.example.admin.oracletest.R;
 
@@ -16,10 +18,6 @@ import com.example.admin.oracletest.R;
  */
 
 public class DescriptionDoneJobActivity extends AppCompatActivity {
-
-    // Виджеты
-    private EditText description_text;
-    private Button nextButton;
 
     // Переменные
     private String cod;
@@ -39,8 +37,13 @@ public class DescriptionDoneJobActivity extends AppCompatActivity {
      */
 
     private void init(){
-        description_text = findViewById(R.id.description_text);
-        nextButton = findViewById(R.id.nextButton);
+        Button nextButton = findViewById(R.id.nextButton);
+
+        nextButton.setOnClickListener((v) -> {
+            Intent intent = new Intent(DescriptionDoneJobActivity.this, DetailzationDoneJobActivity.class);
+            intent.putExtra(getString(R.string.requestNumber), cod);
+            startActivity(intent);
+        });
     }
 
     /**

@@ -109,7 +109,7 @@
             android:layout_weight="50"
             android:background="@color/kfuDefaultColor"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="60dp" />
     </LinearLayout>
 
 </RelativeLayout>

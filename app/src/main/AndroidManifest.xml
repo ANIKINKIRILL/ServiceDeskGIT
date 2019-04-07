@@ -64,6 +64,14 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name=".Activity.DetailzationDoneJobActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.DetailzationDoneJobActivity"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
+
     </application>
 
 </manifest>
