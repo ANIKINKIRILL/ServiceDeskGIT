@@ -83,7 +83,6 @@ public class AuthActivity extends AppCompatActivity {
         forgotPasswordButton.setOnClickListener(forgotPasswordOnClickListener);
     }
 
-
     /**
      * Button.OnClickListener для авторизации пользователья
      */
@@ -106,7 +105,7 @@ public class AuthActivity extends AppCompatActivity {
                     finish();
                 }else{
                     Toast.makeText(AuthActivity.this, "Неверный логин или пароль", Toast.LENGTH_SHORT).show();
-                    progressDialog.dismiss();   
+                    progressDialog.dismiss();
                 }
             }));
         }

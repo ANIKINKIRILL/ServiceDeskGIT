@@ -14,20 +14,24 @@ import java.net.URL;
 /**
  * Класс для асинхроного получения данных с сервера кфу
  */
-public class GetDataFromKfuServer extends AsyncTask<AsyncTaskArguments, Void, AsyncTaskArguments> {
+public class GetDataFromKfuServer {
 
     // Logs
     private static final String TAG = "GetDataFromKfuServer";
 
-    @Override
-    protected AsyncTaskArguments doInBackground(AsyncTaskArguments... asyncTaskArguments) {
-        String resultJson = "";
+    /**
+     * Получить данные с Сервера КФУ
+     * @param url       путь к функции
+     * @return          JSON с данными
+     */
 
+    public static String getDataFromKfuServer(String url){
+        String resultJson = "";
         try {
             //Создаем объект URL передавая в консруктор наш url
-            URL url = new URL(asyncTaskArguments[0].Data.toString());
+            URL urlObject = new URL(url);
             //Создаем подключение
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            HttpURLConnection connection = (HttpURLConnection) urlObject.openConnection();
             //Делаем запрос при помощи GET method
             connection.setRequestMethod("GET");
             connection.connect();
@@ -42,22 +46,14 @@ public class GetDataFromKfuServer extends AsyncTask<AsyncTaskArguments, Void, As
 
             //Читаем, пока можем
             String line;
-            while((line=bufferedReader.readLine()) != null){
+            while ((line = bufferedReader.readLine()) != null) {
                 stringBuffer.append(line);
             }
             resultJson = stringBuffer.toString();
-        } catch (Exception e) {
-            Log.d(TAG, "doInBackground: error die to " + e.getMessage());
+        }catch (Exception e){
+            e.getMessage();
         }
-        AsyncTaskArguments returnAsyncTaskArgument = new AsyncTaskArguments();
-        returnAsyncTaskArgument.Data = resultJson;
-        returnAsyncTaskArgument.Callback = asyncTaskArguments[0].Callback;
-        return returnAsyncTaskArgument;
+        return resultJson;
     }
 
-    @Override
-    protected void onPostExecute(AsyncTaskArguments asyncTaskArguments) {
-        super.onPostExecute(asyncTaskArguments);
-        asyncTaskArguments.Callback.execute(asyncTaskArguments.Data.toString());
-    }
 }

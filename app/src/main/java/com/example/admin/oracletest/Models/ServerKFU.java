@@ -1,10 +1,14 @@
 package com.example.admin.oracletest.Models;
 
 
+import android.util.Log;
+
 import com.example.admin.oracletest.Data.AsyncTaskArguments;
 import com.example.admin.oracletest.Callback;
 import com.example.admin.oracletest.GetDataFromKfuServer;
+import com.example.admin.oracletest.JSONFactory;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -13,6 +17,11 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+
+import static com.example.admin.oracletest.JSONFactory.makeOutAuthenticateUserJson;
+import static com.example.admin.oracletest.JSONFactory.makeOutGetEmployeeRequestsJson;
 
 /**
  * Класс для работы с сервером КФУ
@@ -28,7 +37,6 @@ public class ServerKFU {
      */
     public static String ip = "portal-dis.kpfu.ru";
 
-
     /**
      * Авторизация пользователя
      *
@@ -36,55 +44,23 @@ public class ServerKFU {
      * @param p_password           Пароль пользователья
      */
 
-    public static String authenticateUser(String p_login, String p_password){
-        String resultJson = "";
-        try {
-            //Создаем объект URL передавая в консруктор наш url
-            String url = createUrl("PORTAL_PG_MOBILE", "authentication", "p_login=" + p_login, "p_pass=" + p_password);
-            URL urlObject = new URL(url);
-            //Создаем подключение
-            HttpURLConnection connection = (HttpURLConnection) urlObject.openConnection();
-            //Делаем запрос при помощи GET method
-            connection.setRequestMethod("GET");
-            connection.connect();
-
-            //Создаем поток для чтения
-            InputStream inputStream = connection.getInputStream();
-
-            //Создаем буффер
-            StringBuffer stringBuffer = new StringBuffer();
-            //Создаем reader, указывая кодировку cp1251, для поддержки кириллицы
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "cp1251"));
-
-            //Читаем, пока можем
-            String line;
-            while ((line = bufferedReader.readLine()) != null) {
-                stringBuffer.append(line);
-            }
-            resultJson = stringBuffer.toString();
-        }catch (Exception e){
-            e.getMessage();
-        }
-        return resultJson;
-
+    public static void authenticateUser(String p_login, String p_password, Callback callback){
+        // создаем аддрес обращения к серверу
+        String url = createUrl("PORTAL_PG_MOBILE", "authentication", "p_login=" + p_login, "p_pass=" + p_password);
+        // по url идем на сервер и получаем json, далее парсим
+        makeOutAuthenticateUserJson(GetDataFromKfuServer.getDataFromKfuServer(url), callback);
     }
 
     /**
      * Получить заявки исполнителя
-     * @param callback      Callback, который вернется после получения заявок на исполнителя
-     * @param u_id          id исполнителя
+     * @param u_id      id исполнителя
      */
 
-    public static void get_requests(String u_id, Callback callback){
+    public static List<EmployeeRequest> get_requests(String u_id){
         // создаем аддрес обращения к серверу
         String url = createUrl("SERVICEDESK_MOBILE", "get_employee_requests", "u_id=" + u_id);
-        // создаем задачу
-        GetDataFromKfuServer server = new GetDataFromKfuServer();
-        // аргументы для задачи
-        AsyncTaskArguments asyncTaskArguments = new AsyncTaskArguments();
-        asyncTaskArguments.Data = url;
-        asyncTaskArguments.Callback = callback;
-        server.execute(asyncTaskArguments);
+        // по url идем на сервер и получаем json, далее парсим
+        return makeOutGetEmployeeRequestsJson(GetDataFromKfuServer.getDataFromKfuServer(url));
     }
 
     /**

@@ -97,16 +97,4 @@ public class MyRequestsFragment extends Fragment {
             }
         }
     };
-
-    /**
-     * Замена FrameLayout на Fragment
-     * @param fragment Fragment который поменятся c FrameLayout
-     */
-
-    private void doFragmentTransaction(Fragment fragment){
-        FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        transaction.replace(R.id.main_container, fragment);
-        transaction.commit();
-    }
-
 }
