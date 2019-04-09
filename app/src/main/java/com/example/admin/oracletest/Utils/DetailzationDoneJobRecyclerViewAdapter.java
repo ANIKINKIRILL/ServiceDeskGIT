@@ -53,7 +53,9 @@ public class DetailzationDoneJobRecyclerViewAdapter extends RecyclerView.Adapter
         String detailzationChoice = detailzationChoices.get(i);
         viewHolder.detailzation_text.setText(detailzationChoice);
         viewHolder.deleteButton.setOnClickListener((v) -> {
-            Toast.makeText(context, detailzationChoice, Toast.LENGTH_SHORT).show();
+            detailzationChoices.remove(detailzationChoice);
+            //notifyDataSetChanged();
+            notifyItemRemoved(viewHolder.getLayoutPosition());
         });
     }
 

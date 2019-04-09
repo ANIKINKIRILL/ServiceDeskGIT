@@ -14,7 +14,7 @@
         android:layout_marginTop="15dp"
         android:layout_marginBottom="5dp"
         android:gravity="center"
-        android:textSize="16dp"
+        android:textSize="18dp"
         android:layout_width="match_parent"
         android:layout_height="0dp" />
 
@@ -23,7 +23,8 @@
         android:background="@color/lightGrayColor"
         android:layout_weight="70"
         android:layout_width="match_parent"
-        android:hint="Не более 2000 символов"
+        android:hint="  Не более 2000 символов"
+        android:textCursorDrawable="@color/kfuDefaultColor"
         android:gravity="top"
         android:layout_height="0dp" />
 

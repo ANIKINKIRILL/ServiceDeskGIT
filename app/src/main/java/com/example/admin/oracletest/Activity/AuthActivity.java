@@ -6,31 +6,16 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.admin.oracletest.Callback;
-import com.example.admin.oracletest.Models.EmployeeRequest;
-import com.example.admin.oracletest.Models.ServerKFU;
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
 import com.example.admin.oracletest.Models.User;
 import com.example.admin.oracletest.R;
-import com.example.admin.oracletest.Settings;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
-import java.util.concurrent.Callable;
-
-import io.reactivex.Observable;
-import io.reactivex.Observer;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
 
 
 /**
@@ -104,8 +89,10 @@ public class AuthActivity extends AppCompatActivity {
                     startActivity(intent);
                     finish();
                 }else{
-                    Toast.makeText(AuthActivity.this, "Неверный логин или пароль", Toast.LENGTH_SHORT).show();
                     progressDialog.dismiss();
+                    YoYo.with(Techniques.Shake).repeat(0).duration(1000).playOn(loginEditText);
+                    YoYo.with(Techniques.Shake).repeat(0).duration(1000).playOn(passwordEditText);
+                    Toast.makeText(AuthActivity.this, "Неверный логин или пароль", Toast.LENGTH_SHORT).show();
                 }
             }));
         }

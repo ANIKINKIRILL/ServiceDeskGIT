@@ -30,6 +30,7 @@
         android:textSize="17dp"
         android:layout_below="@id/detailzation_done_job_recycler_view"
         android:text="Выбрать нужное"
+        android:textStyle="bold"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 

@@ -33,10 +33,12 @@ public class DetailzationDoneJobActivity extends AppCompatActivity implements Vi
     private static final String TAG = "DetailzationDoneJobAct";
 
     // Виджеты
-    private RecyclerView recyclerView;
     private RadioButton full, partly;
     private RadioGroup radioGroup;
     private TextView pickDetailzationText;
+
+    // Переменные
+    private DetailzationDoneJobRecyclerViewAdapter adapter;
 
 
     // Постоянные переменные
@@ -53,7 +55,7 @@ public class DetailzationDoneJobActivity extends AppCompatActivity implements Vi
                     "Произведена корректировка данных ИАС")
     );
     public static final ArrayList<String> userDetailzationChoices = new ArrayList<>(
-            Arrays.asList("Произведена корректировка данных ИАС", "Разработан новый модуль ИАС")
+            // Arrays.asList("Произведена корректировка данных ИАС", "Разработан новый модуль ИАС")
     );
 
     // Переменные
@@ -62,10 +64,17 @@ public class DetailzationDoneJobActivity extends AppCompatActivity implements Vi
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d(TAG, "onCreate: called");
         setContentView(R.layout.activity_detailzation_done_job_activity);
         getIntentExtras();
         init();
         initActionBar();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Log.d(TAG, "onStart: called");
         populateRecyclerView();
     }
 
@@ -74,7 +83,6 @@ public class DetailzationDoneJobActivity extends AppCompatActivity implements Vi
      */
 
     private void init(){
-        recyclerView = findViewById(R.id.detailzation_done_job_recycler_view);
         full = findViewById(R.id.full);
         partly = findViewById(R.id.partly);
         radioGroup = findViewById(R.id.radioGroup);
@@ -112,8 +120,9 @@ public class DetailzationDoneJobActivity extends AppCompatActivity implements Vi
      * Наполнить RecyclerView
      */
 
-    private void populateRecyclerView(){
-        DetailzationDoneJobRecyclerViewAdapter adapter = new DetailzationDoneJobRecyclerViewAdapter(userDetailzationChoices, this);
+    public void populateRecyclerView(){
+        RecyclerView recyclerView = findViewById(R.id.detailzation_done_job_recycler_view);
+        adapter = new DetailzationDoneJobRecyclerViewAdapter(userDetailzationChoices, this);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
     }

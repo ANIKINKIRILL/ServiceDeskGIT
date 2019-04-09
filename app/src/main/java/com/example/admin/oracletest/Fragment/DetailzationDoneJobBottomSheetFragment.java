@@ -1,15 +1,19 @@
 package com.example.admin.oracletest.Fragment;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetDialogFragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
+import com.example.admin.oracletest.Activity.DetailzationDoneJobActivity;
 import com.example.admin.oracletest.R;
 import com.example.admin.oracletest.Utils.DetailzationDoneJobBottomSheetFragmentRecyclerViewAdapter;
 
@@ -21,6 +25,8 @@ import java.util.Arrays;
  */
 
 public class DetailzationDoneJobBottomSheetFragment extends BottomSheetDialogFragment{
+
+    private static final String TAG = "BottomSheetFragment";
 
     // Виджеты
     private RecyclerView recyclerView;
@@ -68,4 +74,13 @@ public class DetailzationDoneJobBottomSheetFragment extends BottomSheetDialogFra
         recyclerView.setAdapter(adapter);
     }
 
+    @Override
+    public void onDismiss(DialogInterface dialog) {
+        super.onDismiss(dialog);
+        try {
+            getActivity().recreate();
+        }catch (Exception e){
+            Toast.makeText(getContext(), "Данные не были обновлены попробуйте еще раз", Toast.LENGTH_SHORT).show();
+        }
+    }
 }

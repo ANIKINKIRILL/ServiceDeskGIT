@@ -7,8 +7,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 
+import com.example.admin.oracletest.Activity.DetailzationDoneJobActivity;
 import com.example.admin.oracletest.R;
 
 import java.util.ArrayList;
@@ -51,6 +53,18 @@ public class DetailzationDoneJobBottomSheetFragmentRecyclerViewAdapter extends
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
         String detailzationChoice = detailzationChoices.get(i);
         viewHolder.detailzation_text.setText(detailzationChoice);
+
+        // Реализация нажатия на checkbox
+        viewHolder.checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked){
+                    DetailzationDoneJobActivity.userDetailzationChoices.add(detailzationChoice);
+                }else{
+                    DetailzationDoneJobActivity.userDetailzationChoices.remove(detailzationChoice);
+                }
+            }
+        });
     }
 
     @Override
