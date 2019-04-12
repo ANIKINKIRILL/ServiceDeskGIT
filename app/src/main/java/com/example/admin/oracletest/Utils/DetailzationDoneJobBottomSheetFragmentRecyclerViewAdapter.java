@@ -24,10 +24,12 @@ public class DetailzationDoneJobBottomSheetFragmentRecyclerViewAdapter extends
         RecyclerView.Adapter<DetailzationDoneJobBottomSheetFragmentRecyclerViewAdapter.ViewHolder> {
 
     private ArrayList<String> detailzationChoices = new ArrayList<>();
+    private ArrayList<String> userDetailzationChoices = new ArrayList<>();
     private Context context;
 
-    public DetailzationDoneJobBottomSheetFragmentRecyclerViewAdapter(ArrayList<String> detailzationChoices, Context context) {
+    public DetailzationDoneJobBottomSheetFragmentRecyclerViewAdapter(ArrayList<String> detailzationChoices,ArrayList<String> userDetailzationChoices, Context context) {
         this.detailzationChoices = detailzationChoices;
+        this.userDetailzationChoices = userDetailzationChoices;
         this.context = context;
     }
 
@@ -65,6 +67,12 @@ public class DetailzationDoneJobBottomSheetFragmentRecyclerViewAdapter extends
                 }
             }
         });
+
+        // Проверка если польватель уже выбрал эту характеристику, то checkbox -> checked
+        if(userDetailzationChoices.contains(detailzationChoice)){
+            viewHolder.checkBox.setChecked(true);
+        }
+
     }
 
     @Override

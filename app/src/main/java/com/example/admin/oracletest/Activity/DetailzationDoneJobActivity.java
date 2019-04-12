@@ -23,6 +23,8 @@ import com.example.admin.oracletest.Utils.DetailzationDoneJobRecyclerViewAdapter
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Активити с Детализация выполненных работ, Работы выполнены, Прикрепить файл
@@ -55,7 +57,7 @@ public class DetailzationDoneJobActivity extends AppCompatActivity implements Vi
                     "Произведена корректировка данных ИАС")
     );
     public static final ArrayList<String> userDetailzationChoices = new ArrayList<>(
-            // Arrays.asList("Произведена корректировка данных ИАС", "Разработан новый модуль ИАС")
+            /* Список характеристик, которые выбрал пользователь */
     );
 
     // Переменные
@@ -76,6 +78,7 @@ public class DetailzationDoneJobActivity extends AppCompatActivity implements Vi
         super.onStart();
         Log.d(TAG, "onStart: called");
         populateRecyclerView();
+        removeUserDetailzationChoicesDuplicateElements();
     }
 
     /**
@@ -127,6 +130,16 @@ public class DetailzationDoneJobActivity extends AppCompatActivity implements Vi
         recyclerView.setAdapter(adapter);
     }
 
+    /**
+     * Удалить дубликаты со списка характеристик, которые выбрал пользователь
+     */
+
+    private void removeUserDetailzationChoicesDuplicateElements(){
+        Set<String> removedList = new HashSet<>(userDetailzationChoices);
+        userDetailzationChoices.clear();
+        userDetailzationChoices.addAll(removedList);
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
@@ -144,7 +157,7 @@ public class DetailzationDoneJobActivity extends AppCompatActivity implements Vi
             case R.id.pickDetailzationText:{
                 // откыть снизу всплывающие окно
                 // с выбором характеристики
-                DetailzationDoneJobBottomSheetFragment bottomSheetFragment = new DetailzationDoneJobBottomSheetFragment();
+                DetailzationDoneJobBottomSheetFragment bottomSheetFragment = new DetailzationDoneJobBottomSheetFragment(userDetailzationChoices);
                 bottomSheetFragment.show(getSupportFragmentManager(), getString(R.string.open_dialog));
                 break;
             }

@@ -4,90 +4,104 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/detailzation_done_job_text"
-        android:text="Детализация выполненных работ:"
-        android:textSize="17sp"
-        android:layout_marginTop="20dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginBottom="10dp"
+    <android.support.v4.widget.NestedScrollView
+        android:id="@+id/nestedScrollView"
+        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/detailzation_done_job_recycler_view"
-        android:layout_below="@id/detailzation_done_job_text"
+        <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/pickDetailzationText"
-        android:gravity="center"
-        android:paddingStart="5dp"
-        android:paddingEnd="5dp"
-        android:paddingTop="10dp"
-        android:textSize="17dp"
-        android:layout_below="@id/detailzation_done_job_recycler_view"
-        android:text="Выбрать нужное"
-        android:textStyle="bold"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/detailzation_done_job_text"
+            android:text="Детализация выполненных работ:"
+            android:textSize="17sp"
+            android:layout_marginTop="20dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
-    <TextView
-        android:id="@+id/workStatus"
-        android:layout_below="@id/pickDetailzationText"
-        android:text="Работы выполнены:"
-        android:textSize="17sp"
-        android:layout_marginTop="10dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginBottom="10dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/detailzation_done_job_recycler_view"
+            android:layout_below="@id/detailzation_done_job_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
 
-   <RadioGroup
-       android:id="@+id/radioGroup"
-       android:layout_marginStart="20dp"
-       android:layout_below="@id/workStatus"
-       android:layout_width="match_parent"
-       android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/pickDetailzationText"
+            android:gravity="center"
+            android:paddingStart="5dp"
+            android:paddingEnd="5dp"
+            android:paddingTop="10dp"
+            android:textSize="17dp"
+            android:layout_below="@id/detailzation_done_job_recycler_view"
+            android:text="Выбрать нужное"
+            android:textStyle="bold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
-       <RadioButton
-           android:id="@+id/full"
-           android:text="полностью"
+        <TextView
+            android:id="@+id/workStatus"
+            android:layout_below="@id/pickDetailzationText"
+            android:text="Работы выполнены:"
+            android:textSize="17sp"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+       <RadioGroup
+           android:id="@+id/radioGroup"
+           android:layout_marginStart="20dp"
+           android:layout_below="@id/workStatus"
            android:layout_width="match_parent"
-           android:layout_height="wrap_content" />
+           android:layout_height="wrap_content">
 
-       <RadioButton
-           android:id="@+id/partly"
-           android:text="частично"
-           android:layout_width="match_parent"
-           android:layout_height="wrap_content" />
+           <RadioButton
+               android:id="@+id/full"
+               android:text="полностью"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content" />
 
-   </RadioGroup>
+           <RadioButton
+               android:id="@+id/partly"
+               android:text="частично"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content" />
 
-    <TextView
-        android:id="@+id/loadFile"
-        android:layout_below="@id/radioGroup"
-        android:text="Прикрепить файл"
-        android:textSize="17sp"
-        android:gravity="center"
-        android:layout_marginTop="10dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginBottom="10dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+       </RadioGroup>
+
+        <TextView
+            android:id="@+id/loadFile"
+            android:layout_below="@id/radioGroup"
+            android:text="Прикрепить файл"
+            android:textSize="17sp"
+            android:gravity="center"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    </RelativeLayout>
+
+    </android.support.v4.widget.NestedScrollView>
 
     <Button
         android:id="@+id/nextButton"
+        android:gravity="center"
         android:layout_alignParentBottom="true"
         android:textColor="@android:color/white"
         android:background="@color/kfuDefaultColor"
         android:text="Сохранить"
         android:layout_width="match_parent"
-        android:layout_height="60dp" />
-
+        android:layout_height="wrap_content" />
 
 </RelativeLayout>

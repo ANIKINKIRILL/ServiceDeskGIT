@@ -1,5 +1,6 @@
 package com.example.admin.oracletest.Fragment;
 
+import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -24,6 +25,7 @@ import java.util.Arrays;
  * Всплывающий фрагмент с выбором характеристики выполненных работ
  */
 
+@SuppressLint("ValidFragment")
 public class DetailzationDoneJobBottomSheetFragment extends BottomSheetDialogFragment{
 
     private static final String TAG = "BottomSheetFragment";
@@ -44,6 +46,13 @@ public class DetailzationDoneJobBottomSheetFragment extends BottomSheetDialogFra
                     "Разработан новый модуль ИАС",
                     "Произведена корректировка данных ИАС")
     );
+
+    public ArrayList<String> userDetailzationChoices;
+
+    @SuppressLint("ValidFragment")
+    public DetailzationDoneJobBottomSheetFragment(ArrayList<String> userDetailzationChoices) {
+        this.userDetailzationChoices = userDetailzationChoices;
+    }
 
     @Nullable
     @Override
@@ -69,7 +78,7 @@ public class DetailzationDoneJobBottomSheetFragment extends BottomSheetDialogFra
 
     private void populateRecyclerView(){
         DetailzationDoneJobBottomSheetFragmentRecyclerViewAdapter adapter =
-                new DetailzationDoneJobBottomSheetFragmentRecyclerViewAdapter(detailzationChoices, getContext());
+                new DetailzationDoneJobBottomSheetFragmentRecyclerViewAdapter(detailzationChoices, userDetailzationChoices, getContext());
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(adapter);
     }
