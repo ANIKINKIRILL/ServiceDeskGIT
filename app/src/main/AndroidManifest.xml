@@ -49,7 +49,8 @@
         </activity>
 
         <activity
-            android:name=".Activity.DetailRequestActivity">
+            android:name=".Activity.DetailRequestActivity"
+            android:theme="@style/Theme.Design.Light.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.DetailRequestActivity"/>
                 <category android:name="android.intent.category.DEFAULT"/>

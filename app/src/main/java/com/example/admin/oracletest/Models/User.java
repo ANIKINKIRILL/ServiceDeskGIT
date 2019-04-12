@@ -6,7 +6,6 @@ import com.example.admin.oracletest.Callback;
 import com.example.admin.oracletest.Settings;
 
 import java.util.List;
-import java.util.concurrent.Callable;
 
 import io.reactivex.Observable;
 import io.reactivex.Observer;
@@ -15,7 +14,7 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 /**
-    * Класс пользователя
+ * Класс пользователя
  */
 
 public class User {

@@ -7,8 +7,8 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -37,7 +37,7 @@ public class DetailRequestActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_detailrequest);
+        setContentView(R.layout.activity_detailrequest2);
         init();
         getIntentExtras();
         initActionBar();
@@ -76,6 +76,8 @@ public class DetailRequestActivity extends AppCompatActivity {
      */
 
     private void initActionBar(){
+        Toolbar toolbar = findViewById(R.id.my_toolbar);
+        setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle("Карточка заявки " + cod);
         actionBar.setHomeButtonEnabled(true);
@@ -120,15 +122,15 @@ public class DetailRequestActivity extends AppCompatActivity {
 
     private void setIntentExtrasToWidgets(){
         requestCode.setText(String.format("Номер заяки: %s", cod));
-        requestDateOfRealization.setText(String.format("Дата регистрация: %s", date_of_realization));
-        requestDateOfRegistration.setText(String.format("Дата рекомендуемого выполнения: %s", date_of_reg));
+        requestDateOfRealization.setText(String.format("Дата регистрация: %s", date_of_realization+"\n"));
+        requestDateOfRegistration.setText(String.format("Срок выполнения: %s", date_of_reg));
         requestZaavitel.setText(String.format("Заявитель: %s", zaavitel));
         zaavitelPost.setText(String.format("Должность: %s", post));
         zaavitelBuildingKfu.setText(String.format("Подразделение: %s", building_kfu));
         zaavitelBuildingKfuRoomNumber.setText(String.format("Кабинет: %s", roomNumber));
         zaavitelContact.setText(String.format("Контакт: %s", contact));
-        zaavitelPhone.setText(String.format("Телефон: %s", phone));
-        requestBody.setText(String.format("Текст заявки: %s", body));
+        zaavitelPhone.setText(String.format("Телефон: %s", phone+"\n"));
+        requestBody.setText(String.format("Текст заявки: %s", body+"\n"));
         employeeData.setText(String.format("Исполнитель: %s %s %s",
                 employee_middlename,
                 employee_firstname,
