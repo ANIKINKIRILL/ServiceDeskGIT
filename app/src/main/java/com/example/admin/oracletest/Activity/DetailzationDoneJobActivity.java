@@ -79,6 +79,7 @@ public class DetailzationDoneJobActivity extends AppCompatActivity implements Vi
         Log.d(TAG, "onStart: called");
         populateRecyclerView();
         removeUserDetailzationChoicesDuplicateElements();
+        Log.d(TAG, "onStart: " + userDetailzationChoices.size());
     }
 
     /**

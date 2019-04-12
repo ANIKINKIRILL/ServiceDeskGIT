@@ -3,6 +3,7 @@ package com.example.admin.oracletest.Utils;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +24,9 @@ import java.util.ArrayList;
 public class DetailzationDoneJobBottomSheetFragmentRecyclerViewAdapter extends
         RecyclerView.Adapter<DetailzationDoneJobBottomSheetFragmentRecyclerViewAdapter.ViewHolder> {
 
+    private static final String TAG = "DetailzationDoneJobBott";
+
+    // Переменные
     private ArrayList<String> detailzationChoices = new ArrayList<>();
     private ArrayList<String> userDetailzationChoices = new ArrayList<>();
     private Context context;
@@ -64,6 +68,7 @@ public class DetailzationDoneJobBottomSheetFragmentRecyclerViewAdapter extends
                     DetailzationDoneJobActivity.userDetailzationChoices.add(detailzationChoice);
                 }else{
                     DetailzationDoneJobActivity.userDetailzationChoices.remove(detailzationChoice);
+                    Log.d(TAG, "onCheckedChanged: " + DetailzationDoneJobActivity.userDetailzationChoices.size());
                 }
             }
         });

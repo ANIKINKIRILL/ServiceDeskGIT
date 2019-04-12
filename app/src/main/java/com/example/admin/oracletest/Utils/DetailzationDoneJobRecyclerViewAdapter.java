@@ -29,6 +29,8 @@ public class DetailzationDoneJobRecyclerViewAdapter extends RecyclerView.Adapter
         this.context = context;
     }
 
+    public DetailzationDoneJobRecyclerViewAdapter(){}
+
     static class ViewHolder extends RecyclerView.ViewHolder{
         TextView detailzation_text;
         ImageView deleteButton;
@@ -63,4 +65,5 @@ public class DetailzationDoneJobRecyclerViewAdapter extends RecyclerView.Adapter
     public int getItemCount() {
         return detailzationChoices.size();
     }
+
 }

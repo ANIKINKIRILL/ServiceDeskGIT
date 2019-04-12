@@ -1,16 +1,23 @@
 package com.example.admin.oracletest.Activity;
 
+import android.Manifest;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.admin.oracletest.R;
 import com.example.admin.oracletest.Settings;
@@ -34,6 +41,9 @@ public class DetailRequestActivity extends AppCompatActivity {
     private String employee_middlename;
     private String employee_lastname;
 
+    // Постоянные переменные
+    public static final int REQUEST_CALL = 1;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,7 +59,7 @@ public class DetailRequestActivity extends AppCompatActivity {
      * Инициализация виджетов
      */
 
-    private void init(){
+    private void init() {
         requestCode = findViewById(R.id.requestCode);
         requestDateOfRegistration = findViewById(R.id.requestDateOfRegistration);
         requestDateOfRealization = findViewById(R.id.requestDateOfRealization);
@@ -64,10 +74,14 @@ public class DetailRequestActivity extends AppCompatActivity {
         completeRequestButton = findViewById(R.id.completeRequestButton);
         delayRequestButton = findViewById(R.id.delayRequestButton);
 
-        completeRequestButton.setOnClickListener((view)-> {
+        completeRequestButton.setOnClickListener((view) -> {
             Intent intent = new Intent(this, DescriptionDoneJobActivity.class);
             intent.putExtra(getString(R.string.requestNumber), cod);
             startActivity(intent);
+        });
+
+        zaavitelPhone.setOnClickListener((v) -> {
+            makePhoneCall();
         });
     }
 
@@ -84,6 +98,20 @@ public class DetailRequestActivity extends AppCompatActivity {
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.kfuDefaultColor)));
         actionBar.setElevation(0);
+    }
+
+    /**
+     * Сделать звонок по телефону
+     */
+
+    private void makePhoneCall(){
+        if(ContextCompat.checkSelfPermission(DetailRequestActivity.this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED){
+            ActivityCompat.requestPermissions(DetailRequestActivity.this, new String[] {Manifest.permission.CALL_PHONE}, REQUEST_CALL);
+        }else{
+            Intent phoneIntent = new Intent(Intent.ACTION_CALL);
+            phoneIntent.setData(Uri.parse("tel:" + zaavitelPhone.getText().toString()));
+            startActivity(phoneIntent);
+        }
     }
 
     @Override
@@ -149,4 +177,14 @@ public class DetailRequestActivity extends AppCompatActivity {
         employee_lastname = sharedPreferences.getString(Settings.USER_LAST_NAME, "");
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if(requestCode == REQUEST_CALL){
+            if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                makePhoneCall();
+            }else{
+                Toast.makeText(this, "Вы отменили использование телефона", Toast.LENGTH_LONG).show();
+            }
+        }
+    }
 }
