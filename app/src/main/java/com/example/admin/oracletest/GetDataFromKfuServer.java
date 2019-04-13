@@ -1,7 +1,6 @@
 package com.example.admin.oracletest;
 
 import android.os.AsyncTask;
-import android.util.Log;
 
 import com.example.admin.oracletest.Data.AsyncTaskArguments;
 
@@ -14,18 +13,21 @@ import java.net.URL;
 /**
  * Класс для асинхроного получения данных с сервера кфу
  */
-public class GetDataFromKfuServer {
 
-    // Logs
-    private static final String TAG = "GetDataFromKfuServer";
+public class GetDataFromKfuServer extends AsyncTask<AsyncTaskArguments, Void, AsyncTaskArguments>{
 
     /**
-     * Получить данные с Сервера КФУ
-     * @param url       путь к функции
-     * @return          JSON с данными
+     * @param asyncTaskArguments Параметры передаваемые с {@link com.example.admin.oracletest.Models.ServerKFU}
+     *                           callback - который вернеться с JSON
+     *                           url - это URL по которой происходит подключение к функциям/процедурам
+     * @return Возвращает отбратно {@link AsyncTaskArguments}. Callback - вернется на UI Thread
+     *                                                         Data - полученный JSON
      */
 
-    public static String getDataFromKfuServer(String url){
+    @Override
+    protected AsyncTaskArguments doInBackground(AsyncTaskArguments... asyncTaskArguments) {
+        Callback callback = asyncTaskArguments[0].Callback;
+        String url = asyncTaskArguments[0].Data.toString();
         String resultJson = "";
         try {
             //Создаем объект URL передавая в консруктор наш url
@@ -53,7 +55,16 @@ public class GetDataFromKfuServer {
         }catch (Exception e){
             e.getMessage();
         }
-        return resultJson;
+        AsyncTaskArguments returnedAsyncTaskArguments = new AsyncTaskArguments();
+        returnedAsyncTaskArguments.Callback = callback;
+        returnedAsyncTaskArguments.Data = resultJson;
+        return returnedAsyncTaskArguments;
     }
 
+    @Override
+    protected void onPostExecute(AsyncTaskArguments asyncTaskArguments) {
+        super.onPostExecute(asyncTaskArguments);
+        Callback callback = asyncTaskArguments.Callback;
+        callback.execute(asyncTaskArguments.Data.toString());
+    }
 }

@@ -68,6 +68,7 @@
                     android:layout_height="wrap_content" />
 
                 <TextView
+                    android:visibility="gone"
                     android:id="@+id/zaavitelContact"
                     tools:text="Контакт: Александрова Ирина Сергеевна"
                     android:layout_width="match_parent"

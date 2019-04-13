@@ -1,27 +1,9 @@
 package com.example.admin.oracletest.Models;
 
 
-import android.util.Log;
-
-import com.example.admin.oracletest.Data.AsyncTaskArguments;
 import com.example.admin.oracletest.Callback;
+import com.example.admin.oracletest.Data.AsyncTaskArguments;
 import com.example.admin.oracletest.GetDataFromKfuServer;
-import com.example.admin.oracletest.JSONFactory;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-
-import static com.example.admin.oracletest.JSONFactory.makeOutAuthenticateUserJson;
-import static com.example.admin.oracletest.JSONFactory.makeOutGetEmployeeRequestsJson;
 
 /**
  * Класс для работы с сервером КФУ
@@ -29,38 +11,51 @@ import static com.example.admin.oracletest.JSONFactory.makeOutGetEmployeeRequest
 
 public class ServerKFU {
 
-    // Logs
+    // Лог
     private static final String TAG = "ServerKFU";
 
-    /**
-     * ip адрес сервера КФУ
-     */
-    public static String ip = "portal-dis.kpfu.ru";
+    // Переменные
+    private static String ip = "portal-dis.kpfu.ru"; //     ip адрес сервера КФУ
 
     /**
      * Авторизация пользователя
      *
-     * @param p_login              Логин пользователья
-     * @param p_password           Пароль пользователья
+     * @param p_login     Логин пользователья
+     * @param p_password  Пароль пользователья
+     * @param callback    {@link Callback} вызовиться когда будут получены данные с {@link GetDataFromKfuServer}.
+     *                    Этот интерфес нужен, чтобы разпарсить JSON, который веренеться после асинхронного
+     *                    получения. Зашел ли пользователь удачно или авторизация окончилась ошибкой.
      */
 
     public static void authenticateUser(String p_login, String p_password, Callback callback){
-        // создаем аддрес обращения к серверу
+        // создаем адрес обращения к серверу
         String url = createUrl("PORTAL_PG_MOBILE", "authentication", "p_login=" + p_login, "p_pass=" + p_password);
-        // по url идем на сервер и получаем json, далее парсим
-        makeOutAuthenticateUserJson(GetDataFromKfuServer.getDataFromKfuServer(url), callback);
+        /**
+         *  создаем параметры для асинхронного класса
+         *  {@link GetDataFromKfuServer}
+         */
+        AsyncTaskArguments arguments = new AsyncTaskArguments(url, callback);
+        GetDataFromKfuServer server = new GetDataFromKfuServer();
+        server.execute(arguments);
     }
 
     /**
      * Получить заявки исполнителя
+     *
      * @param u_id      id исполнителя
+     * @param callback  callback, который вернеться полсе получения заявок на исполнителя
      */
 
-    public static List<EmployeeRequest> get_requests(String u_id){
+    public static void get_requests(String u_id, Callback callback){
         // создаем аддрес обращения к серверу
         String url = createUrl("SERVICEDESK_MOBILE", "get_employee_requests", "u_id=" + u_id);
-        // по url идем на сервер и получаем json, далее парсим
-        return makeOutGetEmployeeRequestsJson(GetDataFromKfuServer.getDataFromKfuServer(url));
+        /**
+         *  создаем параметры для асинхронного класса
+         *  {@link GetDataFromKfuServer}
+         */
+        AsyncTaskArguments arguments = new AsyncTaskArguments(url, callback);
+        GetDataFromKfuServer server = new GetDataFromKfuServer();
+        server.execute(arguments);
     }
 
     /**

@@ -1,17 +1,16 @@
 package com.example.admin.oracletest.Models;
 
-import android.annotation.SuppressLint;
+import android.util.Log;
 
 import com.example.admin.oracletest.Callback;
 import com.example.admin.oracletest.Settings;
 
-import java.util.List;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
-import io.reactivex.Observable;
-import io.reactivex.Observer;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Класс пользователя
@@ -19,18 +18,19 @@ import io.reactivex.schedulers.Schedulers;
 
 public class User {
 
-    // Logs
+    // Лог
     private static final String TAG = "User";
 
-    // vars
-    public static boolean isAuthorized; // Авторизован ли пользователь
-    public static String login;
-    public static String password;
-    public static int user_id;
-    public static String firstname;
-    public static String lastname;
-    public static String middlename;
-
+    // Переменные
+    private static boolean isAuthorized; // Авторизован ли пользователь
+    private static String login;
+    private static String password;
+    private static int user_id;
+    private static String firstname;
+    private static String lastname;
+    private static String middlename;
+    private static Callback externalAuthCallback;
+    private static Callback externalGetRequestsCallback;
 
     /**
         * Авторизация пользователя
@@ -40,62 +40,106 @@ public class User {
      */
 
     public static void authenticate(String login, String password, Callback callback){
+        externalAuthCallback = callback;
         User.login = login;
         User.password = password;
-        // Создаем observable
-        Observable.fromCallable(() -> {
-            ServerKFU.authenticateUser(login, password, callback);
-            return null;
-            // Весь процесс просиходит на Background Thread
-            // Вывод данных будет на UI Thread
-            // Подписываем observer, чтобы на любое изменение
-            // UI был обновленным
-        }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
-            .subscribe(new Observer<Object>() {
-                @Override
-                public void onSubscribe(Disposable d) {
-
-                }
-
-                @Override
-                public void onNext(Object o) {
-
-                }
-
-                @Override
-                public void onError(Throwable e) {
-                    e.getMessage();
-                }
-
-                @Override
-                public void onComplete() {
-
-                }
-            });
+        ServerKFU.authenticateUser(login, password, mUserAuthCallback);
     }
+
+    /**
+     * Callback, который вернеться после получения JSON
+     * {@link com.example.admin.oracletest.GetDataFromKfuServer}
+     * Если пользователь успешно авторизован, то отправляем в callback
+     * на{@link com.example.admin.oracletest.Activity.AuthActivity} true,
+     * иначе false
+     */
+
+    private static Callback mUserAuthCallback = new Callback() {
+        @Override
+        public void execute(Object data) {
+            try {
+                JSONObject jsonObject = new JSONObject(data.toString());
+                boolean successful = jsonObject.getBoolean("successful");
+                if(successful){
+                    user_id = jsonObject.getInt("user_id");
+                    firstname = jsonObject.getString("firstname");
+                    lastname = jsonObject.getString("lastname");
+                    middlename = jsonObject.getString("middlename");
+                    isAuthorized = true;
+                    saveInformation();
+                    externalAuthCallback.execute(true);
+                }else{
+                    externalAuthCallback.execute(false);
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+    };
 
     /**
      * Получить заявки исполнителя
-     * @param callback      Callback, который вернется после получения заявок на исполнителя
-     * @param u_id          id исполнителя
+     * @param callback Callback, который вернется после получения заявок на исполнителя
+     * @param u_id     id исполнителя
      */
 
-    @SuppressLint("CheckResult")
     public static void get_requests(String u_id, Callback callback){
-        // Создаем observable со списком запросов на исполнителя
-        Observable<List<EmployeeRequest>> listEmployeeRequestsObservable = Observable.fromCallable(() -> ServerKFU.get_requests(u_id))
-                // сам процесс получения запросов с сервера произходид
-                // на background thread
-                .subscribeOn(Schedulers.io())
-                // получаем ответ на main thread
-                .observeOn(AndroidSchedulers.mainThread());
-        // при помощи callback передаем список с запросами на конкретного
-        // исполнителя обратно
-        listEmployeeRequestsObservable.subscribe(callback::execute);
+        externalGetRequestsCallback = callback;
+        ServerKFU.get_requests(u_id, mGetRequestsCallback);
     }
 
     /**
-     * Сохранение логина пароля пользователя в настройках
+     * Callback, который вернеться после получения JSON
+     * {@link com.example.admin.oracletest.GetDataFromKfuServer}
+     * Парсинг JSON. Все запросы на исполнителя с id = u_id в User.get_requests
+     * При завершении парсинга, собираем все в список и
+     * передаем на {@link com.example.admin.oracletest.Fragment.MyRequestsFragment} callback
+     */
+
+    private static Callback mGetRequestsCallback = new Callback() {
+        @Override
+        public void execute(Object data) {
+            List<EmployeeRequest> requests = new ArrayList<>();
+            try {
+                JSONObject jsonObject = new JSONObject(data.toString());
+                boolean successful = jsonObject.getBoolean("successful");
+                if(successful){
+                    JSONArray employeeRequests = jsonObject.getJSONArray("requests");
+                    for (int i = 0; i < employeeRequests.length(); i++) {
+                        int id = employeeRequests.getJSONObject(i).getInt("id");
+                        String request_date = employeeRequests.getJSONObject(i).getString("request_date");
+                        String phone = employeeRequests.getJSONObject(i).getString("phone");
+                        String declarant_fio = employeeRequests.getJSONObject(i).getString("declarant_fio");
+                        String date_of_realization = employeeRequests.getJSONObject(i).getString("date_of_realization");
+                        String post = employeeRequests.getJSONObject(i).getString("post");
+                        String info = employeeRequests.getJSONObject(i).getString("info");
+                        JSONObject building_kfu = employeeRequests.getJSONObject(i).getJSONObject("building_kfu");
+                        String building_kfu_name = building_kfu.getString("name");
+                        String room_number = employeeRequests.getJSONObject(i).getString("room_num");
+                        JSONObject status = employeeRequests.getJSONObject(i).getJSONObject("status");
+                        String status_name = status.getString("status_name");
+                        String color = status.getString("color");
+                        String descr = status.getString("descr");
+                        String image = "";
+                        int cod = employeeRequests.getJSONObject(i).getInt("cod");
+                        EmployeeRequest request = new EmployeeRequest(
+                                id, image, request_date, date_of_realization, declarant_fio,
+                                post, building_kfu_name, room_number, descr, status_name, color,
+                                phone, cod, info
+                        );
+                        requests.add(request);
+                    }
+                }
+            } catch (JSONException e) {
+                Log.d(TAG, "execute: " + e.getMessage());
+                e.printStackTrace();
+            }
+            externalGetRequestsCallback.execute(requests);
+        }
+    };
+
+    /**
+     * Сохранение данных пользователя в {@link Settings}
      */
 
     public static void saveInformation(){

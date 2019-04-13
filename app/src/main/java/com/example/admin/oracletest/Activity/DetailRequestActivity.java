@@ -213,6 +213,7 @@ public class DetailRequestActivity extends AppCompatActivity {
         ClipboardManager clipboardManager = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
         ClipData clipData = ClipData.newPlainText("employee_request_data", copied_data);
         clipboardManager.setPrimaryClip(clipData);
+        Toast.makeText(this, "Заявка скопирована в буффер обмена", Toast.LENGTH_SHORT).show();
     }
 
     @Override
