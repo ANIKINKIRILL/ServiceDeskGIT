@@ -27,6 +27,7 @@
     <string name="description_done_job">Описание выполненных работ:</string>
     <string name="open_dialog">открыть диалог</string>
     <string name="close_dialog">закрыть диалог</string>
+    <string name="copy_request">Копировать заявку</string>
 
     <string name="settings">settings</string>
     <string name="user_login">user_login</string>

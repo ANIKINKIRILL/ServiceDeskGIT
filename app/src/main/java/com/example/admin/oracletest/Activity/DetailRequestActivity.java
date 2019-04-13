@@ -1,6 +1,9 @@
 package com.example.admin.oracletest.Activity;
 
 import android.Manifest;
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -14,6 +17,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.TextView;
@@ -40,6 +44,7 @@ public class DetailRequestActivity extends AppCompatActivity {
     private String employee_firstname;
     private String employee_middlename;
     private String employee_lastname;
+    private String all_request_content;
 
     // Постоянные переменные
     public static final int REQUEST_CALL = 1;
@@ -115,10 +120,20 @@ public class DetailRequestActivity extends AppCompatActivity {
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.detail_request_activity_menu, menu);
+        return true;
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case android.R.id.home:{
                 finish();
+                break;
+            }
+            case R.id.copy_request:{
+                copyRequestData();
                 break;
             }
         }
@@ -164,6 +179,18 @@ public class DetailRequestActivity extends AppCompatActivity {
                 employee_firstname,
                 employee_lastname)
         );
+        all_request_content =
+                requestCode.getText().toString() + "\n" +
+                requestDateOfRealization.getText().toString() + "\n" +
+                requestDateOfRegistration.getText().toString() + "\n" +
+                requestZaavitel.getText().toString() + "\n" +
+                zaavitelPost.getText().toString() + "\n" +
+                zaavitelBuildingKfu.getText().toString() + "\n" +
+                zaavitelBuildingKfuRoomNumber.getText().toString() + "\n" +
+                zaavitelContact.getText().toString() + "\n" +
+                zaavitelPhone.getText().toString() + "\n" +
+                requestBody.getText().toString() + "\n" +
+                employeeData.getText().toString();
     }
 
     /**
@@ -175,6 +202,17 @@ public class DetailRequestActivity extends AppCompatActivity {
         employee_firstname = sharedPreferences.getString(Settings.USER_FIRST_NAME, "");
         employee_middlename = sharedPreferences.getString(Settings.USER_MIDDLE_NAME, "");
         employee_lastname = sharedPreferences.getString(Settings.USER_LAST_NAME, "");
+    }
+
+    /**
+     * Копировать всю завку в буффер обмена
+     */
+
+    private void copyRequestData(){
+        String copied_data = all_request_content;
+        ClipboardManager clipboardManager = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+        ClipData clipData = ClipData.newPlainText("employee_request_data", copied_data);
+        clipboardManager.setPrimaryClip(clipData);
     }
 
     @Override
