@@ -33,10 +33,10 @@ public class User {
     private static Callback externalGetRequestsCallback;
 
     /**
-        * Авторизация пользователя
-        *
-        * @param login              Логин пользователья
-        * @param password           Пароль пользователья
+    * Авторизация пользователя
+    *
+    * @param login              Логин пользователья
+    * @param password           Пароль пользователья
      */
 
     public static void authenticate(String login, String password, Callback callback){
@@ -63,8 +63,8 @@ public class User {
                 if(successful){
                     user_id = jsonObject.getInt("user_id");
                     firstname = jsonObject.getString("firstname");
-                    lastname = jsonObject.getString("lastname");
-                    middlename = jsonObject.getString("middlename");
+                    middlename = jsonObject.getString("lastname");
+                    lastname = jsonObject.getString("middlename");
                     isAuthorized = true;
                     saveInformation();
                     externalAuthCallback.execute(true);
