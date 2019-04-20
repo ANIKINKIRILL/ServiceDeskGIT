@@ -1,6 +1,7 @@
 package com.example.admin.oracletest;
 
 import android.os.AsyncTask;
+import android.util.Log;
 
 import com.example.admin.oracletest.Data.AsyncTaskArguments;
 
@@ -15,6 +16,8 @@ import java.net.URL;
  */
 
 public class GetDataFromKfuServer extends AsyncTask<AsyncTaskArguments, Void, AsyncTaskArguments>{
+
+    private static final String TAG = "GetDataFromKfuServer";
 
     /**
      * @param asyncTaskArguments Параметры передаваемые с {@link com.example.admin.oracletest.Models.ServerKFU}

@@ -48,7 +48,7 @@ public class ServerKFU {
 
     public static void get_requests(String u_id, Callback callback){
         // создаем аддрес обращения к серверу
-        String url = createUrl("SERVICEDESK_MOBILE", "get_employee_requests", "u_id=" + u_id);
+        String url = createUrl("SERVICEDESK_MOBILE", "get_employee_requests2", "u_id=" + u_id);
         /**
          *  создаем параметры для асинхронного класса
          *  {@link GetDataFromKfuServer}

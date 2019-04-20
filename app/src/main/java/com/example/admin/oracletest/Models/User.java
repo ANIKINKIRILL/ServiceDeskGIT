@@ -100,6 +100,8 @@ public class User {
         @Override
         public void execute(Object data) {
             List<EmployeeRequest> requests = new ArrayList<>();
+            Log.d(TAG, "json: " + data.toString());
+            Log.d(TAG, "word at 849: " + data.toString().substring(845, 850));
             try {
                 JSONObject jsonObject = new JSONObject(data.toString());
                 boolean successful = jsonObject.getBoolean("successful");
@@ -142,9 +144,11 @@ public class User {
      * Сохранение данных пользователя в {@link Settings}
      */
 
-    public static void saveInformation(){
+    private static void saveInformation(){
         Settings.setUserLogin(login);
         Settings.setUserPassword(password);
+        Log.d(TAG, "saveInformation: " + login);
+        Log.d(TAG, "saveInformation: " + password);
         Settings.setUserId(Integer.toString(user_id));
         Settings.setUserFirstName(firstname);
         Settings.setUserMiddleName(middlename);
