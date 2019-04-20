@@ -1,25 +1,33 @@
 package com.example.admin.oracletest.Models;
 
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
+
 /**
- * Заявка
+ * Класс Заявка. Делаем аннатацию для того чтобы
+ * создать таблицу 'REQUEST', которая будет
+ * на local/device database. Room Persistence Library.
  */
 
+@Entity(tableName = "REQUEST")
 public class EmployeeRequest {
-    private int id;
-    private String image;
-    private String request_date;
-    private String date_of_realization;
-    private String declarant_fio;
-    private String post;
-    private String building_kfu_name;
-    private String room_number;
-    private String descr;
-    private String status_name;
-    private String color;
-    private String phone;
-    private String info;
-    private int cod;
 
+    private int id;     // id заявки в табилце TECH_CENTER$DB.REQUEST
+    private String image;       // путь к картике для статуса заявки
+    private String request_date;        // дата регистрации заявки
+    private String date_of_realization;     // дедлайн
+    private String declarant_fio;       // ФИО заявителя
+    private String post;        // должоость заявителя
+    private String building_kfu_name;       // адрес КФУ
+    private String room_number;     // комната
+    private String descr;       // описание заявки
+    private String status_name;     // статус заявки
+    private String color;       // цвет заявки
+    private String phone;       // телефон заявителя
+    private String info;        // иформация о заявки
+    private int cod;        // код заявки
+
+    @Ignore
     public EmployeeRequest(){}
 
     public EmployeeRequest(int id, String image, String request_date, String date_of_realization,
