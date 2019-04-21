@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">ServiceDesk</string>
+    <string name="local_db_name">SERVICEDESK_MOBILE</string>
 
     <string name="loginHintText">Введите логин и пароль от личного кабинета КФУ</string>
     <string name="forgetPasswordText">Если вы забыли пароль, обратитесь в диспетчерскую службу ИЦТИС КФУ по телефону 123-45-67</string>
