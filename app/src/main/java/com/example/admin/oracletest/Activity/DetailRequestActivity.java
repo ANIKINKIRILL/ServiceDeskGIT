@@ -169,7 +169,7 @@ public class DetailRequestActivity extends AppCompatActivity {
         requestDateOfRegistration.setText(String.format("Срок выполнения: %s", date_of_reg));
         requestZaavitel.setText(String.format("Заявитель: %s", zaavitel));
         zaavitelPost.setText(String.format("Должность: %s", post));
-        zaavitelBuildingKfu.setText(String.format("Подразделение: %s", building_kfu));
+        zaavitelBuildingKfu.setText(String.format("Адрес: %s", building_kfu));
         zaavitelBuildingKfuRoomNumber.setText(String.format("Кабинет: %s", roomNumber));
         zaavitelContact.setText(String.format("Контакт: %s", contact));
         zaavitelPhone.setText(String.format("Телефон: %s", phone+"\n"));

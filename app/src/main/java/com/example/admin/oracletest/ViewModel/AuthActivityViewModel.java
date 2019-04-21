@@ -2,6 +2,7 @@ package com.example.admin.oracletest.ViewModel;
 
 import android.arch.lifecycle.ViewModel;
 import android.content.Context;
+import android.util.Log;
 
 import com.example.admin.oracletest.Callback;
 import com.example.admin.oracletest.Models.User;
@@ -18,6 +19,8 @@ import org.json.JSONObject;
 
 public class AuthActivityViewModel extends ViewModel {
 
+    private static final String TAG = "AuthActivityViewModel";
+
     private static Callback externalCallback;
 
     /**
@@ -28,6 +31,8 @@ public class AuthActivityViewModel extends ViewModel {
      */
 
     public void authenticateUser(Context context, String login, String password, Callback callback){
+        User.login = login;
+        User.password = password;
         externalCallback = callback;
         Repository.getInstance(context).authenticateUser(login, password, mUserAuthCallback);
     }
@@ -51,6 +56,7 @@ public class AuthActivityViewModel extends ViewModel {
                     User.firstname = jsonObject.getString("firstname");
                     User.middlename = jsonObject.getString("lastname");
                     User.lastname = jsonObject.getString("middlename");
+                    Log.d(TAG, "execute: " + User.login + " " + User.password);
                     User.isAuthorized = true;
                     User.saveInformation();
                     externalCallback.execute(true);

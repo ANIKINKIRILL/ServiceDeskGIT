@@ -54,8 +54,6 @@ public class User {
         @Override
         public void execute(Object data) {
             List<EmployeeRequest> requests = new ArrayList<>();
-            Log.d(TAG, "json: " + data.toString());
-            Log.d(TAG, "word at 849: " + data.toString().substring(845, 850));
             try {
                 JSONObject jsonObject = new JSONObject(data.toString());
                 boolean successful = jsonObject.getBoolean("successful");
@@ -103,6 +101,7 @@ public class User {
         Settings.setUserPassword(password);
         Log.d(TAG, "saveInformation: " + login);
         Log.d(TAG, "saveInformation: " + password);
+        Log.d(TAG, "saveInformation: " + user_id);
         Settings.setUserId(Integer.toString(user_id));
         Settings.setUserFirstName(firstname);
         Settings.setUserMiddleName(middlename);

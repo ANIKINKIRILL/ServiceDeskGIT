@@ -3,6 +3,7 @@ package com.example.admin.oracletest.Fragment;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -65,9 +66,11 @@ public class MyRequestsFragment extends Fragment {
      */
 
     private void get_employee_requests(Callback callback, String u_id){
+        ColorDrawable colorDrawable = new ColorDrawable(getContext().getResources().getColor(R.color.kfuDefaultColor));
         // Показать загрузочное окно
         progressDialog = new ProgressDialog(getContext());
         progressDialog.setMessage(context.getString(R.string.loadingText));
+        progressDialog.setProgressDrawable(colorDrawable);
         progressDialog.show();
         User.get_requests(u_id, callback);
     }

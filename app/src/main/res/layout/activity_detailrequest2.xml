@@ -1,4 +1,5 @@
-<android.support.design.widget.CoordinatorLayout android:id="@+id/main_content"
+<android.support.design.widget.CoordinatorLayout
+    android:id="@+id/main_content"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android"
@@ -6,8 +7,10 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <android.support.v4.widget.NestedScrollView
+        android:id="@+id/nestedScrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginBottom="50dp"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
             <!--Request Data Layout-->
@@ -98,8 +101,8 @@
     <!--Buttons Layout-->
     <LinearLayout
         android:id="@+id/buttonsLayout"
-        android:layout_gravity="bottom"
         android:orientation="horizontal"
+        android:layout_gravity="bottom"
         android:weightSum="100"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -114,7 +117,7 @@
             android:textColor="@android:color/white"
             android:background="@color/kfuDefaultColor"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="50dp" />
         <Button
             android:id="@+id/completeRequestButton"
             android:padding="13dp"
@@ -125,7 +128,7 @@
             android:layout_weight="50"
             android:background="@color/kfuDefaultColor"
             android:layout_width="match_parent"
-            android:layout_height="60dp" />
+            android:layout_height="50dp" />
     </LinearLayout>
 
     <android.support.design.widget.AppBarLayout
