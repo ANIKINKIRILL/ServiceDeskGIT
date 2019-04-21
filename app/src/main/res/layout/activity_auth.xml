@@ -54,6 +54,7 @@
         android:layout_centerHorizontal="true"
         android:layout_below="@id/loginHint"
         android:hint="Логин"
+        android:textCursorDrawable="@drawable/edit_text_gray_color_cursor"
         android:id="@+id/login"
         android:layout_width="300dp"
         android:layout_height="wrap_content" />
@@ -66,6 +67,7 @@
         android:background="@drawable/login_edittext"
         android:layout_centerHorizontal="true"
         android:hint="Пароль"
+        android:textCursorDrawable="@drawable/edit_text_gray_color_cursor"
         android:layout_below="@id/login"
         android:id="@+id/password"
         android:layout_width="300dp"
