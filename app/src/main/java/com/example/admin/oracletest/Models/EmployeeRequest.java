@@ -2,6 +2,7 @@ package com.example.admin.oracletest.Models;
 
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Ignore;
+import android.arch.persistence.room.PrimaryKey;
 
 /**
  * Класс Заявка. Делаем аннатацию для того чтобы
@@ -12,6 +13,7 @@ import android.arch.persistence.room.Ignore;
 @Entity(tableName = "REQUEST")
 public class EmployeeRequest {
 
+    @PrimaryKey
     private int id;     // id заявки в табилце TECH_CENTER$DB.REQUEST
     private String image;       // путь к картике для статуса заявки
     private String request_date;        // дата регистрации заявки
@@ -32,7 +34,8 @@ public class EmployeeRequest {
 
     public EmployeeRequest(int id, String image, String request_date, String date_of_realization,
                            String declarant_fio, String post, String building_kfu_name,
-                           String room_number, String descr, String status_name, String color, String phone, int cod, String info) {
+                           String room_number, String descr, String status_name, String color, String phone,
+                           int cod, String info) {
         this.id = id;
         this.image = image;
         this.request_date = request_date;

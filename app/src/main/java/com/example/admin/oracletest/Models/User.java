@@ -22,60 +22,14 @@ public class User {
     private static final String TAG = "User";
 
     // Переменные
-    private static boolean isAuthorized; // Авторизован ли пользователь
-    private static String login;
-    private static String password;
-    private static int user_id;
-    private static String firstname;
-    private static String lastname;
-    private static String middlename;
-    private static Callback externalAuthCallback;
-    private static Callback externalGetRequestsCallback;
-
-    /**
-    * Авторизация пользователя
-    *
-    * @param login              Логин пользователья
-    * @param password           Пароль пользователья
-     */
-
-    public static void authenticate(String login, String password, Callback callback){
-        externalAuthCallback = callback;
-        User.login = login;
-        User.password = password;
-        ServerKFU.authenticateUser(login, password, mUserAuthCallback);
-    }
-
-    /**
-     * Callback, который вернеться после получения JSON
-     * {@link com.example.admin.oracletest.GetDataFromKfuServer}
-     * Если пользователь успешно авторизован, то отправляем в callback
-     * на{@link com.example.admin.oracletest.Activity.AuthActivity} true,
-     * иначе false
-     */
-
-    private static Callback mUserAuthCallback = new Callback() {
-        @Override
-        public void execute(Object data) {
-            try {
-                JSONObject jsonObject = new JSONObject(data.toString());
-                boolean successful = jsonObject.getBoolean("successful");
-                if(successful){
-                    user_id = jsonObject.getInt("user_id");
-                    firstname = jsonObject.getString("firstname");
-                    middlename = jsonObject.getString("lastname");
-                    lastname = jsonObject.getString("middlename");
-                    isAuthorized = true;
-                    saveInformation();
-                    externalAuthCallback.execute(true);
-                }else{
-                    externalAuthCallback.execute(false);
-                }
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
-    };
+    public static boolean isAuthorized; // Авторизован ли пользователь
+    public static String login;
+    public static String password;
+    public static int user_id;
+    public static String firstname;
+    public static String lastname;
+    public static String middlename;
+    public static Callback externalGetRequestsCallback;
 
     /**
      * Получить заявки исполнителя
@@ -144,7 +98,7 @@ public class User {
      * Сохранение данных пользователя в {@link Settings}
      */
 
-    private static void saveInformation(){
+    public static void saveInformation(){
         Settings.setUserLogin(login);
         Settings.setUserPassword(password);
         Log.d(TAG, "saveInformation: " + login);

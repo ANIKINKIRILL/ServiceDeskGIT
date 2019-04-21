@@ -1,6 +1,7 @@
 package com.example.admin.oracletest.Activity;
 
 import android.app.ProgressDialog;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -14,8 +15,10 @@ import android.widget.Toast;
 
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
+import com.example.admin.oracletest.Callback;
 import com.example.admin.oracletest.Models.User;
 import com.example.admin.oracletest.R;
+import com.example.admin.oracletest.ViewModel.AuthActivityViewModel;
 
 
 /**
@@ -24,24 +27,24 @@ import com.example.admin.oracletest.R;
 
 public class AuthActivity extends AppCompatActivity {
 
-    // Logs
+    // Лог
     private static final String TAG = "AuthActivity";
 
-    // widgets
+    // UI Компоненты
     private EditText loginEditText, passwordEditText;
-    private Button loginButton;
-    private TextView forgotPasswordButton;
     private ProgressDialog progressDialog;
 
-    // vars
+    // Переменные
     private static final String USER_LOGIN = "user_login";
     private static final String USER_PASSWORD = "user_password";
     public static final String SETTINGS = "settings";
+    private AuthActivityViewModel viewModel;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_auth);
+        initViewModel();
         init();
     }
 
@@ -56,16 +59,24 @@ public class AuthActivity extends AppCompatActivity {
     }
 
     /**
-     * Инициализация
+     * Инициализация ui компонентов
      */
     private void init(){
         loginEditText = findViewById(R.id.login);
         passwordEditText = findViewById(R.id.password);
-        loginButton = findViewById(R.id.loginButton);
-        forgotPasswordButton = findViewById(R.id.forgotPasswordButton);
+        Button loginButton = findViewById(R.id.loginButton);
+        TextView forgotPasswordButton = findViewById(R.id.forgotPasswordButton);
 
         loginButton.setOnClickListener(loginOnClickListener);
         forgotPasswordButton.setOnClickListener(forgotPasswordOnClickListener);
+    }
+
+    /**
+     * Инициализация {@link AuthActivityViewModel}
+     */
+
+    private void initViewModel(){
+        viewModel = ViewModelProviders.of(this).get(AuthActivityViewModel.class);
     }
 
     /**
@@ -80,21 +91,33 @@ public class AuthActivity extends AppCompatActivity {
             progressDialog = new ProgressDialog(AuthActivity.this);
             progressDialog.setMessage("Заходим в Ваш профиль...");
             progressDialog.show();
-            User.authenticate(p_login, p_password, (data -> {
-                boolean successful = (boolean)data;
-                if(successful){
-                    progressDialog.dismiss();
-                    Intent intent = new Intent(AuthActivity.this, MainActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    startActivity(intent);
-                    finish();
-                }else{
-                    progressDialog.dismiss();
-                    YoYo.with(Techniques.Shake).repeat(0).duration(1000).playOn(loginEditText);
-                    YoYo.with(Techniques.Shake).repeat(0).duration(1000).playOn(passwordEditText);
-                    Toast.makeText(AuthActivity.this, "Неверный логин или пароль", Toast.LENGTH_SHORT).show();
-                }
-            }));
+            viewModel.authenticateUser(AuthActivity.this, p_login, p_password, authenticateUserCallback);
+        }
+    };
+
+    /**
+     * Callback, который вернется полсе получения результата с
+     * {@link AuthActivityViewModel}
+     * Если data = true, то пользователь вошел в систему,
+     * иначе авторизация неуспешна
+     */
+
+    private Callback authenticateUserCallback = new Callback() {
+        @Override
+        public void execute(Object data) {
+            boolean successful = (boolean) data;
+            if(successful){
+                progressDialog.dismiss();
+                Intent intent = new Intent(AuthActivity.this, MainActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+                finish();
+            }else{
+                progressDialog.dismiss();
+                YoYo.with(Techniques.Shake).repeat(0).duration(1000).playOn(loginEditText);
+                YoYo.with(Techniques.Shake).repeat(0).duration(1000).playOn(passwordEditText);
+                Toast.makeText(AuthActivity.this, "Неверный логин или пароль", Toast.LENGTH_SHORT).show();
+            }
         }
     };
 
