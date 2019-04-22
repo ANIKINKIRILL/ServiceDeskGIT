@@ -24,7 +24,7 @@ public class EmployeeRequestsRecyclerViewAdapter extends RecyclerView.Adapter<Em
     private ArrayList<EmployeeRequest> requests = new ArrayList<>();
     private Context context;
 
-    public EmployeeRequestsRecyclerViewAdapter(ArrayList<EmployeeRequest> requests, Context context) {
+    public EmployeeRequestsRecyclerViewAdapter(Context context, ArrayList<EmployeeRequest> requests) {
         this.requests = requests;
         this.context = context;
     }

@@ -20,7 +20,6 @@ import org.json.JSONObject;
 public class AuthActivityViewModel extends ViewModel {
 
     private static final String TAG = "AuthActivityViewModel";
-
     private static Callback externalCallback;
 
     /**

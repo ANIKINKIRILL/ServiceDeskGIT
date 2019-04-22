@@ -92,6 +92,11 @@ public class AuthActivity extends AppCompatActivity {
             progressDialog = new ProgressDialog(AuthActivity.this);
             progressDialog.setMessage("Заходим в Ваш профиль...");
             progressDialog.show();
+            /*
+                Просим ViewModel сделать запрос на Repository, где второй
+                идет на Сервер и возвращает JSON. ViewModel вся основная бизнесс
+                логика (парсинг JSON)
+            */
             viewModel.authenticateUser(AuthActivity.this, p_login, p_password, authenticateUserCallback);
         }
     };

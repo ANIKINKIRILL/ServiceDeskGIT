@@ -2,6 +2,9 @@ package com.example.admin.oracletest.Fragment;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -22,8 +25,11 @@ import com.example.admin.oracletest.Models.EmployeeRequest;
 import com.example.admin.oracletest.Models.User;
 import com.example.admin.oracletest.R;
 import com.example.admin.oracletest.Settings;
+import com.example.admin.oracletest.ViewModel.AuthActivityViewModel;
+import com.example.admin.oracletest.ViewModel.MyRequestsFragmentViewModel;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Фрагмент с заяквами исполнителя
@@ -39,11 +45,13 @@ public class MyRequestsFragment extends Fragment {
 
     // Переменные
     private Context context;
+    private MyRequestsFragmentViewModel viewModel;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_myrequests, container, false);
+        initViewModel();
         init(view);
         context = container.getContext().getApplicationContext();
         get_employee_requests(mGetEmployeeRequestsCallback, Settings.getUserId());
@@ -60,6 +68,14 @@ public class MyRequestsFragment extends Fragment {
     }
 
     /**
+     * Инициализация {@link MyRequestsFragmentViewModel}
+     */
+
+    private void initViewModel(){
+        viewModel = ViewModelProviders.of(MyRequestsFragment.this).get(MyRequestsFragmentViewModel.class);
+    }
+
+    /**
      * Получить заявки исполнителя
      * @param callback      Callback, который вернется после получения заявок на исполнителя
      * @param u_id          id исполнителя
@@ -72,7 +88,14 @@ public class MyRequestsFragment extends Fragment {
         progressDialog.setMessage(context.getString(R.string.loadingText));
         progressDialog.setProgressDrawable(colorDrawable);
         progressDialog.show();
-        User.get_requests(u_id, callback);
+        /*
+            Просим ViewModel сделать запрос на Repository, где второй
+            идет на Сервер и возвращает JSON. ViewModel вся основная бизнесс
+            логика (парсинг JSON), далее ViewModel возвращает LiveData на
+            {@link MyRequestsFragment} => UI будет обновляться автоматически.
+            Так как View observes любые изменения в LiveData и реагирует на них
+        */
+        viewModel.get_requests(getContext(), u_id, callback);
     }
 
     /**
@@ -82,22 +105,30 @@ public class MyRequestsFragment extends Fragment {
     Callback mGetEmployeeRequestsCallback = new Callback() {
         @Override
         public void execute(Object data) {
-            ArrayList<EmployeeRequest> requests = (ArrayList) data;
-            Log.d(TAG, "employee_requests: " + requests.size());
-            if(requests.size() == 0){
-                progressDialog.dismiss();
-                AlertDialog.Builder alertDialog = new AlertDialog.Builder(getContext());
-                alertDialog.setTitle(context.getString(R.string.myRequests));
-                alertDialog.setMessage(context.getString(R.string.noRequestsText));
-                alertDialog.setPositiveButton(context.getText(R.string.ok_button), (dialog, which) -> dialog.dismiss());
-                alertDialog.show();
-            }else{
-                progressDialog.dismiss();
-                // Создаем адаптер и RecyclerView для отображения заявок
-                EmployeeRequestsRecyclerViewAdapter adapter = new EmployeeRequestsRecyclerViewAdapter(requests, context);
-                recyclerView.setLayoutManager(new LinearLayoutManager(context));
-                recyclerView.setAdapter(adapter);
-            }
+            LiveData<ArrayList<EmployeeRequest>> requests = (LiveData<ArrayList<EmployeeRequest>>) data;
+            Log.d(TAG, "employee_requests: " + requests.getValue().size());
+            // View observes любые изменения в LiveData и реагирует на них
+            requests.observe(MyRequestsFragment.this, new Observer<ArrayList<EmployeeRequest>>() {
+                @Override
+                public void onChanged(@Nullable ArrayList<EmployeeRequest> employeeRequests) {
+                    // Если у пользователя нет заявок
+                    if(employeeRequests.size() == 0){
+                        progressDialog.dismiss();
+                        AlertDialog.Builder alertDialog = new AlertDialog.Builder(getContext());
+                        alertDialog.setTitle(context.getString(R.string.myRequests));
+                        alertDialog.setMessage(context.getString(R.string.noRequestsText));
+                        alertDialog.setPositiveButton(context.getText(R.string.ok_button), (dialog, which) -> dialog.dismiss());
+                        alertDialog.show();
+                    }else{
+                        progressDialog.dismiss();
+                        // Создаем адаптер и RecyclerView для отображения заявок
+                        EmployeeRequestsRecyclerViewAdapter adapter =
+                                new EmployeeRequestsRecyclerViewAdapter(getContext(), employeeRequests);
+                        recyclerView.setLayoutManager(new LinearLayoutManager(context));
+                        recyclerView.setAdapter(adapter);
+                    }
+                }
+            });
         }
     };
 }

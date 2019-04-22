@@ -29,68 +29,6 @@ public class User {
     public static String firstname;
     public static String lastname;
     public static String middlename;
-    public static Callback externalGetRequestsCallback;
-
-    /**
-     * Получить заявки исполнителя
-     * @param callback Callback, который вернется после получения заявок на исполнителя
-     * @param u_id     id исполнителя
-     */
-
-    public static void get_requests(String u_id, Callback callback){
-        externalGetRequestsCallback = callback;
-        ServerKFU.get_requests(u_id, mGetRequestsCallback);
-    }
-
-    /**
-     * Callback, который вернеться после получения JSON
-     * {@link com.example.admin.oracletest.GetDataFromKfuServer}
-     * Парсинг JSON. Все запросы на исполнителя с id = u_id в User.get_requests
-     * При завершении парсинга, собираем все в список и
-     * передаем на {@link com.example.admin.oracletest.Fragment.MyRequestsFragment} callback
-     */
-
-    private static Callback mGetRequestsCallback = new Callback() {
-        @Override
-        public void execute(Object data) {
-            List<EmployeeRequest> requests = new ArrayList<>();
-            try {
-                JSONObject jsonObject = new JSONObject(data.toString());
-                boolean successful = jsonObject.getBoolean("successful");
-                if(successful){
-                    JSONArray employeeRequests = jsonObject.getJSONArray("requests");
-                    for (int i = 0; i < employeeRequests.length(); i++) {
-                        int id = employeeRequests.getJSONObject(i).getInt("id");
-                        String request_date = employeeRequests.getJSONObject(i).getString("request_date");
-                        String phone = employeeRequests.getJSONObject(i).getString("phone");
-                        String declarant_fio = employeeRequests.getJSONObject(i).getString("declarant_fio");
-                        String date_of_realization = employeeRequests.getJSONObject(i).getString("date_of_realization");
-                        String post = employeeRequests.getJSONObject(i).getString("post");
-                        String info = employeeRequests.getJSONObject(i).getString("info");
-                        JSONObject building_kfu = employeeRequests.getJSONObject(i).getJSONObject("building_kfu");
-                        String building_kfu_name = building_kfu.getString("name");
-                        String room_number = employeeRequests.getJSONObject(i).getString("room_num");
-                        JSONObject status = employeeRequests.getJSONObject(i).getJSONObject("status");
-                        String status_name = status.getString("status_name");
-                        String color = status.getString("color");
-                        String descr = status.getString("descr");
-                        String image = "";
-                        int cod = employeeRequests.getJSONObject(i).getInt("cod");
-                        EmployeeRequest request = new EmployeeRequest(
-                                id, image, request_date, date_of_realization, declarant_fio,
-                                post, building_kfu_name, room_number, descr, status_name, color,
-                                phone, cod, info
-                        );
-                        requests.add(request);
-                    }
-                }
-            } catch (JSONException e) {
-                Log.d(TAG, "execute: " + e.getMessage());
-                e.printStackTrace();
-            }
-            externalGetRequestsCallback.execute(requests);
-        }
-    };
 
     /**
      * Сохранение данных пользователя в {@link Settings}
