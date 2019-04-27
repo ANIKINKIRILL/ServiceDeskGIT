@@ -1,0 +1,63 @@
+package com.test.admin.servicedesk.Models;
+
+import android.util.Log;
+
+import com.test.admin.servicedesk.Callback;
+import com.test.admin.servicedesk.Settings;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * Класс пользователя
+ */
+
+public class User {
+
+    // Лог
+    private static final String TAG = "User";
+
+    // Переменные
+    public static boolean isAuthorized; // Авторизован ли пользователь
+    public static String login;
+    public static String password;
+    public static int user_id;
+    public static String firstname;
+    public static String lastname;
+    public static String middlename;
+
+    /**
+     * Сохранение данных пользователя в {@link Settings}
+     */
+
+    public static void saveInformation(){
+        Settings.setUserLogin(login);
+        Settings.setUserPassword(password);
+        Log.d(TAG, "saveInformation: " + login);
+        Log.d(TAG, "saveInformation: " + password);
+        Log.d(TAG, "saveInformation: " + user_id);
+        Settings.setUserId(Integer.toString(user_id));
+        Settings.setUserFirstName(firstname);
+        Settings.setUserMiddleName(middlename);
+        Settings.setUserLastName(lastname);
+    }
+
+    /**
+     * Выход пользователя
+     */
+
+    public static void exit(){
+        isAuthorized = false;
+        Settings.setUserFirstName("");
+        Settings.setUserMiddleName("");
+        Settings.setUserLastName("");
+        Settings.setUserId("");
+        Settings.setUserLogin("");
+        Settings.setUserPassword("");
+    }
+
+}
