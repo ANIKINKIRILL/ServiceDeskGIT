@@ -46,6 +46,7 @@ public class Repository {
      */
 
     public void authenticateUser(String login, String password, Callback callback){
+        Log.d(TAG, "authenticateUser: called");
         ServerKFU.authenticateUser(login, password, callback);
     }
 
