@@ -1,5 +1,6 @@
 package com.test.admin.servicedesk.ViewModel;
 
+import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 import android.content.Context;
@@ -32,9 +33,10 @@ public class MyRequestsFragmentViewModel extends ViewModel {
      * @param u_id     id исполнителя
      */
 
-    public void get_requests(Context context, String u_id, Callback callback){
+    public void get_requests(Context context, String u_id, int page_number, Callback callback){
+        Log.d(TAG, "get_requests: called");
         externalGetRequestsCallback = callback;
-        Repository.getInstance(context).get_requests(u_id, mGetRequestsCallback);
+        Repository.getInstance(context).get_requests(u_id, page_number, mGetRequestsCallback);
     }
 
     /**

@@ -46,6 +46,7 @@ public class MyRequestsFragment extends Fragment {
     // Переменные
     private Context context;
     private MyRequestsFragmentViewModel viewModel;
+    public static final int FIRST_PAGE = 1;
 
     @Nullable
     @Override
@@ -95,7 +96,7 @@ public class MyRequestsFragment extends Fragment {
             {@link MyRequestsFragment} => UI будет обновляться автоматически.
             Так как View observes любые изменения в LiveData и реагирует на них
         */
-        viewModel.get_requests(getContext(), u_id, callback);
+        viewModel.get_requests(getContext(), u_id, FIRST_PAGE, callback);
     }
 
     /**

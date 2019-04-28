@@ -13,6 +13,10 @@ public abstract class AppDatabase extends RoomDatabase {
 
     private static AppDatabase instance;
 
+    /*
+            SINGLETON PATTERN
+     */
+
     public static AppDatabase getInstance(Context context){
         if(instance == null){
             instance = Room.databaseBuilder(

@@ -2,6 +2,7 @@ package com.test.admin.servicedesk.Repository;
 
 import android.arch.lifecycle.LiveData;
 import android.content.Context;
+import android.util.Log;
 
 import com.test.admin.servicedesk.AppDatabase;
 import com.test.admin.servicedesk.Callback;
@@ -17,6 +18,8 @@ import java.util.List;
  */
 
 public class Repository {
+
+    private static final String TAG = "Repository";
 
     private static Repository instance;
     private static AppDatabase appDatabase;
@@ -50,10 +53,12 @@ public class Repository {
      * Получить заявки исполнителя
      * @param callback Callback, который вернется после получения заявок на исполнителя
      * @param u_id     id исполнителя
+     * @param page_number номер страницы с заявками
      */
 
-    public void get_requests(String u_id, Callback callback){
-        ServerKFU.get_requests(u_id, callback);
+    public void get_requests(String u_id, int page_number, Callback callback){
+        Log.d(TAG, "get_requests: called");
+        ServerKFU.get_requests(u_id, page_number, callback);
     }
 
 }

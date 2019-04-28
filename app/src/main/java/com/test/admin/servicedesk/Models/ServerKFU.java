@@ -47,18 +47,26 @@ public class ServerKFU {
      *
      * @param u_id      id исполнителя
      * @param callback  callback, который вернеться полсе получения заявок на исполнителя
+     * @param page_number номер страницы с заявками
      */
 
-    public static void get_requests(String u_id, Callback callback){
+    public static void get_requests(String u_id, int page_number, Callback callback){
         // создаем аддрес обращения к серверу
-        String url = createUrl("SERVICEDESK_MOBILE", "get_employee_requests2", "u_id=" + u_id);
+        String url = createUrl(
+                "SERVICEDESK_MOBILE",
+                "get_employee_requests2",
+                "u_id=" + u_id,
+                "page_number=" + page_number);
         /**
          *  создаем параметры для асинхронного класса
          *  {@link GetDataFromKfuServer}
          */
+        Log.d(TAG, "get_requests: " + url);
         AsyncTaskArguments arguments = new AsyncTaskArguments(url, callback);
         GetDataFromKfuServer server = new GetDataFromKfuServer();
         server.execute(arguments);
+
+        
     }
 
     /**
