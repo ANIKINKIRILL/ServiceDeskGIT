@@ -1,15 +1,11 @@
 package com.test.admin.servicedesk.Repository;
 
-import android.arch.lifecycle.LiveData;
 import android.content.Context;
 import android.util.Log;
 
 import com.test.admin.servicedesk.AppDatabase;
 import com.test.admin.servicedesk.Callback;
-import com.test.admin.servicedesk.Models.EmployeeRequest;
 import com.test.admin.servicedesk.Models.ServerKFU;
-
-import java.util.List;
 
 /**
  * Абстрактный уровень между бизнес логикой и

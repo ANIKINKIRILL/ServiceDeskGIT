@@ -30,6 +30,11 @@ public class ServerKFU {
 
     // Переменные
     private static String ip = "portal-dis.kpfu.ru"; //     ip адрес сервера КФУ
+    private static Retrofit retrofit = new Retrofit.Builder()
+            .baseUrl("https://" + ip + "/e-ksu/")
+            .addConverterFactory(GsonConverterFactory.create(new GsonBuilder().setLenient().create()))
+            .build();
+    private static KfuServerApi kfuServerApi = retrofit.create(KfuServerApi.class);
 
     /**
      * Авторизация пользователя
@@ -42,14 +47,6 @@ public class ServerKFU {
      */
 
     public static void authenticateUser(String p_login, String p_password, Callback callback){
-        // Создаем обьект класса Retrofit
-        // c url https://portal-dis.kpfu.ru/e-ksu/portal_pg_mobile.authentication?p_login=...&p_pass=...
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://" + ip + "/e-ksu/")
-                .addConverterFactory(GsonConverterFactory.create(new GsonBuilder().setLenient().create()))
-                .build();
-        // Интерефс с методами для обращения на сервер
-        KfuServerApi kfuServerApi = retrofit.create(KfuServerApi.class);
         // Функция для авторизации пользователя в системе ServiceDesk
         Call<Object> call = kfuServerApi.authenticateUser(p_login, p_password);
         // Сдлеать запрос по url на Background Thread, но получить данные на Main Thread
@@ -83,22 +80,24 @@ public class ServerKFU {
      */
 
     public static void get_requests(String u_id, int page_number, Callback callback){
-        // создаем аддрес обращения к серверу
-        String url = createUrl(
-                "SERVICEDESK_MOBILE",
-                "get_employee_requests2",
-                "u_id=" + u_id,
-                "page_number=" + page_number);
-        /**
-         *  создаем параметры для асинхронного класса
-         *  {@link GetDataFromKfuServer}
-         */
-        Log.d(TAG, "get_requests: " + url);
-        AsyncTaskArguments arguments = new AsyncTaskArguments(url, callback);
-        GetDataFromKfuServer server = new GetDataFromKfuServer();
-        server.execute(arguments);
-
-        
+        Log.d(TAG, "get_requests: called");
+        Call<Object> call = kfuServerApi.get_requests(u_id, page_number);
+        Log.d(TAG, "get_requests: " + call.request().url().toString());
+        call.enqueue(new retrofit2.Callback<Object>() {
+            @Override
+            public void onResponse(Call<Object> call, Response<Object> response) {
+                if(!response.isSuccessful()){
+                    Toast.makeText(DirectoryServiceDesk.GetAppContext(), "Ошибка " + response.code(), Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                Object json = response.body();
+                callback.execute(json);
+            }
+            @Override
+            public void onFailure(Call<Object> call, Throwable t) {
+                Toast.makeText(DirectoryServiceDesk.GetAppContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     /**
