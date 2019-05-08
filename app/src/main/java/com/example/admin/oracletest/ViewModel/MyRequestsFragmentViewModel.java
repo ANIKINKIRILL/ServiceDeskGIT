@@ -51,10 +51,6 @@ public class MyRequestsFragmentViewModel extends ViewModel {
     private static Callback mGetRequestsCallback = new Callback() {
         @Override
         public void execute(Object data) {
-            Log.d(TAG, "resultJson: " + data.toString());
-            Log.d(TAG, "resultJson error: " + data.toString().substring(205, 224));
-            Log.d(TAG, "resultJson error: " + data.toString().charAt(222));
-
             ArrayList<EmployeeRequest> requests = new ArrayList<>();
             try {
                 JSONObject jsonObject = new JSONObject(data.toString());

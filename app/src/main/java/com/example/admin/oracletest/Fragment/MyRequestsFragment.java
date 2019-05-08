@@ -21,6 +21,7 @@ import android.view.ViewGroup;
 import com.example.admin.oracletest.Callback;
 import com.example.admin.oracletest.Models.EmployeeRequest;
 import com.example.admin.oracletest.R;
+import com.example.admin.oracletest.RecyclerViewScrollListener;
 import com.example.admin.oracletest.Settings;
 import com.example.admin.oracletest.Utils.EmployeeRequestsRecyclerViewAdapter;
 import com.example.admin.oracletest.ViewModel.MyRequestsFragmentViewModel;
@@ -38,11 +39,15 @@ public class MyRequestsFragment extends Fragment {
     // Виджеты
     private RecyclerView recyclerView;
     private ProgressDialog progressDialog;
+    private LinearLayoutManager linearLayoutManager;
 
     // Переменные
     private Context context;
     private MyRequestsFragmentViewModel viewModel;
-    public static final int FIRST_PAGE = 1;
+    private boolean isLoading = false;
+    private boolean isLastPage = false;
+    private int currentPage = 1;
+    private static ArrayList<EmployeeRequest> requestList = new ArrayList<>();
 
     @Nullable
     @Override
@@ -62,6 +67,39 @@ public class MyRequestsFragment extends Fragment {
 
     private void init(View view){
         recyclerView = view.findViewById(R.id.recycler_view);
+        linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(linearLayoutManager);
+
+        recyclerView.addOnScrollListener(new RecyclerViewScrollListener(linearLayoutManager) {
+            @Override
+            protected void loadMoreItems() {
+                isLoading = true;
+                currentPage += 1;
+                performPagination(mGetEmployeeRequestsCallback, Settings.getUserId());
+            }
+
+            @Override
+            public int getTotalPageCount() {
+                return 5;
+            }
+
+            @Override
+            public boolean isLastPage() {
+                return isLastPage;
+            }
+
+            @Override
+            public boolean isLoading() {
+                return isLoading;
+            }
+        });
+
+    }
+
+    private void performPagination(Callback callback, String u_id){
+        Log.d(TAG, "performPagination: called " + currentPage);
+        get_employee_requests(callback, u_id);
     }
 
     /**
@@ -85,14 +123,8 @@ public class MyRequestsFragment extends Fragment {
         progressDialog.setMessage(context.getString(R.string.loadingText));
         progressDialog.setProgressDrawable(colorDrawable);
         progressDialog.show();
-        /*
-            Просим ViewModel сделать запрос на Repository, где второй
-            идет на Сервер и возвращает JSON. ViewModel вся основная бизнесс
-            логика (парсинг JSON), далее ViewModel возвращает LiveData на
-            {@link MyRequestsFragment} => UI будет обновляться автоматически.
-            Так как View observes любые изменения в LiveData и реагирует на них
-        */
-        viewModel.get_requests(getContext(), u_id, FIRST_PAGE, callback);
+
+        viewModel.get_requests(getContext(), u_id, currentPage, callback);
     }
 
     /**
@@ -108,6 +140,7 @@ public class MyRequestsFragment extends Fragment {
             requests.observe(MyRequestsFragment.this, new Observer<ArrayList<EmployeeRequest>>() {
                 @Override
                 public void onChanged(@Nullable ArrayList<EmployeeRequest> employeeRequests) {
+                    requestList.addAll(employeeRequests);
                     // Если у пользователя нет заявок
                     if(employeeRequests.size() == 0){
                         progressDialog.dismiss();
@@ -120,9 +153,9 @@ public class MyRequestsFragment extends Fragment {
                         progressDialog.dismiss();
                         // Создаем адаптер и RecyclerView для отображения заявок
                         EmployeeRequestsRecyclerViewAdapter adapter =
-                                new EmployeeRequestsRecyclerViewAdapter(getContext(), employeeRequests);
-                        recyclerView.setLayoutManager(new LinearLayoutManager(context));
+                                new EmployeeRequestsRecyclerViewAdapter(getContext(), requestList);
                         recyclerView.setAdapter(adapter);
+                        isLoading = false;
                     }
                 }
             });
