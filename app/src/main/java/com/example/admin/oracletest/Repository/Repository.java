@@ -59,4 +59,16 @@ public class Repository {
         ServerKFU.get_requests(u_id, page_number, callback);
     }
 
+    /**
+     * Получить текущие заявки
+     * @param page_number       номер страницы с заявками
+     * @param status_id         статус заявки (новая, выполненная и т.д)
+     * @param callback          callback для парсинга json после получения текущих заявок c сервера
+     * @return                  LiveData из списка с текущими заявками
+     */
+
+    public void get_current_requests(int page_number, int status_id, Callback callback){
+        ServerKFU.get_current_requests(page_number, status_id, callback);
+    }
+
 }

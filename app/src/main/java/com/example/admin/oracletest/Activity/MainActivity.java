@@ -78,8 +78,7 @@ public class MainActivity extends AppCompatActivity {
         public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
             switch (menuItem.getItemId()){
                 case R.id.allRequests:{
-                    actionBar.setElevation(0);
-                    actionBar.setTitle(getString(R.string.allRequests));
+                    doFragmentTransaction(new AllRequestsFragment(), getString(R.string.allRequests));
                     break;
                 }
                 case R.id.myRequests:{

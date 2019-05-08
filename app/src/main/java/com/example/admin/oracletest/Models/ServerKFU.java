@@ -79,30 +79,29 @@ public class ServerKFU {
      */
 
     public static void get_requests(String u_id, int page_number, Callback callback){
-        /*
-        Log.d(TAG, "get_requests: called");
-        Call<Object> call = kfuServerApi.get_requests(u_id, page_number);
-        Log.d(TAG, "get_requests: " + call.request().url().toString());
-        call.enqueue(new retrofit2.Callback<Object>() {
-            @Override
-            public void onResponse(Call<Object> call, Response<Object> response) {
-                if(!response.isSuccessful()){
-                    Toast.makeText(DirectoryServiceDesk.GetAppContext(), "Ошибка " + response.code(), Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                Object json = response.body();
-                callback.execute(json);
-            }
-            @Override
-            public void onFailure(Call<Object> call, Throwable t) {
-                Toast.makeText(DirectoryServiceDesk.GetAppContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
-        */
         String url = createUrl("servicedesk_mobile_test",
                 "get_employee_requests",
                 "p_emp_id=" + u_id,
                 "p_page_number=" + page_number
+        );
+        AsyncTaskArguments arguments = new AsyncTaskArguments(url, callback);
+        GetDataFromKfuServer backgroundTask = new GetDataFromKfuServer();
+        backgroundTask.execute(arguments);
+    }
+
+    /**
+     * Получить текущие заявки
+     * @param page_number       номер страницы с заявками
+     * @param status_id         статус заявки (новая, выполненная и т.д)
+     * @param callback          callback для парсинга json после получения текущих заявок c сервера
+     * @return                  LiveData из списка с текущими заявками
+     */
+
+    public static void get_current_requests(int page_number, int status_id, Callback callback){
+        String url = createUrl("servicedesk_mobile_test",
+                "get_current_requests",
+                "p_page_number=" + page_number,
+                "p_status_id=" + status_id
         );
         AsyncTaskArguments arguments = new AsyncTaskArguments(url, callback);
         GetDataFromKfuServer backgroundTask = new GetDataFromKfuServer();
