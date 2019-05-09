@@ -5,15 +5,20 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
+import android.support.design.widget.BottomSheetBehavior;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
+import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.example.admin.oracletest.Fragment.AllRequestsFragment;
+import com.example.admin.oracletest.Fragment.BottomSheetDialogFragmentFilterEmployeeRequests;
 import com.example.admin.oracletest.Fragment.MyRequestsFragment;
 import com.example.admin.oracletest.Fragment.SettingsFragment;
 import com.example.admin.oracletest.R;
@@ -24,11 +29,13 @@ import com.example.admin.oracletest.R;
 
 public class MainActivity extends AppCompatActivity {
 
-    // widgets
+    // Виджеты
     BottomNavigationView bottomNavigationView;
     FrameLayout mainContainer;
+    Menu menu;
 
-    // vars
+
+    // Переменные
     ActionBar actionBar;
 
     @Override
@@ -79,10 +86,12 @@ public class MainActivity extends AppCompatActivity {
             switch (menuItem.getItemId()){
                 case R.id.allRequests:{
                     doFragmentTransaction(new AllRequestsFragment(), getString(R.string.allRequests));
+                    menu.findItem(R.id.filterOptions).setVisible(true);
                     break;
                 }
                 case R.id.myRequests:{
                     doFragmentTransaction(new MyRequestsFragment(), getString(R.string.myRequests));
+                    menu.findItem(R.id.filterOptions).setVisible(true);
                     break;
                 }
                 case R.id.map:{
@@ -97,6 +106,7 @@ public class MainActivity extends AppCompatActivity {
                 }
                 case R.id.settings:{
                     doFragmentTransaction(new SettingsFragment(), getString(R.string.settingsText));
+                    menu.findItem(R.id.filterOptions).setVisible(false);
                     break;
                 }
             }
@@ -118,4 +128,21 @@ public class MainActivity extends AppCompatActivity {
         actionBar.setElevation(0);
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_activity_menu, menu);
+        this.menu = menu;
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.filterOptions:{
+                BottomSheetDialogFragmentFilterEmployeeRequests bottomSheetDialog = new BottomSheetDialogFragmentFilterEmployeeRequests();
+                bottomSheetDialog.show(getSupportFragmentManager(), getString(R.string.open_dialog));
+            }
+        }
+        return super.onOptionsItemSelected(item);
+    }
 }

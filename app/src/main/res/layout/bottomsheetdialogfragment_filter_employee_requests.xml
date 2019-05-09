@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:layout_marginTop="10dp"
+    android:layout_marginStart="10dp"
+    android:layout_marginEnd="10dp"
+    android:background="@drawable/bottomsheet_round_corners"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <TextView
+        android:id="@+id/titleOfBottomSheet"
+        android:text="Параметры поиска"
+        android:textStyle="bold"
+        android:textSize="17dp"
+        android:gravity="center_vertical"
+        android:layout_width="match_parent"
+        android:layout_marginBottom="15dp"
+        android:layout_height="30dp" />
+
+    <TextView
+        android:id="@+id/requestCodeFilterOption"
+        android:layout_below="@id/titleOfBottomSheet"
+        android:textSize="15dp"
+        android:text="Номер заявки"
+        android:layout_marginBottom="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <EditText
+        android:id="@+id/requestCodeEditText"
+        android:layout_below="@id/requestCodeFilterOption"
+        android:singleLine="true"
+        android:textColor="@android:color/white"
+        android:textCursorDrawable="@drawable/edit_text_gray_color_cursor"
+        android:hint="Номер"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/requestStatusFilterOption"
+        android:layout_below="@id/requestCodeEditText"
+        android:textSize="15dp"
+        android:text="Статус заявки"
+        android:layout_marginBottom="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <Spinner
+        android:id="@+id/requestStatusSpinner"
+        android:layout_below="@id/requestStatusFilterOption"
+        android:layout_width="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:layout_height="wrap_content"/>
+
+    <Button
+        android:id="@+id/showResultButton"
+        android:layout_below="@id/requestStatusSpinner"
+        android:background="@drawable/button_round_corners"
+        android:textColor="@android:color/white"
+        android:text="Показать результаты"
+        android:layout_width="match_parent"
+        android:layout_height="50dp" />
+
+
+
+</RelativeLayout>

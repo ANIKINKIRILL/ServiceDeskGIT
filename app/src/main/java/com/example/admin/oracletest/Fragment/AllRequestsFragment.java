@@ -92,6 +92,10 @@ public class AllRequestsFragment extends Fragment {
 
     }
 
+    private void initActionBar(){
+
+    }
+
     private void performPagination(int page_number, int status_id, Callback callback){
         get_current_requests(page_number, status_id, callback);
     }
