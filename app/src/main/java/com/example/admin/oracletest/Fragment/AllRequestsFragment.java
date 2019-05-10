@@ -30,6 +30,8 @@ import java.util.ArrayList;
 
 public class AllRequestsFragment extends Fragment {
 
+    private static final String TAG = "AllRequestsFragment";
+    
     // Виджеты
     private RecyclerView recyclerView;
 
@@ -38,20 +40,26 @@ public class AllRequestsFragment extends Fragment {
     private LinearLayoutManager linearLayoutManager;
     private AllRequestsFragmentViewModel viewModel;
     private Context context;
-    private static ArrayList<EmployeeRequest> requestList = new ArrayList<>();
+    private static ArrayList<EmployeeRequest> requestList;
     private boolean isLoading = false;
     private boolean isLastPage = false;
     private int currentPage = 1;
     public static final int DEFAULT_STATUS_ID = 1;  // новые заявки
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        requestList = new ArrayList<>();
+        initViewModel();
+        get_current_requests(currentPage, DEFAULT_STATUS_ID, mGetCurrentRequestsCallback);
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_all_requests, container, false);
-        initViewModel();
         init(view);
         context = container.getContext().getApplicationContext();
-        get_current_requests(currentPage, DEFAULT_STATUS_ID, mGetCurrentRequestsCallback);
         return view;
     }
 
@@ -92,10 +100,6 @@ public class AllRequestsFragment extends Fragment {
 
     }
 
-    private void initActionBar(){
-
-    }
-
     private void performPagination(int page_number, int status_id, Callback callback){
         get_current_requests(page_number, status_id, callback);
     }
@@ -112,7 +116,7 @@ public class AllRequestsFragment extends Fragment {
         ColorDrawable colorDrawable = new ColorDrawable(getContext().getResources().getColor(R.color.kfuDefaultColor));
         // Показать загрузочное окно
         progressDialog = new ProgressDialog(getContext());
-        progressDialog.setMessage(context.getString(R.string.loadingText));
+        progressDialog.setMessage(getContext().getString(R.string.loadingText));
         progressDialog.setProgressDrawable(colorDrawable);
         progressDialog.show();
         viewModel.get_current_requests(getContext(), page_number, status_id, callback);
@@ -131,6 +135,7 @@ public class AllRequestsFragment extends Fragment {
                 @Override
                 public void onChanged(@Nullable ArrayList<EmployeeRequest> employeeRequests) {
                     requestList.addAll(employeeRequests);
+                    Log.d(TAG, "onChanged: called requestListSize:" + requestList.size());
                     // Если у пользователя нет заявок
                     if(employeeRequests.size() == 0){
                         progressDialog.dismiss();
@@ -145,11 +150,15 @@ public class AllRequestsFragment extends Fragment {
                         EmployeeRequestsRecyclerViewAdapter adapter =
                                 new EmployeeRequestsRecyclerViewAdapter(getContext(), requestList);
                         recyclerView.setAdapter(adapter);
+                        if(currentPage != 1) {
+                            recyclerView.smoothScrollToPosition(requestList.size() - 7);
+                            Log.d(TAG, "onChanged: smooth scroll to " + Integer.toString(requestList.size() - 7));
+                        }
                         isLoading = false;
                     }
                 }
             });
         }
     };
-
+    
 }

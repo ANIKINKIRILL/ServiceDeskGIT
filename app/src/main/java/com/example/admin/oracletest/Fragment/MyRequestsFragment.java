@@ -47,16 +47,22 @@ public class MyRequestsFragment extends Fragment {
     private boolean isLoading = false;
     private boolean isLastPage = false;
     private int currentPage = 1;
-    private static ArrayList<EmployeeRequest> requestList = new ArrayList<>();
+    private static ArrayList<EmployeeRequest> requestList;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        requestList = new ArrayList<>();
+        initViewModel();
+        get_employee_requests(mGetEmployeeRequestsCallback, Settings.getUserId());
+    }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_myrequests, container, false);
-        initViewModel();
         init(view);
         context = container.getContext().getApplicationContext();
-        get_employee_requests(mGetEmployeeRequestsCallback, Settings.getUserId());
         return view;
     }
 
@@ -120,7 +126,7 @@ public class MyRequestsFragment extends Fragment {
         ColorDrawable colorDrawable = new ColorDrawable(getContext().getResources().getColor(R.color.kfuDefaultColor));
         // Показать загрузочное окно
         progressDialog = new ProgressDialog(getContext());
-        progressDialog.setMessage(context.getString(R.string.loadingText));
+        progressDialog.setMessage(getContext().getString(R.string.loadingText));
         progressDialog.setProgressDrawable(colorDrawable);
         progressDialog.show();
 
@@ -155,6 +161,10 @@ public class MyRequestsFragment extends Fragment {
                         EmployeeRequestsRecyclerViewAdapter adapter =
                                 new EmployeeRequestsRecyclerViewAdapter(getContext(), requestList);
                         recyclerView.setAdapter(adapter);
+                        if(currentPage != 1) {
+                            recyclerView.smoothScrollToPosition(requestList.size() - 7);
+                            Log.d(TAG, "onChanged: smooth scroll to " + Integer.toString(requestList.size() - 7));
+                        }
                         isLoading = false;
                     }
                 }

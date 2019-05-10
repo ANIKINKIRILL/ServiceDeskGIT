@@ -23,6 +23,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.admin.oracletest.Models.EmployeeRequest;
 import com.example.admin.oracletest.R;
 import com.example.admin.oracletest.Settings;
 
@@ -35,12 +36,12 @@ public class DetailRequestActivity extends AppCompatActivity {
     // Виджеты
     private TextView requestCode, requestDateOfRegistration, requestDateOfRealization,
             requestZaavitel, zaavitelPost, zaavitelBuildingKfu, zaavitelBuildingKfuRoomNumber,
-            zaavitelContact, zaavitelPhone, requestBody, employeeData;
+            zaavitelContact, zaavitelPhone, requestBody, employeeData, requestStatus;
     private Button delayRequestButton, completeRequestButton;
 
     // Переменные
     private String cod, date_of_reg, date_of_realization, zaavitel, post,
-            building_kfu, roomNumber, contact, phone, body, employee_building_kfu;
+            building_kfu, roomNumber, contact, phone, body, employee_building_kfu, status;
     private String employee_firstname;
     private String employee_middlename;
     private String employee_lastname;
@@ -67,6 +68,7 @@ public class DetailRequestActivity extends AppCompatActivity {
     private void init() {
         requestCode = findViewById(R.id.requestCode);
         requestDateOfRegistration = findViewById(R.id.requestDateOfRegistration);
+        requestStatus = findViewById(R.id.requestStatus);
         requestDateOfRealization = findViewById(R.id.requestDateOfRealization);
         requestZaavitel = findViewById(R.id.requestZaavitel);
         zaavitelPost = findViewById(R.id.zaavitelPost);
@@ -157,6 +159,7 @@ public class DetailRequestActivity extends AppCompatActivity {
         phone = bundle.getString(getString(R.string.phone));
         body = bundle.getString(getString(R.string.body));
         employee_building_kfu = "";
+        status = bundle.getString(getString(R.string.requestStatus));
     }
 
     /**
@@ -167,6 +170,7 @@ public class DetailRequestActivity extends AppCompatActivity {
         requestCode.setText(String.format("Номер заяки: %s", cod));
         requestDateOfRealization.setText(String.format("Дата регистрация: %s", date_of_realization+"\n"));
         requestDateOfRegistration.setText(String.format("Срок выполнения: %s", date_of_reg));
+        requestStatus.setText(String.format("Статус: %s", status));
         requestZaavitel.setText(String.format("Заявитель: %s", zaavitel));
         zaavitelPost.setText(String.format("Должность: %s", post));
         zaavitelBuildingKfu.setText(String.format("Адрес: %s", building_kfu));
@@ -179,6 +183,9 @@ public class DetailRequestActivity extends AppCompatActivity {
                 employee_firstname,
                 employee_lastname)
         );
+        if(status.equals(EmployeeRequest.NEW)){
+            employeeData.setText("Исполнитель: отсутствует");
+        }
         all_request_content =
                 requestCode.getText().toString() + "\n" +
                 requestDateOfRealization.getText().toString() + "\n" +

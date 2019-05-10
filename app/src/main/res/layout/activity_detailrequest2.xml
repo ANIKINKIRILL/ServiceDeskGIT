@@ -34,6 +34,12 @@
                     android:layout_height="wrap_content" />
 
                 <TextView
+                    android:id="@+id/requestStatus"
+                    tools:text="Статус: новая"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <TextView
                     android:id="@+id/requestDateOfRealization"
                     tools:text="Дедлайн: 22.03.2019 12.00"
                     android:layout_width="match_parent"

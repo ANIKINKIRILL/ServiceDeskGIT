@@ -29,6 +29,13 @@ public class EmployeeRequest {
     private String info;        // иформация о заявки
     private int cod;        // код заявки
 
+    public static final String NEW = "новая";
+    public static final String DONE = "выполнена";
+    public static final String IN_PROGRESS = "выполняется";
+    public static final String CANCELED = "отменена";
+    public static final String STOPED = "приостановлена";
+    public static final String CLOSED = "закрыта";
+
     @Ignore
     public EmployeeRequest(){}
 

@@ -11,7 +11,7 @@
 
     <TextView
         android:id="@+id/titleOfBottomSheet"
-        android:text="Параметры поиска"
+        android:text="@string/searchParams"
         android:textStyle="bold"
         android:textSize="17dp"
         android:gravity="center_vertical"
@@ -23,7 +23,7 @@
         android:id="@+id/requestCodeFilterOption"
         android:layout_below="@id/titleOfBottomSheet"
         android:textSize="15dp"
-        android:text="Номер заявки"
+        android:text="@string/requestNumber"
         android:layout_marginBottom="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
@@ -34,7 +34,7 @@
         android:singleLine="true"
         android:textColor="@android:color/white"
         android:textCursorDrawable="@drawable/edit_text_gray_color_cursor"
-        android:hint="Номер"
+        android:hint="@string/number"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
@@ -42,7 +42,7 @@
         android:id="@+id/requestStatusFilterOption"
         android:layout_below="@id/requestCodeEditText"
         android:textSize="15dp"
-        android:text="Статус заявки"
+        android:text="@string/requestStatus"
         android:layout_marginBottom="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
@@ -59,7 +59,7 @@
         android:layout_below="@id/requestStatusSpinner"
         android:background="@drawable/button_round_corners"
         android:textColor="@android:color/white"
-        android:text="Показать результаты"
+        android:text="@string/showResults"
         android:layout_width="match_parent"
         android:layout_height="50dp" />
 
