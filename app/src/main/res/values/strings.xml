@@ -39,4 +39,13 @@
     <string name="requestStatus">Статус заявки</string>
     <string name="showResults">Показать результаты</string>
 
+    <string-array name="requestStatusArray">
+        <item>Новая</item>
+        <item>Выполнена</item>
+        <item>Выполняется</item>
+        <item>Отменена</item>
+        <item>Приостановлена</item>
+        <item>Закрыта</item>
+    </string-array>
+
 </resources>

@@ -40,15 +40,16 @@ public class AllRequestsFragment extends Fragment {
     private LinearLayoutManager linearLayoutManager;
     private AllRequestsFragmentViewModel viewModel;
     private Context context;
-    private static ArrayList<EmployeeRequest> requestList;
+    public static ArrayList<EmployeeRequest> requestList;
     private boolean isLoading = false;
     private boolean isLastPage = false;
     private int currentPage = 1;
-    public static final int DEFAULT_STATUS_ID = 1;  // новые заявки
+    public static int DEFAULT_STATUS_ID = 1;  // новые заявки
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d(TAG, "onCreate: called " + DEFAULT_STATUS_ID);
         requestList = new ArrayList<>();
         initViewModel();
         get_current_requests(currentPage, DEFAULT_STATUS_ID, mGetCurrentRequestsCallback);
@@ -57,10 +58,23 @@ public class AllRequestsFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        Log.d(TAG, "onCreateView: called" + DEFAULT_STATUS_ID);
         View view = inflater.inflate(R.layout.fragment_all_requests, container, false);
         init(view);
         context = container.getContext().getApplicationContext();
         return view;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        Log.d(TAG, "onStart: called" + DEFAULT_STATUS_ID);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.d(TAG, "onResume: called" + DEFAULT_STATUS_ID);
     }
 
     /**
@@ -112,7 +126,7 @@ public class AllRequestsFragment extends Fragment {
         viewModel = ViewModelProviders.of(this).get(AllRequestsFragmentViewModel.class);
     }
 
-    private void get_current_requests(int page_number, int status_id, Callback callback){
+    public void get_current_requests(int page_number, int status_id, Callback callback){
         ColorDrawable colorDrawable = new ColorDrawable(getContext().getResources().getColor(R.color.kfuDefaultColor));
         // Показать загрузочное окно
         progressDialog = new ProgressDialog(getContext());
@@ -126,9 +140,10 @@ public class AllRequestsFragment extends Fragment {
      * Callback, который вернется после получения заявок на исполнителя (externalCallbackGetRequests)
      */
 
-    Callback mGetCurrentRequestsCallback = new Callback() {
+    public Callback mGetCurrentRequestsCallback = new Callback() {
         @Override
         public void execute(Object data) {
+            Log.d(TAG, "execute: called");
             LiveData<ArrayList<EmployeeRequest>> requests = (LiveData<ArrayList<EmployeeRequest>>) data;
             // View observes любые изменения в LiveData и реагирует на них
             requests.observe(AllRequestsFragment.this, new Observer<ArrayList<EmployeeRequest>>() {
@@ -136,16 +151,15 @@ public class AllRequestsFragment extends Fragment {
                 public void onChanged(@Nullable ArrayList<EmployeeRequest> employeeRequests) {
                     requestList.addAll(employeeRequests);
                     Log.d(TAG, "onChanged: called requestListSize:" + requestList.size());
+                    progressDialog.cancel();
                     // Если у пользователя нет заявок
                     if(employeeRequests.size() == 0){
-                        progressDialog.dismiss();
                         AlertDialog.Builder alertDialog = new AlertDialog.Builder(getContext());
                         alertDialog.setTitle(context.getString(R.string.myRequests));
                         alertDialog.setMessage(context.getString(R.string.noRequestsText));
                         alertDialog.setPositiveButton(context.getText(R.string.ok_button), (dialog, which) -> dialog.dismiss());
                         alertDialog.show();
                     }else{
-                        progressDialog.dismiss();
                         // Создаем адаптер и RecyclerView для отображения заявок
                         EmployeeRequestsRecyclerViewAdapter adapter =
                                 new EmployeeRequestsRecyclerViewAdapter(getContext(), requestList);

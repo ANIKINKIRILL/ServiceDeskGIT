@@ -21,6 +21,7 @@ public class User {
     public static String firstname;
     public static String lastname;
     public static String middlename;
+    public static int current_requests_amount;
 
     /**
      * Сохранение данных пользователя в {@link Settings}

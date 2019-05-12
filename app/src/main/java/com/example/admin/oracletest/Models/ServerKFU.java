@@ -78,11 +78,12 @@ public class ServerKFU {
      * @param page_number номер страницы с заявками
      */
 
-    public static void get_requests(String u_id, int page_number, Callback callback){
+    public static void get_requests(String u_id, int page_number, int status_id, Callback callback){
         String url = createUrl("servicedesk_mobile_test",
                 "get_employee_requests",
                 "p_emp_id=" + u_id,
-                "p_page_number=" + page_number
+                "p_page_number=" + page_number,
+                "p_status_id=" + status_id
         );
         AsyncTaskArguments arguments = new AsyncTaskArguments(url, callback);
         GetDataFromKfuServer backgroundTask = new GetDataFromKfuServer();

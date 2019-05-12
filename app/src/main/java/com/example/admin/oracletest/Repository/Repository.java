@@ -54,9 +54,9 @@ public class Repository {
      * @param page_number номер страницы с заявками
      */
 
-    public void get_requests(String u_id, int page_number, Callback callback){
+    public void get_requests(String u_id, int page_number, int status_id, Callback callback){
         Log.d(TAG, "get_requests: called");
-        ServerKFU.get_requests(u_id, page_number, callback);
+        ServerKFU.get_requests(u_id, page_number, status_id, callback);
     }
 
     /**

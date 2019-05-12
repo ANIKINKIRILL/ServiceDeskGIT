@@ -9,6 +9,7 @@ import com.example.admin.oracletest.Callback;
 import com.example.admin.oracletest.Fragment.MyRequestsFragment;
 import com.example.admin.oracletest.GetDataFromKfuServer;
 import com.example.admin.oracletest.Models.EmployeeRequest;
+import com.example.admin.oracletest.Models.User;
 import com.example.admin.oracletest.Repository.Repository;
 
 import org.json.JSONArray;
@@ -34,10 +35,10 @@ public class MyRequestsFragmentViewModel extends ViewModel {
      * @param u_id     id исполнителя
      */
 
-    public void get_requests(Context context, String u_id, int page_number, Callback callback){
+    public void get_requests(Context context, String u_id, int page_number, int status_id, Callback callback){
         Log.d(TAG, "get_requests: called");
         externalGetRequestsCallback = callback;
-        Repository.getInstance(context).get_requests(u_id, page_number, mGetRequestsCallback);
+        Repository.getInstance(context).get_requests(u_id, page_number, status_id, mGetRequestsCallback);
     }
 
     /**
@@ -55,6 +56,7 @@ public class MyRequestsFragmentViewModel extends ViewModel {
             try {
                 JSONObject jsonObject = new JSONObject(data.toString());
                 boolean successful = jsonObject.getBoolean("successful");
+                User.current_requests_amount = jsonObject.getInt("v_emp_requests_amount");
                 if(successful){
                     JSONArray employeeRequests = jsonObject.getJSONArray("requests");
                     for (int i = 0; i < employeeRequests.length(); i++) {

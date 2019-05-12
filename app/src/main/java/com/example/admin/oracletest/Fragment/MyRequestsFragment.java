@@ -20,6 +20,7 @@ import android.view.ViewGroup;
 
 import com.example.admin.oracletest.Callback;
 import com.example.admin.oracletest.Models.EmployeeRequest;
+import com.example.admin.oracletest.Models.User;
 import com.example.admin.oracletest.R;
 import com.example.admin.oracletest.RecyclerViewScrollListener;
 import com.example.admin.oracletest.Settings;
@@ -48,13 +49,14 @@ public class MyRequestsFragment extends Fragment {
     private boolean isLastPage = false;
     private int currentPage = 1;
     private static ArrayList<EmployeeRequest> requestList;
+    public static int DEFAULT_STATUS_ID = 1;  // новые заявки
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestList = new ArrayList<>();
         initViewModel();
-        get_employee_requests(mGetEmployeeRequestsCallback, Settings.getUserId());
+        get_employee_requests(mGetEmployeeRequestsCallback, Settings.getUserId(), DEFAULT_STATUS_ID);
     }
 
     @Nullable
@@ -82,7 +84,7 @@ public class MyRequestsFragment extends Fragment {
             protected void loadMoreItems() {
                 isLoading = true;
                 currentPage += 1;
-                performPagination(mGetEmployeeRequestsCallback, Settings.getUserId());
+                performPagination(mGetEmployeeRequestsCallback, Settings.getUserId(), DEFAULT_STATUS_ID);
             }
 
             @Override
@@ -103,9 +105,10 @@ public class MyRequestsFragment extends Fragment {
 
     }
 
-    private void performPagination(Callback callback, String u_id){
-        Log.d(TAG, "performPagination: called " + currentPage);
-        get_employee_requests(callback, u_id);
+    private void performPagination(Callback callback, String u_id, int status_id){
+        if(User.current_requests_amount > 7) {
+            get_employee_requests(callback, u_id, status_id);
+        }
     }
 
     /**
@@ -122,7 +125,7 @@ public class MyRequestsFragment extends Fragment {
      * @param u_id          id исполнителя
      */
 
-    private void get_employee_requests(Callback callback, String u_id){
+    private void get_employee_requests(Callback callback, String u_id, int status_id){
         ColorDrawable colorDrawable = new ColorDrawable(getContext().getResources().getColor(R.color.kfuDefaultColor));
         // Показать загрузочное окно
         progressDialog = new ProgressDialog(getContext());
@@ -130,7 +133,34 @@ public class MyRequestsFragment extends Fragment {
         progressDialog.setProgressDrawable(colorDrawable);
         progressDialog.show();
 
-        viewModel.get_requests(getContext(), u_id, currentPage, callback);
+        viewModel.get_requests(getContext(), u_id, currentPage, status_id, callback);
+    }
+
+    private String get_status_name(int status_id){
+        String resultStatusName = "Новая";
+        switch (status_id){
+            case 1:{
+                resultStatusName = "Новая";
+                break;
+            }
+            case 2:{
+                resultStatusName = "Выполнена";
+                break;
+            }case 3:{
+                resultStatusName = "Выполнются";
+                break;
+            }case 4:{
+                resultStatusName = "Отменена";
+                break;
+            }case 5:{
+                resultStatusName = "Приостановлена";
+                break;
+            }case 6:{
+                resultStatusName = "Закрта";
+                break;
+            }
+        }
+        return resultStatusName;
     }
 
     /**
@@ -141,21 +171,22 @@ public class MyRequestsFragment extends Fragment {
         @Override
         public void execute(Object data) {
             LiveData<ArrayList<EmployeeRequest>> requests = (LiveData<ArrayList<EmployeeRequest>>) data;
-            Log.d(TAG, "employee_requests: " + requests.getValue().size());
             // View observes любые изменения в LiveData и реагирует на них
             requests.observe(MyRequestsFragment.this, new Observer<ArrayList<EmployeeRequest>>() {
                 @Override
                 public void onChanged(@Nullable ArrayList<EmployeeRequest> employeeRequests) {
                     requestList.addAll(employeeRequests);
                     // Если у пользователя нет заявок
-                    if(employeeRequests.size() == 0){
+                    if(User.current_requests_amount == 0 || requests.getValue().size() == 0){
+                        String status = get_status_name(DEFAULT_STATUS_ID);
                         progressDialog.dismiss();
                         AlertDialog.Builder alertDialog = new AlertDialog.Builder(getContext());
                         alertDialog.setTitle(context.getString(R.string.myRequests));
-                        alertDialog.setMessage(context.getString(R.string.noRequestsText));
+                        alertDialog.setMessage("У Вас нет заявок со статусом '" + status + "'");
                         alertDialog.setPositiveButton(context.getText(R.string.ok_button), (dialog, which) -> dialog.dismiss());
                         alertDialog.show();
-                    }else{
+                    }
+                    if(User.current_requests_amount >= 7){
                         progressDialog.dismiss();
                         // Создаем адаптер и RecyclerView для отображения заявок
                         EmployeeRequestsRecyclerViewAdapter adapter =
@@ -167,6 +198,16 @@ public class MyRequestsFragment extends Fragment {
                         }
                         isLoading = false;
                     }
+
+                    if(User.current_requests_amount < 7){
+                        progressDialog.dismiss();
+                        // Создаем адаптер и RecyclerView для отображения заявок
+                        EmployeeRequestsRecyclerViewAdapter adapter =
+                                new EmployeeRequestsRecyclerViewAdapter(getContext(), requestList);
+                        recyclerView.setAdapter(adapter);
+                        isLoading = false;
+                    }
+
                 }
             });
         }

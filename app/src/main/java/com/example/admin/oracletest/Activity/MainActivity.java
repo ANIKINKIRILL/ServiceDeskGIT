@@ -37,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
 
     // Переменные
     ActionBar actionBar;
+    public static int createCounter = 0;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -44,7 +45,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_activitymain);
         init();
         initActionBar();
-        setLaunchFragment();
+        if(AllRequestsFragment.DEFAULT_STATUS_ID == 1 && createCounter == 0) {
+            setLaunchFragment();
+        }
     }
 
     /**
@@ -54,7 +57,6 @@ public class MainActivity extends AppCompatActivity {
     private void init(){
         bottomNavigationView = findViewById(R.id.main_bottom_nav_view);
         mainContainer = findViewById(R.id.main_container);
-
         bottomNavigationView.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener);
     }
 

@@ -31,6 +31,7 @@ public class AllRequestsFragmentViewModel extends ViewModel {
      */
 
     public void get_current_requests(Context context, int page_number, int status_id, Callback callback){
+        Log.d(TAG, "get_current_requests: called");
         externalGetRequestsCallback = callback;
         Repository.getInstance(context).get_current_requests(page_number, status_id, mGetRequestsCallback);
     }
@@ -79,7 +80,9 @@ public class AllRequestsFragmentViewModel extends ViewModel {
                 }
             } catch (JSONException e) {
                 Log.d(TAG, "execute: " + e.getMessage());
+                Log.d(TAG, "execute error: " + data.toString().substring(5720, 5730));
             }
+            Log.d(TAG, "execute: " + requests.size());
             MutableLiveData<ArrayList<EmployeeRequest>> mutableLiveData = new MutableLiveData<>();
             mutableLiveData.setValue(requests);
             externalGetRequestsCallback.execute(mutableLiveData);
