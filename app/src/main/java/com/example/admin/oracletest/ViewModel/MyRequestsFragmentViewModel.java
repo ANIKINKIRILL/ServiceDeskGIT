@@ -61,6 +61,7 @@ public class MyRequestsFragmentViewModel extends ViewModel {
                     JSONArray employeeRequests = jsonObject.getJSONArray("requests");
                     for (int i = 0; i < employeeRequests.length(); i++) {
                         int id = employeeRequests.getJSONObject(i).getInt("id");
+                        String emp_fio = employeeRequests.getJSONObject(i).getString("emp_fio");
                         String request_date = employeeRequests.getJSONObject(i).getString("request_date");
                         String phone = employeeRequests.getJSONObject(i).getString("phone");
                         String declarant_fio = employeeRequests.getJSONObject(i).getString("declarant_fio");
@@ -77,7 +78,7 @@ public class MyRequestsFragmentViewModel extends ViewModel {
                         String image = "";
                         int cod = employeeRequests.getJSONObject(i).getInt("cod");
                         EmployeeRequest request = new EmployeeRequest(
-                                id, image, request_date, date_of_realization, declarant_fio,
+                                id, emp_fio, image, request_date, date_of_realization, declarant_fio,
                                 post, building_kfu_name, room_number, descr, status_name, color,
                                 phone, cod, info
                         );

@@ -15,6 +15,7 @@ public class EmployeeRequest {
 
     @PrimaryKey
     private int id;     // id заявки в табилце TECH_CENTER$DB.REQUEST
+    private String emp_fio;     // ФИО исполнителя
     private String image;       // путь к картике для статуса заявки
     private String request_date;        // дата регистрации заявки
     private String date_of_realization;     // дедлайн
@@ -33,17 +34,18 @@ public class EmployeeRequest {
     public static final String DONE = "выполнена";
     public static final String IN_PROGRESS = "выполняется";
     public static final String CANCELED = "отменена";
-    public static final String STOPED = "приостановлена";
+    public static final String STOPPED = "приостановлена";
     public static final String CLOSED = "закрыта";
 
     @Ignore
     public EmployeeRequest(){}
 
-    public EmployeeRequest(int id, String image, String request_date, String date_of_realization,
+    public EmployeeRequest(int id, String emp_fio, String image, String request_date, String date_of_realization,
                            String declarant_fio, String post, String building_kfu_name,
                            String room_number, String descr, String status_name, String color, String phone,
                            int cod, String info) {
         this.id = id;
+        this.emp_fio = emp_fio;
         this.image = image;
         this.request_date = request_date;
         this.date_of_realization = date_of_realization;
@@ -65,6 +67,14 @@ public class EmployeeRequest {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getEmp_fio() {
+        return emp_fio;
+    }
+
+    public void setEmp_fio(String emp_fio) {
+        this.emp_fio = emp_fio;
     }
 
     public String getImage() {

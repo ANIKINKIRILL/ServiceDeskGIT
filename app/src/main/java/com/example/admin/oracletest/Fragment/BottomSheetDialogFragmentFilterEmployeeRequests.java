@@ -145,7 +145,7 @@ public class BottomSheetDialogFragmentFilterEmployeeRequests extends BottomSheet
                 status_id = 4;
                 break;
             }
-            case EmployeeRequest.STOPED:{
+            case EmployeeRequest.STOPPED:{
                 status_id = 5;
                 break;
             }

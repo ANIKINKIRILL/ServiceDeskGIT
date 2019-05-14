@@ -46,9 +46,11 @@ public class DetailRequestActivity extends AppCompatActivity {
     private String employee_middlename;
     private String employee_lastname;
     private String all_request_content;
+    private String emp_fio;
 
     // Постоянные переменные
     public static final int REQUEST_CALL = 1;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -57,7 +59,6 @@ public class DetailRequestActivity extends AppCompatActivity {
         init();
         getIntentExtras();
         initActionBar();
-        getUserFIO();
         setIntentExtrasToWidgets();
     }
 
@@ -160,6 +161,7 @@ public class DetailRequestActivity extends AppCompatActivity {
         body = bundle.getString(getString(R.string.body));
         employee_building_kfu = "";
         status = bundle.getString(getString(R.string.requestStatus));
+        emp_fio = bundle.getString(getString(R.string.emp_fio));
     }
 
     /**
@@ -178,14 +180,7 @@ public class DetailRequestActivity extends AppCompatActivity {
         zaavitelContact.setText(String.format("Контакт: %s", contact));
         zaavitelPhone.setText(String.format("Телефон: %s", phone+"\n"));
         requestBody.setText(String.format("Текст заявки: %s", body+"\n"));
-        employeeData.setText(String.format("Исполнитель: %s %s %s",
-                employee_middlename,
-                employee_firstname,
-                employee_lastname)
-        );
-        if(status.equals(EmployeeRequest.NEW)){
-            employeeData.setText("Исполнитель: отсутствует");
-        }
+        employeeData.setText(String.format("Исполнитель: %s", emp_fio));
         all_request_content =
                 requestCode.getText().toString() + "\n" +
                 requestDateOfRealization.getText().toString() + "\n" +

@@ -48,4 +48,6 @@
         <item>Закрыта</item>
     </string-array>
 
+    <string name="emp_fio">ФИО Исполнителя</string>
+
 </resources>

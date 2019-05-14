@@ -65,6 +65,7 @@ public class EmployeeRequestsRecyclerViewAdapter extends RecyclerView.Adapter<Em
         final String phone = request.getPhone();
         final String body = request.getInfo();
         final String status = request.getStatus_name();
+        final String emp_fio = request.getEmp_fio();
         // Устанавливаем данные в виджеты
         viewHolder.requestCode.setText(String.format("%s: %s", context.getString(R.string.requestNumber), cod));
         viewHolder.requestDateOfRegistration.setText(String.format("%s: %s", context.getString(R.string.date_of_reg), date_of_reg));
@@ -88,6 +89,7 @@ public class EmployeeRequestsRecyclerViewAdapter extends RecyclerView.Adapter<Em
                 intent.putExtra(context.getString(R.string.body), body);
                 intent.putExtra(context.getString(R.string.building_kfu_name), building_kfu_name);
                 intent.putExtra(context.getString(R.string.requestStatus), status);
+                intent.putExtra(context.getString(R.string.emp_fio), emp_fio);
                 // Переходим на активити с детальной информацией о заявке
                 context.startActivity(intent);
             }

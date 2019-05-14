@@ -30,9 +30,6 @@ public class User {
     public static void saveInformation(){
         Settings.setUserLogin(login);
         Settings.setUserPassword(password);
-        Log.d(TAG, "saveInformation: " + login);
-        Log.d(TAG, "saveInformation: " + password);
-        Log.d(TAG, "saveInformation: " + user_id);
         Settings.setUserId(Integer.toString(user_id));
         Settings.setUserFirstName(firstname);
         Settings.setUserMiddleName(middlename);

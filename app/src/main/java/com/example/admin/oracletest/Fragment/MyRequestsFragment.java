@@ -136,6 +136,13 @@ public class MyRequestsFragment extends Fragment {
         viewModel.get_requests(getContext(), u_id, currentPage, status_id, callback);
     }
 
+    /**
+     * Получить название статуса
+     *
+     * @param status_id     id статуса
+     * @return              название статуса
+     */
+
     private String get_status_name(int status_id){
         String resultStatusName = "Новая";
         switch (status_id){
@@ -166,7 +173,7 @@ public class MyRequestsFragment extends Fragment {
     /**
      * Callback, который вернется после получения заявок на исполнителя (externalCallbackGetRequests)
      */
-
+    
     Callback mGetEmployeeRequestsCallback = new Callback() {
         @Override
         public void execute(Object data) {
@@ -176,7 +183,7 @@ public class MyRequestsFragment extends Fragment {
                 @Override
                 public void onChanged(@Nullable ArrayList<EmployeeRequest> employeeRequests) {
                     requestList.addAll(employeeRequests);
-                    // Если у пользователя нет заявок
+                    // Если у пользователя нет заявок с этим статусом
                     if(User.current_requests_amount == 0 || requests.getValue().size() == 0){
                         String status = get_status_name(DEFAULT_STATUS_ID);
                         progressDialog.dismiss();
@@ -186,6 +193,7 @@ public class MyRequestsFragment extends Fragment {
                         alertDialog.setPositiveButton(context.getText(R.string.ok_button), (dialog, which) -> dialog.dismiss());
                         alertDialog.show();
                     }
+                    // Количетсво заявок больше чем на одну страницу
                     if(User.current_requests_amount >= 7){
                         progressDialog.dismiss();
                         // Создаем адаптер и RecyclerView для отображения заявок
@@ -198,7 +206,7 @@ public class MyRequestsFragment extends Fragment {
                         }
                         isLoading = false;
                     }
-
+                    // Количетсво заявок меньше чем на одну страницу
                     if(User.current_requests_amount < 7){
                         progressDialog.dismiss();
                         // Создаем адаптер и RecyclerView для отображения заявок

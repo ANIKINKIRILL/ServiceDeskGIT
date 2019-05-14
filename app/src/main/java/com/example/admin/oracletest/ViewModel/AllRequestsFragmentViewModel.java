@@ -56,6 +56,7 @@ public class AllRequestsFragmentViewModel extends ViewModel {
                     for (int i = 0; i < employeeRequests.length(); i++) {
                         int id = employeeRequests.getJSONObject(i).getInt("id");
                         String request_date = employeeRequests.getJSONObject(i).getString("request_date");
+                        String emp_fio = employeeRequests.getJSONObject(i).getString("emp_fio");
                         String phone = employeeRequests.getJSONObject(i).getString("phone");
                         String declarant_fio = employeeRequests.getJSONObject(i).getString("declarant_fio");
                         String date_of_realization = employeeRequests.getJSONObject(i).getString("date_of_realization");
@@ -71,7 +72,7 @@ public class AllRequestsFragmentViewModel extends ViewModel {
                         String image = "";
                         int cod = employeeRequests.getJSONObject(i).getInt("cod");
                         EmployeeRequest request = new EmployeeRequest(
-                                id, image, request_date, date_of_realization, declarant_fio,
+                                id, emp_fio, image, request_date, date_of_realization, declarant_fio,
                                 post, building_kfu_name, room_number, descr, status_name, color,
                                 phone, cod, info
                         );
@@ -80,7 +81,6 @@ public class AllRequestsFragmentViewModel extends ViewModel {
                 }
             } catch (JSONException e) {
                 Log.d(TAG, "execute: " + e.getMessage());
-                Log.d(TAG, "execute error: " + data.toString().substring(5720, 5730));
             }
             Log.d(TAG, "execute: " + requests.size());
             MutableLiveData<ArrayList<EmployeeRequest>> mutableLiveData = new MutableLiveData<>();
