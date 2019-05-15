@@ -39,7 +39,7 @@ public class BottomSheetDialogFragmentFilterEmployeeRequests extends BottomSheet
     // Виджеты
     private Spinner statusSpinner;
     private Button showResultButton;
-    private EditText requestCodeEditText;
+    //private EditText requestCodeEditText;
 
     // Переменные
     private AllRequestsFragmentViewModel viewModel;
@@ -82,7 +82,7 @@ public class BottomSheetDialogFragmentFilterEmployeeRequests extends BottomSheet
 
     private void init(View view){
         statusSpinner = view.findViewById(R.id.requestStatusSpinner);
-        requestCodeEditText = view.findViewById(R.id.requestCodeEditText);
+        //requestCodeEditText = view.findViewById(R.id.requestCodeEditText);
         showResultButton = view.findViewById(R.id.showResultButton);
 
         showResultButton.setOnClickListener(this);
@@ -161,16 +161,14 @@ public class BottomSheetDialogFragmentFilterEmployeeRequests extends BottomSheet
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.showResultButton:{
-                if(requestCodeEditText.getText().toString().trim().isEmpty()){
-                    // Сортируем по статусу заявки
-                    String selectedStatus = statusSpinner.getSelectedItem().toString().toLowerCase();
-                    status_id = getStatusId(selectedStatus);
-                    AllRequestsFragment.DEFAULT_STATUS_ID = status_id;
-                    MyRequestsFragment.DEFAULT_STATUS_ID = status_id;
-                    MainActivity.createCounter++;
-                    dialog.dismiss();
-                    getActivity().recreate();
-                }
+                // Сортируем по статусу заявки
+                String selectedStatus = statusSpinner.getSelectedItem().toString().toLowerCase();
+                status_id = getStatusId(selectedStatus);
+                AllRequestsFragment.DEFAULT_STATUS_ID = status_id;
+                MyRequestsFragment.DEFAULT_STATUS_ID = status_id;
+                MainActivity.createCounter++;
+                dialog.dismiss();
+                getActivity().recreate();
                 break;
             }
         }

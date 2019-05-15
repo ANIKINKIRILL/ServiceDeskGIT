@@ -45,29 +45,13 @@ public class ServerKFU {
 
     public static void authenticateUser(String p_login, String p_password, Callback callback){
         Log.d(TAG, "authenticateUser: called");
-        // Функция для авторизации пользователя в системе ServiceDesk
-        Call<Object> call = kfuServerApi.authenticateUser(p_login, p_password);
-        Log.d(TAG, "authenticateUser: " + call.request().url().toString());
-        // Сдлеать запрос по url на Background Thread, но получить данные на Main Thread
-        call.enqueue(new retrofit2.Callback<Object>() {
-            @Override
-            public void onResponse(Call<Object> call, Response<Object> response) {
-                // Если запрос с ошибкой (404, 501, 505...)
-                if(!response.isSuccessful()){
-                    Toast.makeText(DirectoryServiceDesk.GetAppContext(), "Ошибка " + response.code(), Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                // Получить сам JSON
-                Object json = response.body();
-                // Отправить его на AuthActivityViewModel callback
-                callback.execute(json);
-            }
-            @Override
-            public void onFailure(Call<Object> call, Throwable t) {
-                // Если запрос не удался
-                Toast.makeText(DirectoryServiceDesk.GetAppContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
+        String url = createUrl("portal_pg_mobile",
+                "authentication",
+                "p_login=" + p_login,
+                "p_pass=" + p_password);
+        AsyncTaskArguments arguments = new AsyncTaskArguments(url, callback);
+        GetDataFromKfuServer server = new GetDataFromKfuServer();
+        server.execute(arguments);
     }
 
     /**
@@ -86,8 +70,8 @@ public class ServerKFU {
                 "p_status_id=" + status_id
         );
         AsyncTaskArguments arguments = new AsyncTaskArguments(url, callback);
-        GetDataFromKfuServer backgroundTask = new GetDataFromKfuServer();
-        backgroundTask.execute(arguments);
+        GetDataFromKfuServer server = new GetDataFromKfuServer();
+        server.execute(arguments);
     }
 
     /**
@@ -105,8 +89,8 @@ public class ServerKFU {
                 "p_status_id=" + status_id
         );
         AsyncTaskArguments arguments = new AsyncTaskArguments(url, callback);
-        GetDataFromKfuServer backgroundTask = new GetDataFromKfuServer();
-        backgroundTask.execute(arguments);
+        GetDataFromKfuServer server = new GetDataFromKfuServer();
+        server.execute(arguments);
     }
 
     /**
