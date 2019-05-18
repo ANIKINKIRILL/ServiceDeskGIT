@@ -90,11 +90,13 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.allRequests:{
                     doFragmentTransaction(new AllRequestsFragment(), getString(R.string.allRequests));
                     menu.findItem(R.id.filterOptions).setVisible(true);
+                    menu.findItem(R.id.clearSearchFilters).setVisible(false);
                     break;
                 }
                 case R.id.myRequests:{
                     doFragmentTransaction(new MyRequestsFragment(), getString(R.string.myRequests));
                     menu.findItem(R.id.filterOptions).setVisible(true);
+                    menu.findItem(R.id.clearSearchFilters).setVisible(false);
                     break;
                 }
                 case R.id.map:{
@@ -105,11 +107,13 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.search:{
                     doFragmentTransaction(new SearchRequestsFragment(), getString(R.string.search));
                     menu.findItem(R.id.filterOptions).setVisible(false);
+                    menu.findItem(R.id.clearSearchFilters).setVisible(true);
                     break;
                 }
                 case R.id.settings:{
                     doFragmentTransaction(new SettingsFragment(), getString(R.string.settingsText));
                     menu.findItem(R.id.filterOptions).setVisible(false);
+                    menu.findItem(R.id.clearSearchFilters).setVisible(false);
                     break;
                 }
             }
@@ -131,10 +135,19 @@ public class MainActivity extends AppCompatActivity {
         actionBar.setElevation(0);
     }
 
+    /**
+     * Отчистить все данные с виджетов
+     */
+
+    private void clearAllWidgetsData() throws NullPointerException{
+        SearchRequestsFragment.clearAllWidgetsData();
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_activity_menu, menu);
         this.menu = menu;
+        menu.findItem(R.id.clearSearchFilters).setVisible(false);
         return true;
     }
 
@@ -145,6 +158,12 @@ public class MainActivity extends AppCompatActivity {
                 BottomSheetDialogFragmentFilterEmployeeRequests bottomSheetDialog = new BottomSheetDialogFragmentFilterEmployeeRequests();
                 bottomSheetDialog.show(getSupportFragmentManager(), getString(R.string.open_dialog));
             }
+
+            case R.id.clearSearchFilters:{
+                clearAllWidgetsData();
+                break;
+            }
+
         }
         return super.onOptionsItemSelected(item);
     }

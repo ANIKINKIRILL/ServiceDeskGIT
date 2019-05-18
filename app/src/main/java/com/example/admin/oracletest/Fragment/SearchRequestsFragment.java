@@ -1,9 +1,11 @@
 package com.example.admin.oracletest.Fragment;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,15 +22,17 @@ import com.example.admin.oracletest.R;
 
 public class SearchRequestsFragment extends Fragment implements View.OnClickListener{
 
+    private static final String TAG = "SearchRequestsFragment";
+
     // Виджеты
-    private EditText code, zaavitel, podrazdilenie,
+    private static EditText code, zaavitel, podrazdilenie,
     location, roomNumber, type, info;
-    private TextView reg_date, closing_date;
-    private Spinner otdel, emp_fio, status, reg_user;
-    private Button searchButton;
+    private static TextView reg_date, closing_date;
+    private static Spinner otdel, emp_fio, status, reg_user;
+    private static Button searchButton;
 
     // Переменные
-    private String sql_statement = "";
+    private String sql_statement = "SELECT * FROM TECH_CENTER$DB.REQUEST ";
 
     @Nullable
     @Override
@@ -45,8 +49,8 @@ public class SearchRequestsFragment extends Fragment implements View.OnClickList
 
     private void init(View view){
         code = view.findViewById(R.id.requestCodeValue);
-        reg_date = view.findViewById(R.id.requestDateOfRegistrationValue)
-        closing_date = view.findViewById(R.id.requestDateOfRealizationValue)
+        reg_date = view.findViewById(R.id.requestDateOfRegistrationValue);
+        closing_date = view.findViewById(R.id.requestDateOfRealizationValue);
         zaavitel = view.findViewById(R.id.requestZaavitelValue);
         podrazdilenie = view.findViewById(R.id.requestPodrazdelenieValue);
         location = view.findViewById(R.id.requestLocationValue);
@@ -88,8 +92,53 @@ public class SearchRequestsFragment extends Fragment implements View.OnClickList
         return true;
     }
 
-    private void makeSqlStatement(){
+    /**
+     * Получить текст с EditText
+     * @return текст
+     */
 
+    private String getTextFromEditText(EditText editText){
+        return editText.getText().toString().trim();
+    }
+
+    /**
+     * Создать SQL запрос
+     */
+
+    private void makeSqlStatement(){
+        sql_statement = "SELECT * FROM TECH_CENTER$DB.REQUEST ";
+        if(!getTextFromEditText(code).isEmpty()){
+            sql_statement += "WHERE COD = " + getTextFromEditText(code);
+        }
+
+        if(!getTextFromEditText(zaavitel).isEmpty()){
+            if(sql_statement.contains("WHERE")) {
+                sql_statement += " AND DECLARANT_FIO = LIKE '%" + getTextFromEditText(zaavitel) + "%'";
+            }else {
+                sql_statement += "WHERE DECLARANT_FIO = LIKE '%" + getTextFromEditText(zaavitel) + "%'";
+            }
+        }
+
+        if(!getTextFromEditText(roomNumber).isEmpty()){
+            if(sql_statement.contains("WHERE")) {
+                sql_statement += " AND ROOM_NUMBER = " + getTextFromEditText(roomNumber);
+            }else {
+                sql_statement += "WHERE ROOM_NUMBER = " + getTextFromEditText(roomNumber);
+            }
+        }
+
+        Log.d(TAG, "makeSqlStatement: " + sql_statement);
+
+    }
+
+    /**
+     * Отчистить все данные с виджетов
+     */
+
+    public static void clearAllWidgetsData(){
+        code.getText().clear();
+        zaavitel.getText().clear();
+        roomNumber.getText().clear();
     }
 
     @Override
@@ -98,7 +147,13 @@ public class SearchRequestsFragment extends Fragment implements View.OnClickList
             case R.id.search_button:{
                 // Если хотя бы 1 ввод есть
                 if(isValid()){
-
+                    makeSqlStatement();
+                }else{
+                    AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
+                    dialog.setTitle("Неверный ввод");
+                    dialog.setMessage("Мы не сможем найти заявки без параметров. Введите какие-нибудь данные");
+                    dialog.setPositiveButton("OK", (dialogInterface, which) -> dialogInterface.dismiss());
+                    dialog.show();
                 }
                 break;
             }

@@ -25,6 +25,7 @@
             android:id="@+id/requestCodeValue"
             android:singleLine="true"
             android:textSize="15sp"
+            android:inputType="numberDecimal"
             android:textCursorDrawable="@drawable/edit_text_gray_color_cursor"
             android:hint="@string/number"
             android:layout_width="match_parent"
