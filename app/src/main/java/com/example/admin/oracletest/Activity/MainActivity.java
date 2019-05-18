@@ -20,6 +20,7 @@ import android.widget.Toast;
 import com.example.admin.oracletest.Fragment.AllRequestsFragment;
 import com.example.admin.oracletest.Fragment.BottomSheetDialogFragmentFilterEmployeeRequests;
 import com.example.admin.oracletest.Fragment.MyRequestsFragment;
+import com.example.admin.oracletest.Fragment.SearchRequestsFragment;
 import com.example.admin.oracletest.Fragment.SettingsFragment;
 import com.example.admin.oracletest.R;
 
@@ -102,8 +103,8 @@ public class MainActivity extends AppCompatActivity {
                     break;
                 }
                 case R.id.search:{
-                    actionBar.setElevation(0);
-                    actionBar.setTitle(getString(R.string.search));
+                    doFragmentTransaction(new SearchRequestsFragment(), getString(R.string.search));
+                    menu.findItem(R.id.filterOptions).setVisible(false);
                     break;
                 }
                 case R.id.settings:{

@@ -13,13 +13,24 @@
     <string name="settingsText">Настроки</string>
     <string name="requestNumber">Номер заявки</string>
     <string name="date_of_reg">Регистрация</string>
+    <string name="date_of_req_reg">Дата регистрации заявки</string>
     <string name="date_of_realization">Дедлайн</string>
+    <string name="date_of_closing">Дата закрытия заявки</string>
+    <string name="pick_date">Выбрать дату</string>
     <string name="zaavitel">Заявитель</string>
+    <string name="podrazdelenie">Подразделение</string>
+    <string name="location_address">Местонахождения (адрес)</string>
     <string name="post">Должнотсь</string>
     <string name="roomNumber">Кабинет</string>
+    <string name="otdel_employees">Отдел (исполнителей заявки)</string>
+    <string name="otdel">Отдел</string>
     <string name="body">Текст заявки</string>
     <string name="phone">Телефон</string>
     <string name="building_kfu_name">Адрес</string>
+    <string name="reg_user">Заявку зарегистрировал</string>
+    <string name="request_type">Тип заявки (работ)</string>
+    <string name="request_info">Текст заявки</string>
+    <string name="type">Тип</string>
     <string name="dummyText">Текст заявки: Настройка прав доступа учетной записи. Прошу предоставить доступ с правами администратора на имя Сулейманова Рината в систему ServiceDesk.</string>
     <string name="delay_request">Продлить</string>
     <string name="complete_request">Завершить</string>
@@ -49,5 +60,6 @@
     </string-array>
 
     <string name="emp_fio">ФИО Исполнителя</string>
+    <string name="fio">ФИО</string>
 
 </resources>
