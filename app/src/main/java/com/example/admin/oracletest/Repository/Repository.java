@@ -74,11 +74,12 @@ public class Repository {
     /**
      * Получить результаты поиска
      * @param p_sql_statement   SQL запрос на сервер
+     * @param p_sql_statement_count_rows    SQL запрос на сервер для подсчета найденных строк
      * @param callback          callback с {@link com.example.admin.oracletest.ViewModel.SearchRequestsFragmentViewModel}
      */
 
-    public void search_request(String p_sql_statement, Callback callback){
-        ServerKFU.search_request(p_sql_statement, callback);
+    public void search_request(String p_sql_statement, String p_sql_statement_count_rows, Callback callback){
+        ServerKFU.search_request(p_sql_statement, p_sql_statement_count_rows, callback);
     }
 
 }

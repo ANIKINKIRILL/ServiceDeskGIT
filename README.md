@@ -61,7 +61,7 @@ CREATE OR REPLACE PACKAGE BODY IAS$DB.SERVICEDESK_MOBILE_TEST AS
         HTP.p('     successful:true,');
     ELSE
         HTP.p('     successful:false,');
-        HTP.p('     reason:"У Вас нет заявок"');
+        HTP.p('     reason:"У Вас нет заявок",');
     END IF;
 
     HTP.p('     v_p_start:' || v_p_start || ',');
@@ -70,6 +70,7 @@ CREATE OR REPLACE PACKAGE BODY IAS$DB.SERVICEDESK_MOBILE_TEST AS
     IF(v_emp_max_page = 0) THEN
         v_emp_max_page := 1;
     END IF;
+
     HTP.p('     v_emp_max_page:' || v_emp_max_page || ',');
 
     IF(p_page_number > v_emp_max_page) THEN
@@ -106,6 +107,7 @@ CREATE OR REPLACE PACKAGE BODY IAS$DB.SERVICEDESK_MOBILE_TEST AS
                   HTP.p('          {');
 
                   HTP.p('            id:' || v_employee_request_row.id || ',');
+                  HTP.p('            emp_fio:"' || SERVICEDESK_MOBILE_TEST.GET_REQUEST_EMP_FIO(v_employee_request_row.id) || '",');
                   HTP.p('            request_date:"' || v_employee_request_row.request_date || '",');
                   HTP.p('            phone:"' || v_employee_request_row.phone || '",');
                   IF(v_employee_request_row.declarant_fio = v_employee_request_row.contact_face_fio) THEN
@@ -123,7 +125,7 @@ CREATE OR REPLACE PACKAGE BODY IAS$DB.SERVICEDESK_MOBILE_TEST AS
                   HTP.p('               color:"' || v_request_color || '",');
                   HTP.p('               descr:"' || v_request_descr || '"');
                   HTP.p('            },');
-                  HTP.p('            info:"' || SERVICEDESK_MOBILE.removeDoubleQuotesFromString(v_employee_request_row.reason) || '",');
+                  --HTP.p('            info:"' || SERVICEDESK_MOBILE.removeDoubleQuotesFromString(v_employee_request_row.reason) || '",');
                   HTP.p('            cod:' || v_employee_request_row.cod || ',');
                   HTP.p('            type:{');
                   HTP.p('               id:' || v_employee_request_row.type_id  || ',');
@@ -190,6 +192,7 @@ CREATE OR REPLACE PACKAGE BODY IAS$DB.SERVICEDESK_MOBILE_TEST AS
                       HTP.p('          {');
 
                       HTP.p('            id:' || v_employee_request_row.id || ',');
+                      HTP.p('            emp_fio:"' || SERVICEDESK_MOBILE_TEST.GET_REQUEST_EMP_FIO(v_employee_request_row.id) || '",');
                       HTP.p('            request_date:"' || v_employee_request_row.request_date || '",');
                       HTP.p('            phone:"' || v_employee_request_row.phone || '",');
                       IF(v_employee_request_row.declarant_fio = v_employee_request_row.contact_face_fio) THEN
@@ -207,7 +210,7 @@ CREATE OR REPLACE PACKAGE BODY IAS$DB.SERVICEDESK_MOBILE_TEST AS
                       HTP.p('               color:"' || v_request_color || '",');
                       HTP.p('               descr:"' || v_request_descr || '"');
                       HTP.p('            },');
-                      HTP.p('            info:"' || SERVICEDESK_MOBILE.removeDoubleQuotesFromString(v_employee_request_row.reason) || '",');
+                      --HTP.p('            info:"' || SERVICEDESK_MOBILE.removeDoubleQuotesFromString(v_employee_request_row.reason) || '",');
                       HTP.p('            cod:' || v_employee_request_row.cod || ',');
                       HTP.p('            type:{');
                       HTP.p('               id:' || v_employee_request_row.type_id  || ',');
@@ -260,6 +263,12 @@ CREATE OR REPLACE PACKAGE BODY IAS$DB.SERVICEDESK_MOBILE_TEST AS
   )
 
   AS
+
+   /***********************
+
+    Получить теккуще заявки
+
+  *************************/
 
   v_current_requests_amount INTEGER;    -- всего текущих запросов
   v_requests_page_amount CONSTANT INTEGER := 8;     -- количество запросов на одной странице
@@ -339,6 +348,7 @@ CREATE OR REPLACE PACKAGE BODY IAS$DB.SERVICEDESK_MOBILE_TEST AS
                   HTP.p('          {');
 
                   HTP.p('            id:' || v_request_row.id || ',');
+                  HTP.p('            emp_fio:"' || SERVICEDESK_MOBILE_TEST.GET_REQUEST_EMP_FIO(v_request_row.id) || '",');
                   HTP.p('            request_date:"' || v_request_row.request_date || '",');
                   HTP.p('            phone:"' || v_request_row.phone || '",');
                   IF(v_request_row.declarant_fio = v_request_row.contact_face_fio) THEN
@@ -427,6 +437,7 @@ CREATE OR REPLACE PACKAGE BODY IAS$DB.SERVICEDESK_MOBILE_TEST AS
                       HTP.p('         {');
 
                       HTP.p('            id:' || v_request_row.id || ',');
+                      HTP.p('            emp_fio:"' || SERVICEDESK_MOBILE_TEST.GET_REQUEST_EMP_FIO(v_request_row.id) || '",');
                       HTP.p('            request_date:"' || v_request_row.request_date || '",');
                       HTP.p('            phone:"' || v_request_row.phone || '",');
                       IF(v_request_row.declarant_fio = v_request_row.contact_face_fio) THEN
@@ -459,7 +470,7 @@ CREATE OR REPLACE PACKAGE BODY IAS$DB.SERVICEDESK_MOBILE_TEST AS
                       END IF;
                       IF(v_request_row.zaavitel IS NOT NULL) THEN
                         HTP.p('            zaavitel:' || v_request_row.zaavitel || ',');
-                      ELSE 
+                      ELSE
                         HTP.p('            zaavitel:' || 0 || ',');
                       END IF;
                       HTP.p('            building_kfu:{');
@@ -467,34 +478,101 @@ CREATE OR REPLACE PACKAGE BODY IAS$DB.SERVICEDESK_MOBILE_TEST AS
                       HTP.p('               name:"' || v_request_building_kfu_name || '"');
                       HTP.p('            },');
                       HTP.p('            room_num:"' || v_request_row.room_num || '"');
-                      
+
                       IF(v_p_start = 1) THEN
                           IF(v_counter < v_requests_page_amount - 1) THEN
                             HTP.p('        },');
                             v_counter := v_counter + 1;
                           ELSE
-                            HTP.p('        }');  
+                            HTP.p('        }');
                           END IF;
-                      ELSE 
+                      ELSE
                          IF(v_counter < v_requests_page_amount) THEN
                             HTP.p('        },');
                             v_counter := v_counter + 1;
                          ELSE
-                            HTP.p('        }');  
+                            HTP.p('        }');
                          END IF;
                       END IF;
-                        
-                    END IF;      
+
+                    END IF;
             END LOOP;
             HTP.p('     ]');
             CLOSE cur_current_requests_id;
         END IF;
-    
+
     END IF;
-    
-    
+
+
     HTP.p('}');
-  
+
+  END;
+
+
+  FUNCTION get_request_emp_fio(request_id IN INTEGER /* id заявки */)
+  RETURN VARCHAR2
+  AS
+
+   /***************************
+
+    Получить ФИО исполнителя на заявку
+
+  ****************************/
+
+  v_emp_fio VARCHAR2(150) := ' ';
+  p_request_id INTEGER := request_id;
+
+  BEGIN
+
+    FOR emp_name IN (SELECT STAFF$DB.EMPLOYEE.LASTNAME, STAFF$DB.EMPLOYEE.FIRSTNAME, STAFF$DB.EMPLOYEE.MIDDLENAME,
+    IAS$DB.USERS.ID
+    FROM TECH_CENTER$DB.REQUEST_EMPLOYEES
+    INNER JOIN IAS$DB.USERS
+    ON IAS$DB.USERS.ID = TECH_CENTER$DB.REQUEST_EMPLOYEES.EMPLOYEE_ID
+    INNER JOIN STAFF$DB.EMPLOYEE
+    ON STAFF$DB.EMPLOYEE.ID = IAS$DB.USERS.EMPLOYEE_ID
+    WHERE TECH_CENTER$DB.REQUEST_EMPLOYEES.REQUEST_ID = p_request_id) LOOP
+
+        v_emp_fio := emp_name.lastname || ' ' || emp_name.firstname || ' ' || emp_name.middlename;
+
+    END LOOP;
+
+    IF (v_emp_fio = ' ') THEN
+        v_emp_fio := 'отсутствует';
+    END IF;
+
+    RETURN v_emp_fio;
+
+  END;
+
+  PROCEDURE search_request(p_sql_statement VARCHAR2 /* сформированный SQL запрос */)
+  AS
+
+  TYPE search_req_cur_type IS REF CURSOR;
+  search_req_cur   search_req_cur_type;
+  request_rec  TECH_CENTER$DB.REQUEST%ROWTYPE;
+
+  BEGIN
+    OWA_UTIL.MIME_HEADER ('application/json;charset=windows-1251');
+    HTP.p('{');
+    HTP.p('     p_sql_statement:"' || p_sql_statement || '"');
+    OPEN search_req_cur FOR p_sql_statement;
+    LOOP
+        FETCH search_req_cur INTO request_rec;
+        EXIT WHEN search_req_cur%NOTFOUND;
+        HTP.p('     request_id:' || request_rec.id);
+    END LOOP;
+    CLOSE search_req_cur;
+    HTP.p('}');
+  END;
+
+  PROCEDURE test(p_string VARCHAR2)
+  AS
+  result VARCHAR2(50);
+  BEGIN
+  OWA_UTIL.MIME_HEADER ('application/json;charset=utf-8');
+  --result := CONVERT(p_string, 'UTF8');
+  HTP.p(p_string);
   END;
 
 END SERVICEDESK_MOBILE_TEST;

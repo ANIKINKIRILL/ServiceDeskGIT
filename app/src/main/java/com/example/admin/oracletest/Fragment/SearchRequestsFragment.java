@@ -1,6 +1,8 @@
 package com.example.admin.oracletest.Fragment;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
+import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
@@ -15,13 +17,16 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.admin.oracletest.Callback;
+import com.example.admin.oracletest.Models.EmployeeRequest;
 import com.example.admin.oracletest.R;
 import com.example.admin.oracletest.ViewModel.SearchRequestsFragmentViewModel;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 
 /**
  *  Фрагмент с глобальным поиском по заявкам
@@ -37,9 +42,11 @@ public class SearchRequestsFragment extends Fragment implements View.OnClickList
     private static TextView reg_date, closing_date;
     private static Spinner otdel, emp_fio, status, reg_user;
     private static Button searchButton;
+    private ProgressDialog progressDialog;
 
     // Переменные
     private String sql_statement = "SELECT * FROM TECH_CENTER$DB.REQUEST ";
+    private String sql_statement_count_rows = "SELECT COUNT(ID) FROM TECH_CENTER$DB.REQUEST ";
     private SearchRequestsFragmentViewModel viewModel;
 
     @Override
@@ -125,8 +132,10 @@ public class SearchRequestsFragment extends Fragment implements View.OnClickList
 
     private void makeSqlStatement(){
         sql_statement = "SELECT * FROM TECH_CENTER$DB.REQUEST ";
+        sql_statement_count_rows = "SELECT COUNT(ID) FROM TECH_CENTER$DB.REQUEST ";
         if(!getTextFromEditText(code).isEmpty()){
             sql_statement += "WHERE COD = " + getTextFromEditText(code);
+            sql_statement_count_rows += "WHERE COD = " + getTextFromEditText(code);
         }
 
         if(!getTextFromEditText(zaavitel).isEmpty()){
@@ -139,6 +148,17 @@ public class SearchRequestsFragment extends Fragment implements View.OnClickList
             }else {
                 sql_statement += "WHERE INSTR(DECLARANT_FIO,'" + getTextFromEditText(zaavitel) + "'" + ") > 0";
             }
+
+            if(sql_statement_count_rows.contains("WHERE")) {
+                try {
+                    sql_statement_count_rows += " AND INSTR(DECLARANT_FIO,'" + URLEncoder.encode(getTextFromEditText(zaavitel), "Cp1251") + "'" + ") > 0";
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
+            }else {
+                sql_statement_count_rows += "WHERE INSTR(DECLARANT_FIO,'" + getTextFromEditText(zaavitel) + "'" + ") > 0";
+            }
+
         }
 
         if(!getTextFromEditText(roomNumber).isEmpty()){
@@ -147,11 +167,18 @@ public class SearchRequestsFragment extends Fragment implements View.OnClickList
             }else {
                 sql_statement += "WHERE ROOM_NUMBER = " + getTextFromEditText(roomNumber);
             }
+
+            if(sql_statement_count_rows.contains("WHERE")) {
+                sql_statement_count_rows += " AND ROOM_NUMBER = " + getTextFromEditText(roomNumber);
+            }else {
+                sql_statement_count_rows += "WHERE ROOM_NUMBER = " + getTextFromEditText(roomNumber);
+            }
+
         }
 
         //sql_statement = "'" + sql_statement + "'";
 
-        Log.d(TAG, "makeSqlStatement: " + sql_statement);
+        Log.d(TAG, "makeSqlStatement: " + sql_statement); Log.d(TAG, "makeSqlStatement: " + sql_statement_count_rows);
 
     }
 
@@ -172,7 +199,21 @@ public class SearchRequestsFragment extends Fragment implements View.OnClickList
     private Callback mResultCallback = new Callback() {
         @Override
         public void execute(Object data) {
-            Log.d(TAG, "execute: " + data.toString());
+            progressDialog.dismiss();
+            LiveData<ArrayList<EmployeeRequest>> requests = (LiveData<ArrayList<EmployeeRequest>>) data;
+            AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
+            dialog.setTitle("Поиск");
+            dialog.setMessage("Найденные заявки: " + requests.getValue().size());
+            if(requests.getValue().size() > 0) {
+                dialog.setPositiveButton("ПОКАЗАТЬ", (dialog1, which) -> {
+                    Toast.makeText(getContext(), "Активити с заявками", Toast.LENGTH_SHORT).show();
+                });
+            }else{
+                dialog.setPositiveButton("ОТМЕНА", (dialog1, which) -> {
+                    Toast.makeText(getContext(), "Другое действие", Toast.LENGTH_SHORT).show();
+                });
+            }
+            dialog.show();
         }
     };
 
@@ -182,8 +223,11 @@ public class SearchRequestsFragment extends Fragment implements View.OnClickList
             case R.id.search_button:{
                 // Если хотя бы 1 ввод есть
                 if(isValid()){
+                    progressDialog = new ProgressDialog(getContext());
+                    progressDialog.setMessage("Поиск заявок...");
+                    progressDialog.show();
                     makeSqlStatement();
-                    viewModel.search_request(sql_statement, mResultCallback, getContext());
+                    viewModel.search_request(sql_statement, sql_statement_count_rows, mResultCallback, getContext());
                 }else{
                     AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
                     dialog.setTitle("Неверный ввод");
