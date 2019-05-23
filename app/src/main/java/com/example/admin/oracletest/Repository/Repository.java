@@ -71,4 +71,14 @@ public class Repository {
         ServerKFU.get_current_requests(page_number, status_id, callback);
     }
 
+    /**
+     * Получить результаты поиска
+     * @param p_sql_statement   SQL запрос на сервер
+     * @param callback          callback с {@link com.example.admin.oracletest.ViewModel.SearchRequestsFragmentViewModel}
+     */
+
+    public void search_request(String p_sql_statement, Callback callback){
+        ServerKFU.search_request(p_sql_statement, callback);
+    }
+
 }

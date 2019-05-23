@@ -94,6 +94,21 @@ public class ServerKFU {
     }
 
     /**
+     * Получить результаты поиска
+     * @param p_sql_statement   SQL запрос на сервер
+     * @param callback          callback с {@link com.example.admin.oracletest.ViewModel.SearchRequestsFragmentViewModel}
+     */
+
+    public static void search_request(String p_sql_statement, Callback callback){
+        String url = createUrl("servicedesk_mobile_test",
+                "search_request",
+                "p_sql_statement=" + p_sql_statement);
+        AsyncTaskArguments arguments = new AsyncTaskArguments(url, callback);
+        GetDataFromKfuServer server = new GetDataFromKfuServer();
+        server.execute(arguments);
+    }
+
+    /**
      * Собираем url
      *
      * @param procedureName имя процедуры

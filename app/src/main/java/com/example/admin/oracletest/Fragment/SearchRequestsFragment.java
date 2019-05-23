@@ -1,6 +1,8 @@
 package com.example.admin.oracletest.Fragment;
 
 import android.app.AlertDialog;
+import android.arch.lifecycle.ViewModel;
+import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -14,7 +16,12 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.example.admin.oracletest.Callback;
 import com.example.admin.oracletest.R;
+import com.example.admin.oracletest.ViewModel.SearchRequestsFragmentViewModel;
+
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 
 /**
  *  Фрагмент с глобальным поиском по заявкам
@@ -33,6 +40,13 @@ public class SearchRequestsFragment extends Fragment implements View.OnClickList
 
     // Переменные
     private String sql_statement = "SELECT * FROM TECH_CENTER$DB.REQUEST ";
+    private SearchRequestsFragmentViewModel viewModel;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        initViewModel();
+    }
 
     @Nullable
     @Override
@@ -65,6 +79,10 @@ public class SearchRequestsFragment extends Fragment implements View.OnClickList
 
         searchButton.setOnClickListener(this);
 
+    }
+
+    private void initViewModel(){
+        viewModel = ViewModelProviders.of(this).get(SearchRequestsFragmentViewModel.class);
     }
 
     /**
@@ -113,9 +131,13 @@ public class SearchRequestsFragment extends Fragment implements View.OnClickList
 
         if(!getTextFromEditText(zaavitel).isEmpty()){
             if(sql_statement.contains("WHERE")) {
-                sql_statement += " AND DECLARANT_FIO = LIKE '%" + getTextFromEditText(zaavitel) + "%'";
+                try {
+                    sql_statement += " AND INSTR(DECLARANT_FIO,'" + URLEncoder.encode(getTextFromEditText(zaavitel), "Cp1251") + "'" + ") > 0";
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
             }else {
-                sql_statement += "WHERE DECLARANT_FIO = LIKE '%" + getTextFromEditText(zaavitel) + "%'";
+                sql_statement += "WHERE INSTR(DECLARANT_FIO,'" + getTextFromEditText(zaavitel) + "'" + ") > 0";
             }
         }
 
@@ -126,6 +148,8 @@ public class SearchRequestsFragment extends Fragment implements View.OnClickList
                 sql_statement += "WHERE ROOM_NUMBER = " + getTextFromEditText(roomNumber);
             }
         }
+
+        //sql_statement = "'" + sql_statement + "'";
 
         Log.d(TAG, "makeSqlStatement: " + sql_statement);
 
@@ -141,6 +165,17 @@ public class SearchRequestsFragment extends Fragment implements View.OnClickList
         roomNumber.getText().clear();
     }
 
+    /**
+     * Callback со списком найденных заявок
+     */
+
+    private Callback mResultCallback = new Callback() {
+        @Override
+        public void execute(Object data) {
+            Log.d(TAG, "execute: " + data.toString());
+        }
+    };
+
     @Override
     public void onClick(View v) {
         switch (v.getId()){
@@ -148,6 +183,7 @@ public class SearchRequestsFragment extends Fragment implements View.OnClickList
                 // Если хотя бы 1 ввод есть
                 if(isValid()){
                     makeSqlStatement();
+                    viewModel.search_request(sql_statement, mResultCallback, getContext());
                 }else{
                     AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
                     dialog.setTitle("Неверный ввод");
