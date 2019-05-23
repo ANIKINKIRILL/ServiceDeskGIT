@@ -163,20 +163,20 @@ public class SearchRequestsFragment extends Fragment implements View.OnClickList
 
         if(!getTextFromEditText(roomNumber).isEmpty()){
             if(sql_statement.contains("WHERE")) {
-                sql_statement += " AND ROOM_NUMBER = " + getTextFromEditText(roomNumber);
+                sql_statement += " AND ROOM_NUM = '" + getTextFromEditText(roomNumber) + "'";
             }else {
-                sql_statement += "WHERE ROOM_NUMBER = " + getTextFromEditText(roomNumber);
+                sql_statement += "WHERE ROOM_NUM = '" + getTextFromEditText(roomNumber) + "'";
             }
 
             if(sql_statement_count_rows.contains("WHERE")) {
-                sql_statement_count_rows += " AND ROOM_NUMBER = " + getTextFromEditText(roomNumber);
+                sql_statement_count_rows += " AND ROOM_NUM = '" + getTextFromEditText(roomNumber) + "'";
             }else {
-                sql_statement_count_rows += "WHERE ROOM_NUMBER = " + getTextFromEditText(roomNumber);
+                sql_statement_count_rows += "WHERE ROOM_NUM = '" + getTextFromEditText(roomNumber) + "'";
             }
 
         }
 
-        //sql_statement = "'" + sql_statement + "'";
+        sql_statement = sql_statement + " ORDER BY (ID) DESC";
 
         Log.d(TAG, "makeSqlStatement: " + sql_statement); Log.d(TAG, "makeSqlStatement: " + sql_statement_count_rows);
 
