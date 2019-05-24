@@ -30,12 +30,13 @@ public class SearchRequestsFragmentViewModel extends ViewModel {
      * Получить результаты поиска
      * @param p_sql_statement   SQL запрос на сервер
      * @param p_sql_statement_count_rows    SQL запрос на сервер для подсчета найденных строк
+     * @param p_page_number     номер страницы с заявками
      * @param callback          callback с {@link com.example.admin.oracletest.Fragment.SearchRequestsFragment}
      */
 
-    public void search_request(String p_sql_statement, String p_sql_statement_count_rows, Callback callback, Context context){
+    public void search_request(String p_sql_statement, String p_sql_statement_count_rows, int p_page_number, Callback callback, Context context){
         externalCallback = callback;
-        Repository.getInstance(context).search_request(p_sql_statement, p_sql_statement_count_rows, mSearchRequestCallback);
+        Repository.getInstance(context).search_request(p_sql_statement, p_sql_statement_count_rows, p_page_number, mSearchRequestCallback);
     }
 
     /**
@@ -49,6 +50,7 @@ public class SearchRequestsFragmentViewModel extends ViewModel {
             try {
                 JSONObject jsonObject = new JSONObject(data.toString());
                 JSONArray employeeRequests = jsonObject.getJSONArray("requests");
+                User.search_requests_amount = jsonObject.getInt("requests_amount");
                 for (int i = 0; i < employeeRequests.length(); i++) {
                     int id = employeeRequests.getJSONObject(i).getInt("id");
                     String emp_fio = employeeRequests.getJSONObject(i).getString("emp_fio");

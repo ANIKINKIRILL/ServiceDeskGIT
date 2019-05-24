@@ -22,13 +22,20 @@ import com.example.admin.oracletest.Fragment.BottomSheetDialogFragmentFilterEmpl
 import com.example.admin.oracletest.Fragment.MyRequestsFragment;
 import com.example.admin.oracletest.Fragment.SearchRequestsFragment;
 import com.example.admin.oracletest.Fragment.SettingsFragment;
+import com.example.admin.oracletest.Fragment.ViewSearchRequestsFragment;
+import com.example.admin.oracletest.Models.EmployeeRequest;
+import com.example.admin.oracletest.OnViewSearchRequestsFragmentListener;
+import com.example.admin.oracletest.OnViewSearchRequestsFragmentSqlParams;
 import com.example.admin.oracletest.R;
+
+import java.util.ArrayList;
 
 /**
  * Главное Активити
  */
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements OnViewSearchRequestsFragmentListener,
+        OnViewSearchRequestsFragmentSqlParams {
 
     // Виджеты
     BottomNavigationView bottomNavigationView;
@@ -166,5 +173,15 @@ public class MainActivity extends AppCompatActivity {
 
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void setRequests(ArrayList<EmployeeRequest> requests) {
+        ViewSearchRequestsFragment.setRequests(requests);
+    }
+
+    @Override
+    public void setSqlParams(String p_sql_statement, String p_sql_statement_count_rows) {
+        ViewSearchRequestsFragment.setSqlParams(p_sql_statement, p_sql_statement_count_rows);
     }
 }

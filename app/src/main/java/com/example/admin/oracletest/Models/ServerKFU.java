@@ -97,14 +97,16 @@ public class ServerKFU {
      * Получить результаты поиска
      * @param p_sql_statement   SQL запрос на сервер
      * @param p_sql_statement_count_rows    SQL запрос на сервер для подсчета найденных строк
+     * @param p_page_number     номер страницы с заявками
      * @param callback          callback с {@link com.example.admin.oracletest.ViewModel.SearchRequestsFragmentViewModel}
      */
 
-    public static void search_request(String p_sql_statement, String p_sql_statement_count_rows, Callback callback){
+    public static void search_request(String p_sql_statement, String p_sql_statement_count_rows, int p_page_number, Callback callback){
         String url = createUrl("servicedesk_mobile_test",
                 "search_request",
                 "p_sql_statement=" + p_sql_statement,
-                        "p_sql_statement_count_rows=" + p_sql_statement_count_rows);
+                        "p_sql_statement_count_rows=" + p_sql_statement_count_rows,
+                        "p_page_number=" + p_page_number);
         AsyncTaskArguments arguments = new AsyncTaskArguments(url, callback);
         GetDataFromKfuServer server = new GetDataFromKfuServer();
         server.execute(arguments);

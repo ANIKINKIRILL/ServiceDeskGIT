@@ -1,5 +1,6 @@
 package com.example.admin.oracletest.Fragment;
 
+import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.arch.lifecycle.LiveData;
@@ -21,42 +22,44 @@ import android.view.ViewGroup;
 import com.example.admin.oracletest.Callback;
 import com.example.admin.oracletest.Models.EmployeeRequest;
 import com.example.admin.oracletest.Models.User;
+import com.example.admin.oracletest.OnViewSearchRequestsFragmentListener;
 import com.example.admin.oracletest.R;
 import com.example.admin.oracletest.RecyclerViewScrollListener;
 import com.example.admin.oracletest.Settings;
 import com.example.admin.oracletest.Utils.EmployeeRequestsRecyclerViewAdapter;
 import com.example.admin.oracletest.ViewModel.MyRequestsFragmentViewModel;
+import com.example.admin.oracletest.ViewModel.SearchRequestsFragmentViewModel;
 
 import java.util.ArrayList;
 
 /**
- * Фрагмент с заяквами исполнителя
+ * Фрагмент со списком найденных заявок
  */
 
-public class MyRequestsFragment extends Fragment {
+public class ViewSearchRequestsFragment extends Fragment{
 
-    private static final String TAG = "MyRequestsFragment";
+    private static final String TAG = "ViewSearchRequestsFrag";
 
     // Виджеты
-    private RecyclerView recyclerView;
+    private static RecyclerView recyclerView;
     private ProgressDialog progressDialog;
     private LinearLayoutManager linearLayoutManager;
 
     // Переменные
-    private Context context;
-    private MyRequestsFragmentViewModel viewModel;
+    private SearchRequestsFragmentViewModel viewModel;
     private boolean isLoading = false;
     private boolean isLastPage = false;
     private int currentPage = 1;
-    private static ArrayList<EmployeeRequest> requestList;
-    public static int DEFAULT_STATUS_ID = 1;  // новые заявки
+    public static ArrayList<EmployeeRequest> requests; /** список заявок с {@link SearchRequestsFragment} */
+    public static String p_sql_statement;
+    public static String p_sql_statement_count_rows;
+    private static Context context;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        requestList = new ArrayList<>();
+        context = getContext();
         initViewModel();
-        get_employee_requests(mGetEmployeeRequestsCallback, Settings.getUserId(), DEFAULT_STATUS_ID);
     }
 
     @Nullable
@@ -64,8 +67,18 @@ public class MyRequestsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_myrequests, container, false);
         init(view);
-        context = container.getContext().getApplicationContext();
+        firstPopulationRecyclerViewWithData();
         return view;
+    }
+
+    /**
+     * Наполнить RecyclerView первыми 7-ми заявками с
+     * {@link SearchRequestsFragment}
+     */
+
+    private void firstPopulationRecyclerViewWithData(){
+        EmployeeRequestsRecyclerViewAdapter adapter = new EmployeeRequestsRecyclerViewAdapter(context, ViewSearchRequestsFragment.requests);
+        recyclerView.setAdapter(adapter);
     }
 
     /**
@@ -84,7 +97,7 @@ public class MyRequestsFragment extends Fragment {
             protected void loadMoreItems() {
                 isLoading = true;
                 currentPage += 1;
-                performPagination(mGetEmployeeRequestsCallback, Settings.getUserId(), DEFAULT_STATUS_ID);
+                performPagination(mGetEmployeeRequestsCallback);
             }
 
             @Override
@@ -105,10 +118,9 @@ public class MyRequestsFragment extends Fragment {
 
     }
 
-    private void performPagination(Callback callback, String u_id, int status_id){
-        if(User.current_requests_amount > 7) {
-            get_employee_requests(callback, u_id, status_id);
-        }
+
+    private void performPagination(Callback callback){
+        get_employee_requests(callback);
     }
 
     /**
@@ -116,108 +128,66 @@ public class MyRequestsFragment extends Fragment {
      */
 
     private void initViewModel(){
-        viewModel = ViewModelProviders.of(MyRequestsFragment.this).get(MyRequestsFragmentViewModel.class);
+        viewModel = ViewModelProviders.of(ViewSearchRequestsFragment.this).get(SearchRequestsFragmentViewModel.class);
     }
 
     /**
      * Получить заявки исполнителя
      * @param callback      Callback, который вернется после получения заявок на исполнителя
-     * @param u_id          id исполнителя
      */
 
-    private void get_employee_requests(Callback callback, String u_id, int status_id){
+    private void get_employee_requests(Callback callback){
         ColorDrawable colorDrawable = new ColorDrawable(getContext().getResources().getColor(R.color.kfuDefaultColor));
         // Показать загрузочное окно
         progressDialog = new ProgressDialog(getContext());
         progressDialog.setMessage(getContext().getString(R.string.loadingText));
         progressDialog.setProgressDrawable(colorDrawable);
         progressDialog.show();
-
-        viewModel.get_requests(getContext(), u_id, currentPage, status_id, callback);
-    }
-
-    /**
-     * Получить название статуса
-     *
-     * @param status_id     id статуса
-     * @return              название статуса
-     */
-
-    private String get_status_name(int status_id){
-        String resultStatusName = "Новая";
-        switch (status_id){
-            case 1:{
-                resultStatusName = "Новая";
-                break;
-            }
-            case 2:{
-                resultStatusName = "Выполнена";
-                break;
-            }case 3:{
-                resultStatusName = "Выполнются";
-                break;
-            }case 4:{
-                resultStatusName = "Отменена";
-                break;
-            }case 5:{
-                resultStatusName = "Приостановлена";
-                break;
-            }case 6:{
-                resultStatusName = "Закрта";
-                break;
-            }
-        }
-        return resultStatusName;
+        viewModel.search_request(p_sql_statement, p_sql_statement_count_rows, currentPage, callback, getContext());
     }
 
     /**
      * Callback, который вернется после получения заявок на исполнителя (externalCallbackGetRequests)
      */
-    
+
     Callback mGetEmployeeRequestsCallback = new Callback() {
         @Override
         public void execute(Object data) {
+            progressDialog.dismiss();
             LiveData<ArrayList<EmployeeRequest>> requests = (LiveData<ArrayList<EmployeeRequest>>) data;
-            // View observes любые изменения в LiveData и реагирует на них
-            requests.observe(MyRequestsFragment.this, new Observer<ArrayList<EmployeeRequest>>() {
+            requests.observe(ViewSearchRequestsFragment.this, new Observer<ArrayList<EmployeeRequest>>() {
                 @Override
                 public void onChanged(@Nullable ArrayList<EmployeeRequest> employeeRequests) {
-                    requestList.addAll(employeeRequests);
-                    // Если у пользователя нет заявок с этим статусом
-                    if(User.current_requests_amount == 0 || requests.getValue().size() == 0){
-                        String status = get_status_name(DEFAULT_STATUS_ID);
-                        progressDialog.dismiss();
+                    Log.d(TAG, "onChanged: " + employeeRequests.size());
+                    ViewSearchRequestsFragment.requests.addAll(employeeRequests);
+                    if(employeeRequests.size() == 0){
                         AlertDialog.Builder alertDialog = new AlertDialog.Builder(getContext());
-                        alertDialog.setTitle(context.getString(R.string.myRequests));
-                        alertDialog.setMessage("У Вас нет заявок со статусом '" + status + "'");
-                        alertDialog.setPositiveButton(context.getText(R.string.ok_button), (dialog, which) -> dialog.dismiss());
+                        alertDialog.setTitle("Найденные заявки");
+                        alertDialog.setMessage("Заявок больше не осталось");
+                        alertDialog.setPositiveButton(getContext().getText(R.string.ok_button), (dialog, which) -> dialog.dismiss());
                         alertDialog.show();
-                    }
-                    // Количетсво заявок больше чем на одну страницу
-                    if(User.current_requests_amount >= 7){
-                        progressDialog.dismiss();
-                        // Создаем адаптер и RecyclerView для отображения заявок
+                    }else {
                         EmployeeRequestsRecyclerViewAdapter adapter =
-                                new EmployeeRequestsRecyclerViewAdapter(getContext(), requestList);
+                                new EmployeeRequestsRecyclerViewAdapter(getContext(), ViewSearchRequestsFragment.requests);
                         recyclerView.setAdapter(adapter);
+                        isLoading = false;
                         if(currentPage != 1) {
-                            recyclerView.smoothScrollToPosition(requestList.size() - 7);
-                            Log.d(TAG, "onChanged: smooth scroll to " + Integer.toString(requestList.size() - 7));
+                            recyclerView.smoothScrollToPosition(ViewSearchRequestsFragment.requests.size() - 7);
+                            Log.d(TAG, "onChanged: smooth scroll to " + Integer.toString(ViewSearchRequestsFragment.requests.size() - 7));
                         }
-                        isLoading = false;
-                        }
-                    // Количетсво заявок меньше чем на одну страницу
-                    if(User.current_requests_amount < 7){
-                        progressDialog.dismiss();
-                        // Создаем адаптер и RecyclerView для отображения заявок
-                        EmployeeRequestsRecyclerViewAdapter adapter =
-                                new EmployeeRequestsRecyclerViewAdapter(getContext(), requestList);
-                        recyclerView.setAdapter(adapter);
-                        isLoading = false;
                     }
-
                 }
             });
         }
     };
+
+    public static void setRequests(ArrayList<EmployeeRequest> requests) {
+        ViewSearchRequestsFragment.requests = requests;
+    }
+
+    public static void setSqlParams(String p_sql_statement, String p_sql_statement_count_rows){
+        ViewSearchRequestsFragment.p_sql_statement = p_sql_statement;
+        ViewSearchRequestsFragment.p_sql_statement_count_rows = p_sql_statement_count_rows;
+    }
+
 }
