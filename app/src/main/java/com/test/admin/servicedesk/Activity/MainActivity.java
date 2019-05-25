@@ -145,6 +145,7 @@ public class MainActivity extends AppCompatActivity implements OnViewSearchReque
     private void doFragmentTransaction(Fragment fragment, String actionBarTitle){
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_right);
         fragmentTransaction.replace(R.id.main_container, fragment).commit();
         actionBar.setTitle(actionBarTitle);
         actionBar.setElevation(0);

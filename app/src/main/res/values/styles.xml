@@ -7,10 +7,12 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/kfuDefaultColor</item>
         <item name="android:statusBarColor">@color/kfuDefaultColor</item>
+        <item name="android:windowAnimationStyle">@style/CustomActivityAnimation</item>
     </style>
     
     <style name="SplashScreenTheme" parent="Theme.AppCompat.NoActionBar">
         <item name="android:windowBackground">@drawable/splashscreen_background</item>
+        <item name="android:windowAnimationStyle">@style/CustomActivityAnimation</item>
     </style>
 
     <style name="AppThemeNoActionBar" parent="Theme.AppCompat.Light.NoActionBar">
@@ -19,6 +21,7 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/kfuDefaultColor</item>
         <item name="android:statusBarColor">@color/kfuDefaultColor</item>
+        <item name="android:windowAnimationStyle">@style/CustomActivityAnimation</item>
     </style>
 
     <style name="BottomSheetDialog" parent="Theme.Design.Light.BottomSheetDialog">
@@ -27,6 +30,13 @@
 
     <style name="bottomSheetStyleWrapper" parent="Widget.Design.BottomSheet.Modal">
         <item name="android:background">@android:color/transparent</item>
+    </style>
+
+    <style name="CustomActivityAnimation" parent="@android:style/Animation.Activity">
+        <item name="android:activityOpenEnterAnimation">@anim/slide_in_right</item>
+        <item name="android:activityOpenExitAnimation">@anim/slide_out_left</item>
+        <item name="android:activityCloseEnterAnimation">@anim/slide_in_left</item>
+        <item name="android:activityCloseExitAnimation">@anim/slide_out_right</item>
     </style>
 
 </resources>
