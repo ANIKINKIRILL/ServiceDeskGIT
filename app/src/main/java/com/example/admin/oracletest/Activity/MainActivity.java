@@ -11,6 +11,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
@@ -24,6 +25,7 @@ import com.example.admin.oracletest.Fragment.SearchRequestsFragment;
 import com.example.admin.oracletest.Fragment.SettingsFragment;
 import com.example.admin.oracletest.Fragment.ViewSearchRequestsFragment;
 import com.example.admin.oracletest.Models.EmployeeRequest;
+import com.example.admin.oracletest.Models.User;
 import com.example.admin.oracletest.OnViewSearchRequestsFragmentListener;
 import com.example.admin.oracletest.OnViewSearchRequestsFragmentSqlParams;
 import com.example.admin.oracletest.R;
@@ -35,12 +37,14 @@ import java.util.ArrayList;
  */
 
 public class MainActivity extends AppCompatActivity implements OnViewSearchRequestsFragmentListener,
-        OnViewSearchRequestsFragmentSqlParams {
+        OnViewSearchRequestsFragmentSqlParams{
+
+    private static final String TAG = "MainActivity";
 
     // Виджеты
     BottomNavigationView bottomNavigationView;
     FrameLayout mainContainer;
-    Menu menu;
+    public static Menu menu;
 
 
     // Переменные
@@ -93,17 +97,20 @@ public class MainActivity extends AppCompatActivity implements OnViewSearchReque
     BottomNavigationView.OnNavigationItemSelectedListener onNavigationItemSelectedListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+            User.search_requests_amount = 0;
             switch (menuItem.getItemId()){
                 case R.id.allRequests:{
                     doFragmentTransaction(new AllRequestsFragment(), getString(R.string.allRequests));
                     menu.findItem(R.id.filterOptions).setVisible(true);
                     menu.findItem(R.id.clearSearchFilters).setVisible(false);
+                    menu.findItem(R.id.smoothScrollToTop).setVisible(false);
                     break;
                 }
                 case R.id.myRequests:{
                     doFragmentTransaction(new MyRequestsFragment(), getString(R.string.myRequests));
                     menu.findItem(R.id.filterOptions).setVisible(true);
                     menu.findItem(R.id.clearSearchFilters).setVisible(false);
+                    menu.findItem(R.id.smoothScrollToTop).setVisible(false);
                     break;
                 }
                 case R.id.map:{
@@ -114,13 +121,14 @@ public class MainActivity extends AppCompatActivity implements OnViewSearchReque
                 case R.id.search:{
                     doFragmentTransaction(new SearchRequestsFragment(), getString(R.string.search));
                     menu.findItem(R.id.filterOptions).setVisible(false);
-                    menu.findItem(R.id.clearSearchFilters).setVisible(true);
+                    menu.findItem(R.id.smoothScrollToTop).setVisible(false);
                     break;
                 }
                 case R.id.settings:{
                     doFragmentTransaction(new SettingsFragment(), getString(R.string.settingsText));
                     menu.findItem(R.id.filterOptions).setVisible(false);
                     menu.findItem(R.id.clearSearchFilters).setVisible(false);
+                    menu.findItem(R.id.smoothScrollToTop).setVisible(false);
                     break;
                 }
             }
@@ -153,8 +161,9 @@ public class MainActivity extends AppCompatActivity implements OnViewSearchReque
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_activity_menu, menu);
-        this.menu = menu;
+        MainActivity.menu = menu;
         menu.findItem(R.id.clearSearchFilters).setVisible(false);
+        menu.findItem(R.id.smoothScrollToTop).setVisible(false);
         return true;
     }
 

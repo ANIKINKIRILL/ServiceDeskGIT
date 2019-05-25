@@ -1,5 +1,6 @@
 package com.example.admin.oracletest.Fragment;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.arch.lifecycle.LiveData;
@@ -28,7 +29,6 @@ import com.example.admin.oracletest.OnViewSearchRequestsFragmentSqlParams;
 import com.example.admin.oracletest.R;
 import com.example.admin.oracletest.ViewModel.SearchRequestsFragmentViewModel;
 
-import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 
@@ -95,6 +95,10 @@ public class SearchRequestsFragment extends Fragment implements View.OnClickList
 
     }
 
+    /**
+     * Инициализация {@link SearchRequestsFragmentViewModel}
+     */
+
     private void initViewModel(){
         viewModel = ViewModelProviders.of(this).get(SearchRequestsFragmentViewModel.class);
     }
@@ -126,7 +130,8 @@ public class SearchRequestsFragment extends Fragment implements View.OnClickList
 
     /**
      * Получить текст с EditText
-     * @return текст
+     * @param editText      EditText с которого хотим получить текст
+     * @return полученный текст с editText
      */
 
     private String getTextFromEditText(EditText editText){
@@ -135,6 +140,8 @@ public class SearchRequestsFragment extends Fragment implements View.OnClickList
 
     /**
      * Создать SQL запрос
+     * для основного запроса 'sql_statement'
+     * для запроса с поиском кол-ва найденных заявок 'sql_statement_count_rows'
      */
 
     private void makeSqlStatement(){
@@ -210,6 +217,7 @@ public class SearchRequestsFragment extends Fragment implements View.OnClickList
             AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
             dialog.setTitle("Поиск");
             dialog.setMessage("Найденные заявки: " + User.search_requests_amount);
+            // Если найденных заявок больше чем 0
             if(requests.getValue().size() > 0) {
                 dialog.setPositiveButton("ПОКАЗАТЬ", (dialog1, which) -> {
                     // Закрытие диалогового окна
@@ -220,8 +228,9 @@ public class SearchRequestsFragment extends Fragment implements View.OnClickList
                             .beginTransaction()
                             .replace(R.id.main_container, new ViewSearchRequestsFragment())
                             .commit();
-                    // Передача списка с найденнами заявками
+                    // Передача списка с найденнами заявками ViewSearchRequestsFragment
                     requestsFragmentListener.setRequests(requests.getValue());
+                    // Передача sql параметров на ViewSearchRequestsFragment
                     requestsFragmentSqlParams.setSqlParams(sql_statement, sql_statement_count_rows);
                 });
             }else{
@@ -236,8 +245,9 @@ public class SearchRequestsFragment extends Fragment implements View.OnClickList
     @Override
     public void onClick(View v) {
         switch (v.getId()){
+            // Нажатие на кнопку 'Показать результаты'
             case R.id.search_button:{
-                // Если хотя бы 1 ввод есть
+                // Проверка если хотя бы 1 ввод есть
                 if(isValid()){
                     progressDialog = new ProgressDialog(getContext());
                     progressDialog.setMessage("Поиск заявок...");
@@ -260,7 +270,11 @@ public class SearchRequestsFragment extends Fragment implements View.OnClickList
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-            if(context instanceof OnViewSearchRequestsFragmentListener && context instanceof OnViewSearchRequestsFragmentSqlParams){
+        /**
+         * Если класс {@link com.example.admin.oracletest.Activity.MainActivity} (на котором нах-ся фрагменты) не implements интерфесы
+         * {@link OnViewSearchRequestsFragmentSqlParams} и {@link OnViewSearchRequestsFragmentListener}
+         */
+        if(context instanceof OnViewSearchRequestsFragmentListener && context instanceof OnViewSearchRequestsFragmentSqlParams){
             requestsFragmentListener = (OnViewSearchRequestsFragmentListener) context;
             requestsFragmentSqlParams = (OnViewSearchRequestsFragmentSqlParams) context;
         }else{

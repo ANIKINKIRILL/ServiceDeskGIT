@@ -1,6 +1,5 @@
 package com.example.admin.oracletest.Fragment;
 
-import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.arch.lifecycle.LiveData;
@@ -16,27 +15,27 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.admin.oracletest.Activity.MainActivity;
 import com.example.admin.oracletest.Callback;
 import com.example.admin.oracletest.Models.EmployeeRequest;
-import com.example.admin.oracletest.Models.User;
-import com.example.admin.oracletest.OnViewSearchRequestsFragmentListener;
 import com.example.admin.oracletest.R;
 import com.example.admin.oracletest.RecyclerViewScrollListener;
-import com.example.admin.oracletest.Settings;
 import com.example.admin.oracletest.Utils.EmployeeRequestsRecyclerViewAdapter;
-import com.example.admin.oracletest.ViewModel.MyRequestsFragmentViewModel;
 import com.example.admin.oracletest.ViewModel.SearchRequestsFragmentViewModel;
 
 import java.util.ArrayList;
 
 /**
  * Фрагмент со списком найденных заявок
+ * переход с {@link SearchRequestsFragment} после нажатия
+ * на кнопку 'Показать результаты'
  */
 
-public class ViewSearchRequestsFragment extends Fragment{
+public class ViewSearchRequestsFragment extends Fragment implements MenuItem.OnMenuItemClickListener{
 
     private static final String TAG = "ViewSearchRequestsFrag";
 
@@ -53,13 +52,14 @@ public class ViewSearchRequestsFragment extends Fragment{
     public static ArrayList<EmployeeRequest> requests; /** список заявок с {@link SearchRequestsFragment} */
     public static String p_sql_statement;
     public static String p_sql_statement_count_rows;
-    private static Context context;
+    private Context context;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         context = getContext();
         initViewModel();
+        configureActionBar();
     }
 
     @Nullable
@@ -82,6 +82,15 @@ public class ViewSearchRequestsFragment extends Fragment{
     }
 
     /**
+     * Настройка ActionBar
+     */
+
+    private void configureActionBar(){
+        MainActivity.menu.findItem(R.id.clearSearchFilters).setVisible(false);
+        MainActivity.menu.findItem(R.id.smoothScrollToTop).setVisible(true).setOnMenuItemClickListener(this);
+    }
+
+    /**
      * Инициализация виджетов
      * @param view      окно фрагмента
      */
@@ -92,12 +101,17 @@ public class ViewSearchRequestsFragment extends Fragment{
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(linearLayoutManager);
 
+         /*
+             При скролле до последнего элемента
+             загружается еще одна страница с заявками
+         */
+
         recyclerView.addOnScrollListener(new RecyclerViewScrollListener(linearLayoutManager) {
             @Override
             protected void loadMoreItems() {
                 isLoading = true;
                 currentPage += 1;
-                performPagination(mGetEmployeeRequestsCallback);
+                get_employee_requests(mGetEmployeeRequestsCallback);
             }
 
             @Override
@@ -118,13 +132,8 @@ public class ViewSearchRequestsFragment extends Fragment{
 
     }
 
-
-    private void performPagination(Callback callback){
-        get_employee_requests(callback);
-    }
-
     /**
-     * Инициализация {@link MyRequestsFragmentViewModel}
+     * Инициализация {@link SearchRequestsFragmentViewModel}
      */
 
     private void initViewModel(){
@@ -158,7 +167,6 @@ public class ViewSearchRequestsFragment extends Fragment{
             requests.observe(ViewSearchRequestsFragment.this, new Observer<ArrayList<EmployeeRequest>>() {
                 @Override
                 public void onChanged(@Nullable ArrayList<EmployeeRequest> employeeRequests) {
-                    Log.d(TAG, "onChanged: " + employeeRequests.size());
                     ViewSearchRequestsFragment.requests.addAll(employeeRequests);
                     if(employeeRequests.size() == 0){
                         AlertDialog.Builder alertDialog = new AlertDialog.Builder(getContext());
@@ -171,6 +179,7 @@ public class ViewSearchRequestsFragment extends Fragment{
                                 new EmployeeRequestsRecyclerViewAdapter(getContext(), ViewSearchRequestsFragment.requests);
                         recyclerView.setAdapter(adapter);
                         isLoading = false;
+                        // Скролл вниз до след. загруженного элемента
                         if(currentPage != 1) {
                             recyclerView.smoothScrollToPosition(ViewSearchRequestsFragment.requests.size() - 7);
                             Log.d(TAG, "onChanged: smooth scroll to " + Integer.toString(ViewSearchRequestsFragment.requests.size() - 7));
@@ -181,13 +190,34 @@ public class ViewSearchRequestsFragment extends Fragment{
         }
     };
 
+    /**
+     * Метод пришёл с {@link SearchRequestsFragment} -> {@link MainActivity} -> сюда
+     * @param requests  заявки которые нашлись 1 страница
+     */
+
     public static void setRequests(ArrayList<EmployeeRequest> requests) {
         ViewSearchRequestsFragment.requests = requests;
     }
+
+    /**
+     * Метод пришёл с {@link SearchRequestsFragment} -> {@link MainActivity} -> сюда
+     * @param p_sql_statement   SQL запрос на сервер
+     * @param p_sql_statement_count_rows    SQL запрос на сервер для подсчета найденных строк
+     */
 
     public static void setSqlParams(String p_sql_statement, String p_sql_statement_count_rows){
         ViewSearchRequestsFragment.p_sql_statement = p_sql_statement;
         ViewSearchRequestsFragment.p_sql_statement_count_rows = p_sql_statement_count_rows;
     }
 
+    @Override
+    public boolean onMenuItemClick(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.smoothScrollToTop:{
+                recyclerView.smoothScrollToPosition(0);
+                break;
+            }
+        }
+        return true;
+    }
 }

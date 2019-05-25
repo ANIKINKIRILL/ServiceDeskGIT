@@ -15,9 +15,13 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.admin.oracletest.Activity.MainActivity;
 import com.example.admin.oracletest.Callback;
 import com.example.admin.oracletest.Models.EmployeeRequest;
 import com.example.admin.oracletest.Models.User;
@@ -33,12 +37,12 @@ import java.util.ArrayList;
  * Фрагмент с заяквами исполнителя
  */
 
-public class MyRequestsFragment extends Fragment {
+public class MyRequestsFragment extends Fragment implements MenuItem.OnMenuItemClickListener{
 
     private static final String TAG = "MyRequestsFragment";
 
     // Виджеты
-    private RecyclerView recyclerView;
+    private static RecyclerView recyclerView;
     private ProgressDialog progressDialog;
     private LinearLayoutManager linearLayoutManager;
 
@@ -220,4 +224,15 @@ public class MyRequestsFragment extends Fragment {
             });
         }
     };
+
+    @Override
+    public boolean onMenuItemClick(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.smoothScrollToTop:{
+                recyclerView.smoothScrollToPosition(1);
+                break;
+            }
+        }
+        return true;
+    }
 }

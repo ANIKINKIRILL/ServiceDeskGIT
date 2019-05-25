@@ -15,9 +15,13 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.admin.oracletest.Activity.MainActivity;
 import com.example.admin.oracletest.Callback;
 import com.example.admin.oracletest.Models.EmployeeRequest;
 import com.example.admin.oracletest.R;
@@ -28,7 +32,7 @@ import com.example.admin.oracletest.ViewModel.AllRequestsFragmentViewModel;
 
 import java.util.ArrayList;
 
-public class AllRequestsFragment extends Fragment {
+public class AllRequestsFragment extends Fragment{
 
     private static final String TAG = "AllRequestsFragment";
     
@@ -111,7 +115,6 @@ public class AllRequestsFragment extends Fragment {
                 return isLoading;
             }
         });
-
     }
 
     private void performPagination(int page_number, int status_id, Callback callback){
@@ -174,5 +177,5 @@ public class AllRequestsFragment extends Fragment {
             });
         }
     };
-    
+
 }

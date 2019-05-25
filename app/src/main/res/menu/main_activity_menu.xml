@@ -14,4 +14,10 @@
         app:showAsAction="always"
         android:icon="@drawable/ic_clear"/>
 
+    <item
+        android:id="@+id/smoothScrollToTop"
+        android:title="Вернуться на вверх"
+        app:showAsAction="always"
+        android:icon="@drawable/ic_arrow_upward_white"/>
+
 </menu>

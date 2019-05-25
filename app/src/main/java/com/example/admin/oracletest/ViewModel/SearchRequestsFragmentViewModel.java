@@ -17,7 +17,8 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 /**
- *  ViewModel для {@link com.example.admin.oracletest.Fragment.SearchRequestsFragment}
+ *  ViewModel для {@link com.example.admin.oracletest.Fragment.SearchRequestsFragment},
+ *  {@link com.example.admin.oracletest.Fragment.ViewSearchRequestsFragment}
  */
 
 public class SearchRequestsFragmentViewModel extends ViewModel {
