@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.admin.oracletest">
+    package="com.test.admin.servicedesk">
 
     <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
-        android:name="com.example.admin.oracletest.DirectoryServiceDesk"
+        android:name="com.test.admin.servicedesk.DirectoryServiceDesk"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -15,7 +15,7 @@
         android:theme="@style/AppTheme">
 
         <activity
-            android:name="com.example.admin.oracletest.Activity.SplashScreenActivity"
+            android:name="com.test.admin.servicedesk.Activity.SplashScreenActivity"
             android:theme="@style/SplashScreenTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -24,7 +24,7 @@
         </activity>
 
         <activity
-            android:name="com.example.admin.oracletest.Activity.AuthActivity"
+            android:name="com.test.admin.servicedesk.Activity.AuthActivity"
             android:theme="@style/AppThemeNoActionBar"
             android:windowSoftInputMode="stateAlwaysHidden">
             <intent-filter>
@@ -34,7 +34,7 @@
         </activity>
 
         <activity
-            android:name="com.example.admin.oracletest.Activity.ForgetPasswordActivity">
+            android:name="com.test.admin.servicedesk.Activity.ForgetPasswordActivity">
             <intent-filter>
                 <action android:name="android.intent.action.ForgetPassword"/>
                 <category android:name="android.intent.category.DEFAULT"/>
@@ -42,7 +42,7 @@
         </activity>
 
         <activity
-            android:name="com.example.admin.oracletest.Activity.MainActivity">
+            android:name="com.test.admin.servicedesk.Activity.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MainActivity"/>
                 <category android:name="android.intent.category.DEFAULT"/>
@@ -50,7 +50,7 @@
         </activity>
 
         <activity
-            android:name="com.example.admin.oracletest.Activity.DetailRequestActivity"
+            android:name="com.test.admin.servicedesk.Activity.DetailRequestActivity"
             android:theme="@style/AppThemeNoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.DetailRequestActivity"/>
@@ -59,7 +59,7 @@
         </activity>
 
         <activity
-            android:name="com.example.admin.oracletest.Activity.DescriptionDoneJobActivity">
+            android:name="com.test.admin.servicedesk.Activity.DescriptionDoneJobActivity">
             <intent-filter>
                 <action android:name="android.intent.action.DescriptionDoneJobActivity"/>
                 <category android:name="android.intent.category.DEFAULT"/>
@@ -67,7 +67,7 @@
         </activity>
 
         <activity
-            android:name="com.example.admin.oracletest.Activity.DetailzationDoneJobActivity">
+            android:name="com.test.admin.servicedesk.Activity.DetailzationDoneJobActivity">
             <intent-filter>
                 <action android:name="android.intent.action.DetailzationDoneJobActivity"/>
                 <category android:name="android.intent.category.DEFAULT"/>
