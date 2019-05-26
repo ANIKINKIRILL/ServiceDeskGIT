@@ -1,11 +1,11 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 28
+    compileSdkVersion rootProject.ext.compileSdkVersion
     defaultConfig {
         applicationId "com.test.admin.servicedesk"
-        minSdkVersion 21
-        targetSdkVersion 28
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 2
         versionName "1.1"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -24,22 +24,23 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'com.android.support:appcompat-v7:28.0.0'
-    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
-    testImplementation 'junit:junit:4.12'
+    implementation "com.android.support:appcompat-v7:$rootProject.supportLibraryVersion"
+    implementation "com.android.support.constraint:constraint-layout:$rootProject.constraintLayoutVersion"
+    testImplementation "junit:junit:$rootProject.junitVersion"
+
     // Espresso Library for Testing App
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0'
-    androidTestImplementation 'androidx.test:runner:1.1.0'
-    androidTestImplementation 'androidx.test:rules:1.1.0'
+    androidTestImplementation "androidx.test.espresso:espresso-core:$rootProject.espressoCoreVersion"
+    androidTestImplementation "androidx.test:runner:$rootProject.rulesAndRunnerVerison"
+    androidTestImplementation "androidx.test:rules:$rootProject.rulesAndRunnerVerison"
 
     // Material Design Library
-    implementation 'com.android.support:design:28.0.0'
+    implementation "com.android.support:design:$rootProject.supportLibraryVersion"
 
     // RecyclerView
-    implementation 'com.android.support:recyclerview-v7:28.0.0'
+    implementation "com.android.support:recyclerview-v7:$rootProject.supportLibraryVersion"
 
     // CardView
-    implementation 'com.android.support:cardview-v7:28.0.0'
+    implementation "com.android.support:cardview-v7:$rootProject.supportLibraryVersion"
 
     // Room
     def room_version = "1.1.1"
@@ -52,14 +53,17 @@ dependencies {
     annotationProcessor "android.arch.lifecycle:compiler:$version"
 
     // Android Debug Database Library
-    debugImplementation 'com.amitshekhar.android:debug-db:1.0.6'
+    debugImplementation "com.amitshekhar.android:debug-db:$rootProject.debugdbVersion"
 
     // ViewAnimation Library 'YoYo'
     compile 'com.daimajia.easing:library:2.0@aar'
     compile 'com.daimajia.androidanimations:library:2.3@aar'
 
     // Retrofit, JSON converter
-    compile 'com.squareup.retrofit2:retrofit:2.5.0'
-    implementation 'com.squareup.retrofit2:converter-gson:2.5.0'
+    compile "com.squareup.retrofit2:retrofit:$rootProject.retrofit2Version"
+    implementation "com.squareup.retrofit2:converter-gson:$rootProject.retrofit2Version"
+
+    // Mockito Library
+    testImplementation "org.mockito:mockito-core:$rootProject.mockitoVersion"
 
 }
