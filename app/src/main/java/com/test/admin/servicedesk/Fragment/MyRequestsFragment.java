@@ -22,9 +22,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.test.admin.servicedesk.Activity.MainActivity;
+import com.test.admin.servicedesk.AppDatabase;
 import com.test.admin.servicedesk.Callback;
 import com.test.admin.servicedesk.Models.EmployeeRequest;
 import com.test.admin.servicedesk.Models.User;
+import com.test.admin.servicedesk.MyRequestsFragmentContact;
 import com.test.admin.servicedesk.R;
 import com.test.admin.servicedesk.RecyclerViewScrollListener;
 import com.test.admin.servicedesk.Settings;
@@ -47,13 +49,15 @@ public class MyRequestsFragment extends Fragment implements MenuItem.OnMenuItemC
     private LinearLayoutManager linearLayoutManager;
 
     // Переменные
-    private Context context;
+    public static Context context;
     private MyRequestsFragmentViewModel viewModel;
     private boolean isLoading = false;
     private boolean isLastPage = false;
     private int currentPage = 1;
     private static ArrayList<EmployeeRequest> requestList;
     public static int DEFAULT_STATUS_ID = 1;  // новые заявки
+
+    /*----------------------------------- LIFECYCLE -----------------------------------*/
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -71,6 +75,8 @@ public class MyRequestsFragment extends Fragment implements MenuItem.OnMenuItemC
         context = container.getContext().getApplicationContext();
         return view;
     }
+
+    /*------------------------------------ Class Methods ------------------------------------*/
 
     /**
      * Инициализация виджетов
@@ -120,7 +126,7 @@ public class MyRequestsFragment extends Fragment implements MenuItem.OnMenuItemC
      */
 
     private void initViewModel(){
-        viewModel = ViewModelProviders.of(MyRequestsFragment.this).get(MyRequestsFragmentViewModel.class);
+        viewModel = ViewModelProviders.of(this).get(MyRequestsFragmentViewModel.class);
     }
 
     /**
@@ -137,7 +143,7 @@ public class MyRequestsFragment extends Fragment implements MenuItem.OnMenuItemC
         progressDialog.setProgressDrawable(colorDrawable);
         progressDialog.show();
 
-        viewModel.get_requests(getContext(), u_id, currentPage, status_id, callback);
+        viewModel.get_requests(getContext(), u_id, currentPage, status_id, callback, contactView);
     }
 
     /**
@@ -147,7 +153,7 @@ public class MyRequestsFragment extends Fragment implements MenuItem.OnMenuItemC
      * @return              название статуса
      */
 
-    private String get_status_name(int status_id){
+    public static String get_status_name(int status_id){
         String resultStatusName = "Новая";
         switch (status_id){
             case 1:{
@@ -187,39 +193,7 @@ public class MyRequestsFragment extends Fragment implements MenuItem.OnMenuItemC
                 @Override
                 public void onChanged(@Nullable ArrayList<EmployeeRequest> employeeRequests) {
                     requestList.addAll(employeeRequests);
-                    // Если у пользователя нет заявок с этим статусом
-                    if(User.current_requests_amount == 0 || requests.getValue().size() == 0){
-                        String status = get_status_name(DEFAULT_STATUS_ID);
-                        progressDialog.dismiss();
-                        AlertDialog.Builder alertDialog = new AlertDialog.Builder(getContext());
-                        alertDialog.setTitle(context.getString(R.string.myRequests));
-                        alertDialog.setMessage("У Вас нет заявок со статусом '" + status + "'");
-                        alertDialog.setPositiveButton(context.getText(R.string.ok_button), (dialog, which) -> dialog.dismiss());
-                        alertDialog.show();
-                    }
-                    // Количетсво заявок больше чем на одну страницу
-                    if(User.current_requests_amount >= 7){
-                        progressDialog.dismiss();
-                        // Создаем адаптер и RecyclerView для отображения заявок
-                        EmployeeRequestsRecyclerViewAdapter adapter =
-                                new EmployeeRequestsRecyclerViewAdapter(getContext(), requestList);
-                        recyclerView.setAdapter(adapter);
-                        if(currentPage != 1) {
-                            recyclerView.smoothScrollToPosition(requestList.size() - 7);
-                            Log.d(TAG, "onChanged: smooth scroll to " + Integer.toString(requestList.size() - 7));
-                        }
-                        isLoading = false;
-                        }
-                    // Количетсво заявок меньше чем на одну страницу
-                    if(User.current_requests_amount < 7){
-                        progressDialog.dismiss();
-                        // Создаем адаптер и RecyclerView для отображения заявок
-                        EmployeeRequestsRecyclerViewAdapter adapter =
-                                new EmployeeRequestsRecyclerViewAdapter(getContext(), requestList);
-                        recyclerView.setAdapter(adapter);
-                        isLoading = false;
-                    }
-
+                    progressDialog.dismiss();
                 }
             });
         }
@@ -235,4 +209,42 @@ public class MyRequestsFragment extends Fragment implements MenuItem.OnMenuItemC
         }
         return true;
     }
+
+    /*----------------------------------- CONTACT -----------------------------------*/
+
+    private MyRequestsFragmentContact.View contactView = new MyRequestsFragmentContact.View() {
+        @Override
+        public void userDoesNotHaveRequests() {
+            String status = get_status_name(DEFAULT_STATUS_ID);
+            AlertDialog.Builder alertDialog = new AlertDialog.Builder(getContext());
+            alertDialog.setTitle(context.getString(R.string.myRequests));
+            alertDialog.setMessage("У Вас нет заявок со статусом '" + status + "'");
+            alertDialog.setPositiveButton(context.getText(R.string.ok_button), (dialog, which) -> dialog.dismiss());
+            alertDialog.show();
+        }
+
+        @Override
+        public void userHasMoreThanOnePageRequests() {
+            // Создаем адаптер и RecyclerView для отображения заявок
+            EmployeeRequestsRecyclerViewAdapter adapter =
+                    new EmployeeRequestsRecyclerViewAdapter(getContext(), requestList);
+            recyclerView.setAdapter(adapter);
+            if(currentPage != 1) {
+                recyclerView.smoothScrollToPosition(requestList.size() - 7);
+                Log.d(TAG, "onChanged: smooth scroll to " + Integer.toString(requestList.size() - 7));
+            }
+            isLoading = false;
+        }
+
+        @Override
+        public void userHasLessThanOnePageRequests() {
+            // Создаем адаптер и RecyclerView для отображения заявок
+            EmployeeRequestsRecyclerViewAdapter adapter =
+                    new EmployeeRequestsRecyclerViewAdapter(getContext(), requestList);
+            recyclerView.setAdapter(adapter);
+            isLoading = false;
+        }
+    };
+
+
 }

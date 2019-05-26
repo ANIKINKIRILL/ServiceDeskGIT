@@ -1,8 +1,11 @@
 package com.test.admin.servicedesk.ViewModel;
 
+import android.app.Application;
+import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.test.admin.servicedesk.Callback;
@@ -10,6 +13,7 @@ import com.test.admin.servicedesk.Fragment.MyRequestsFragment;
 import com.test.admin.servicedesk.GetDataFromKfuServer;
 import com.test.admin.servicedesk.Models.EmployeeRequest;
 import com.test.admin.servicedesk.Models.User;
+import com.test.admin.servicedesk.MyRequestsFragmentContact;
 import com.test.admin.servicedesk.Repository.Repository;
 
 import org.json.JSONArray;
@@ -21,13 +25,14 @@ import java.util.ArrayList;
 /**
  * ViewModel для {@link MyRequestsFragment}
  * Здесь представлена вся основная бизнес логика для MyRequestsFragment.
- * Все заявки на пользователя
+ * Все заявки на авторизованного в приложении исполнителя
  */
 
-public class MyRequestsFragmentViewModel extends ViewModel {
+public class MyRequestsFragmentViewModel extends ViewModel{
 
     private static final String TAG = "MyRequestsFragmentViewM";
     private static Callback externalGetRequestsCallback;
+    private MyRequestsFragmentContact.View view;
 
     /**
      * Получить заявки исполнителя
@@ -35,8 +40,9 @@ public class MyRequestsFragmentViewModel extends ViewModel {
      * @param u_id     id исполнителя
      */
 
-    public void get_requests(Context context, String u_id, int page_number, int status_id, Callback callback){
+    public void get_requests(Context context, String u_id, int page_number, int status_id, Callback callback, MyRequestsFragmentContact.View view){
         Log.d(TAG, "get_requests: called");
+        this.view = view;
         externalGetRequestsCallback = callback;
         Repository.getInstance(context).get_requests(u_id, page_number, status_id, mGetRequestsCallback);
     }
@@ -49,7 +55,7 @@ public class MyRequestsFragmentViewModel extends ViewModel {
      * передаем на {@link MyRequestsFragment} callback
      */
 
-    private static Callback mGetRequestsCallback = new Callback() {
+    private Callback mGetRequestsCallback = new Callback() {
         @Override
         public void execute(Object data) {
             ArrayList<EmployeeRequest> requests = new ArrayList<>();
@@ -92,7 +98,22 @@ public class MyRequestsFragmentViewModel extends ViewModel {
             MutableLiveData<ArrayList<EmployeeRequest>> mutableLiveData = new MutableLiveData<>();
             mutableLiveData.setValue(requests);
             externalGetRequestsCallback.execute(mutableLiveData);
+
+            // Если у пользователя нет заявок с этим статусом
+            if(User.current_requests_amount == 0 || requests.size() == 0){
+                view.userDoesNotHaveRequests();
+            }
+
+            // Количетсво заявок больше чем на одну страницу
+            if(User.current_requests_amount >= 7){
+                view.userHasMoreThanOnePageRequests();
+            }
+
+            // Количетсво заявок меньше чем на одну страницу
+            if(User.current_requests_amount < 7){
+                view.userHasLessThanOnePageRequests();
+            }
+
         }
     };
-
 }

@@ -21,9 +21,9 @@
     <EditText
         android:id="@+id/description_text"
         android:background="@color/lightGrayColor"
-        android:layout_weight="70"
+        android:layout_weight="72.5"
         android:layout_width="match_parent"
-        android:hint="  Не более 2000 символов"
+        android:hint="      Не более 2000 символов"
         android:textCursorDrawable="@color/kfuDefaultColor"
         android:gravity="top"
         android:layout_height="0dp" />
@@ -31,7 +31,7 @@
     <Button
         android:id="@+id/nextButton"
         android:textColor="@android:color/white"
-        android:layout_weight="10"
+        android:layout_weight="7.5"
         android:background="@color/kfuDefaultColor"
         android:text="Дальше"
         android:layout_width="match_parent"

@@ -1,6 +1,5 @@
 package com.test.admin.servicedesk.Fragment;
 
-import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.arch.lifecycle.LiveData;
@@ -11,6 +10,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.app.ActionBar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +21,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.test.admin.servicedesk.Activity.MainActivity;
 import com.test.admin.servicedesk.Callback;
 import com.test.admin.servicedesk.Models.EmployeeRequest;
 import com.test.admin.servicedesk.Models.User;
@@ -60,6 +61,17 @@ public class SearchRequestsFragment extends Fragment implements View.OnClickList
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initViewModel();
+        configActionBar();
+    }
+
+    /**
+     * Настройка ActionBar
+     */
+
+    private static void configActionBar(){
+        ActionBar actionBar = MainActivity.actionBar;
+        actionBar.setDisplayShowCustomEnabled(true);
+        actionBar.setCustomView(R.layout.custom_action_bar_search_requests_fragment);
     }
 
     @Nullable

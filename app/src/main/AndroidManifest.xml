@@ -34,7 +34,8 @@
         </activity>
 
         <activity
-            android:name="com.test.admin.servicedesk.Activity.ForgetPasswordActivity">
+            android:name="com.test.admin.servicedesk.Activity.ForgetPasswordActivity"
+            android:label="Забыл пароль">
             <intent-filter>
                 <action android:name="android.intent.action.ForgetPassword"/>
                 <category android:name="android.intent.category.DEFAULT"/>

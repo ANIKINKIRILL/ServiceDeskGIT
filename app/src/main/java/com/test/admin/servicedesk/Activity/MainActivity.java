@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity implements OnViewSearchReque
 
 
     // Переменные
-    ActionBar actionBar;
+    public static ActionBar actionBar;
     public static int createCounter = 0;
 
     @Override
@@ -147,6 +147,7 @@ public class MainActivity extends AppCompatActivity implements OnViewSearchReque
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_right);
         fragmentTransaction.replace(R.id.main_container, fragment).commit();
+        actionBar.setDisplayShowCustomEnabled(false);
         actionBar.setTitle(actionBarTitle);
         actionBar.setElevation(0);
     }

@@ -46,6 +46,7 @@
         android:layout_height="wrap_content" />
 
     <EditText
+        android:id="@+id/login"
         android:singleLine="true"
         android:textColorHint="@android:color/white"
         android:textColor="@android:color/white"
@@ -55,12 +56,13 @@
         android:layout_centerHorizontal="true"
         android:layout_below="@id/loginHint"
         android:hint="Логин"
-        android:id="@+id/login"
         android:layout_width="300dp"
         android:layout_height="wrap_content" />
 
     <EditText
+        android:id="@+id/password"
         android:inputType="textPassword"
+        android:layout_below="@id/login"
         android:textColor="@android:color/white"
         android:padding="15dp"
         android:textColorHint="@android:color/white"
@@ -68,8 +70,6 @@
         android:layout_centerHorizontal="true"
         android:hint="Пароль"
         android:textCursorDrawable="@drawable/edit_text_gray_color_cursor"
-        android:layout_below="@id/login"
-        android:id="@+id/password"
         android:layout_width="300dp"
         android:layout_height="wrap_content" />
 
