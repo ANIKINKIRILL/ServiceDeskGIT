@@ -1,19 +1,16 @@
 package com.test.admin.servicedesk.ViewModel;
 
-import android.app.Application;
-import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 import android.content.Context;
-import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.test.admin.servicedesk.Callback;
-import com.test.admin.servicedesk.Fragment.MyRequestsFragment;
+import com.test.admin.servicedesk.Fragment.MyRequests.MyRequestsFragment;
 import com.test.admin.servicedesk.GetDataFromKfuServer;
 import com.test.admin.servicedesk.Models.EmployeeRequest;
 import com.test.admin.servicedesk.Models.User;
-import com.test.admin.servicedesk.MyRequestsFragmentContact;
+import com.test.admin.servicedesk.Fragment.MyRequests.MyRequestsFragmentContact;
 import com.test.admin.servicedesk.Repository.Repository;
 
 import org.json.JSONArray;

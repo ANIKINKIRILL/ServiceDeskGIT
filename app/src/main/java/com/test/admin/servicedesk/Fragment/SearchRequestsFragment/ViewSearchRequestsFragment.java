@@ -1,4 +1,4 @@
-package com.test.admin.servicedesk.Fragment;
+package com.test.admin.servicedesk.Fragment.SearchRequestsFragment;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -22,8 +23,9 @@ import android.view.ViewGroup;
 import com.test.admin.servicedesk.Activity.MainActivity;
 import com.test.admin.servicedesk.Callback;
 import com.test.admin.servicedesk.Models.EmployeeRequest;
+import com.test.admin.servicedesk.Models.User;
 import com.test.admin.servicedesk.R;
-import com.test.admin.servicedesk.RecyclerViewScrollListener;
+import com.test.admin.servicedesk.Utils.RecyclerViewScrollListener;
 import com.test.admin.servicedesk.Utils.EmployeeRequestsRecyclerViewAdapter;
 import com.test.admin.servicedesk.ViewModel.SearchRequestsFragmentViewModel;
 
@@ -56,6 +58,8 @@ public class ViewSearchRequestsFragment extends Fragment implements MenuItem.OnM
     public static String p_sql_statement_count_rows;
     private Context context;
 
+    /*------------------------------------ LIFECYCLE -----------------------------------*/
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,6 +76,8 @@ public class ViewSearchRequestsFragment extends Fragment implements MenuItem.OnM
         firstPopulationRecyclerViewWithData();
         return view;
     }
+
+    /*-------------------------------------- Class Methods ------------------------------------------*/
 
     /**
      * Наполнить RecyclerView первыми 7-ми заявками с

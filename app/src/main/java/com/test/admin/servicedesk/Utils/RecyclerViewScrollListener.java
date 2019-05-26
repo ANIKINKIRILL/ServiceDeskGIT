@@ -1,4 +1,4 @@
-package com.test.admin.servicedesk;
+package com.test.admin.servicedesk.Utils;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;

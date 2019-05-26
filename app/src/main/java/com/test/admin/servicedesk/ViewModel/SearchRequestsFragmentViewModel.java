@@ -3,11 +3,16 @@ package com.test.admin.servicedesk.ViewModel;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 import android.content.Context;
+import android.support.v4.app.FragmentManager;
 import android.util.Log;
 
 import com.test.admin.servicedesk.Callback;
+import com.test.admin.servicedesk.Fragment.SearchRequestsFragment.SearchRequestsFragment;
+import com.test.admin.servicedesk.Fragment.SearchRequestsFragment.SearchRequestsFragmentContact;
+import com.test.admin.servicedesk.Fragment.SearchRequestsFragment.ViewSearchRequestsFragment;
 import com.test.admin.servicedesk.Models.EmployeeRequest;
 import com.test.admin.servicedesk.Models.User;
+import com.test.admin.servicedesk.R;
 import com.test.admin.servicedesk.Repository.Repository;
 
 import org.json.JSONArray;
@@ -17,8 +22,8 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 /**
- *  ViewModel для {@link com.test.admin.servicedesk.Fragment.SearchRequestsFragment},
- *  {@link com.test.admin.servicedesk.Fragment.ViewSearchRequestsFragment}
+ *  ViewModel для {@link SearchRequestsFragment},
+ *  {@link ViewSearchRequestsFragment}
  */
 
 public class SearchRequestsFragmentViewModel extends ViewModel {
@@ -26,14 +31,21 @@ public class SearchRequestsFragmentViewModel extends ViewModel {
     private static final String TAG = "SearchRequestsFragVM";
 
     private static Callback externalCallback;
+    private SearchRequestsFragmentContact.View view;
 
     /**
      * Получить результаты поиска
      * @param p_sql_statement   SQL запрос на сервер
      * @param p_sql_statement_count_rows    SQL запрос на сервер для подсчета найденных строк
      * @param p_page_number     номер страницы с заявками
-     * @param callback          callback с {@link com.test.admin.servicedesk.Fragment.SearchRequestsFragment}
+     * @param callback          callback с {@link SearchRequestsFragment}
      */
+
+    public void search_request(String p_sql_statement, String p_sql_statement_count_rows, int p_page_number, Callback callback, Context context, SearchRequestsFragmentContact.View view){
+        externalCallback = callback;
+        this.view = view;
+        Repository.getInstance(context).search_request(p_sql_statement, p_sql_statement_count_rows, p_page_number, mSearchRequestCallback);
+    }
 
     public void search_request(String p_sql_statement, String p_sql_statement_count_rows, int p_page_number, Callback callback, Context context){
         externalCallback = callback;
@@ -44,7 +56,7 @@ public class SearchRequestsFragmentViewModel extends ViewModel {
      * Callback, который вернётся после получения данных с сервера КФУ
      */
 
-    private static Callback mSearchRequestCallback = new Callback() {
+    private Callback mSearchRequestCallback = new Callback() {
         @Override
         public void execute(Object data) {
             ArrayList<EmployeeRequest> requests = new ArrayList<>();
@@ -84,6 +96,13 @@ public class SearchRequestsFragmentViewModel extends ViewModel {
             MutableLiveData<ArrayList<EmployeeRequest>> mutableLiveData = new MutableLiveData<>();
             mutableLiveData.setValue(requests);
             externalCallback.execute(mutableLiveData);
+
+            // Если найденных заявок больше чем 0
+            if(requests.size() > 0) {
+                view.userHasSomeRequests();
+            }else{
+                view.userDoesNotHaveRequests();
+            }
         }
     };
 

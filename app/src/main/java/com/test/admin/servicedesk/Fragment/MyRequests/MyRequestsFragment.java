@@ -1,4 +1,4 @@
-package com.test.admin.servicedesk.Fragment;
+package com.test.admin.servicedesk.Fragment.MyRequests;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -15,20 +15,15 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.test.admin.servicedesk.Activity.MainActivity;
-import com.test.admin.servicedesk.AppDatabase;
 import com.test.admin.servicedesk.Callback;
 import com.test.admin.servicedesk.Models.EmployeeRequest;
 import com.test.admin.servicedesk.Models.User;
-import com.test.admin.servicedesk.MyRequestsFragmentContact;
 import com.test.admin.servicedesk.R;
-import com.test.admin.servicedesk.RecyclerViewScrollListener;
+import com.test.admin.servicedesk.Utils.RecyclerViewScrollListener;
 import com.test.admin.servicedesk.Settings;
 import com.test.admin.servicedesk.Utils.EmployeeRequestsRecyclerViewAdapter;
 import com.test.admin.servicedesk.ViewModel.MyRequestsFragmentViewModel;

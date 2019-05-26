@@ -1,4 +1,4 @@
-package com.test.admin.servicedesk;
+package com.test.admin.servicedesk.Fragment.SearchRequestsFragment;
 
 import com.test.admin.servicedesk.Models.EmployeeRequest;
 
@@ -6,8 +6,8 @@ import java.util.ArrayList;
 
 /**
  * Интерфейс для передачи списка найденных заявок с
- * {@link com.test.admin.servicedesk.Fragment.SearchRequestsFragment} на
- * {@link com.test.admin.servicedesk.Fragment.ViewSearchRequestsFragment}
+ * {@link SearchRequestsFragment} на
+ * {@link ViewSearchRequestsFragment}
  */
 
 public interface OnViewSearchRequestsFragmentListener {

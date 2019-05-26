@@ -1,4 +1,4 @@
-package com.test.admin.servicedesk.Fragment;
+package com.test.admin.servicedesk.Fragment.SettingsFragment;
 
 import android.content.Intent;
 import android.os.Bundle;

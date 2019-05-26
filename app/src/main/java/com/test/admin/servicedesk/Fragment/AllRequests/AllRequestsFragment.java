@@ -21,7 +21,7 @@ import android.view.ViewGroup;
 import com.test.admin.servicedesk.Callback;
 import com.test.admin.servicedesk.Models.EmployeeRequest;
 import com.test.admin.servicedesk.R;
-import com.test.admin.servicedesk.RecyclerViewScrollListener;
+import com.test.admin.servicedesk.Utils.RecyclerViewScrollListener;
 import com.test.admin.servicedesk.Utils.EmployeeRequestsRecyclerViewAdapter;
 import com.test.admin.servicedesk.ViewModel.AllRequestsFragmentViewModel;
 

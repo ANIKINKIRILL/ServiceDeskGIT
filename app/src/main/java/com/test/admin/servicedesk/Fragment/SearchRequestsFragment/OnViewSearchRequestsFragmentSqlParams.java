@@ -1,9 +1,9 @@
-package com.test.admin.servicedesk;
+package com.test.admin.servicedesk.Fragment.SearchRequestsFragment;
 
 /**
  * Интерфейс для передачи SQL параметров с
- * {@link com.test.admin.servicedesk.Fragment.SearchRequestsFragment} на
- * {@link com.test.admin.servicedesk.Fragment.ViewSearchRequestsFragment}
+ * {@link SearchRequestsFragment} на
+ * {@link ViewSearchRequestsFragment}
  */
 
 public interface OnViewSearchRequestsFragmentSqlParams {

@@ -16,14 +16,14 @@ import android.widget.FrameLayout;
 
 import com.test.admin.servicedesk.Fragment.AllRequests.AllRequestsFragment;
 import com.test.admin.servicedesk.Fragment.BottomSheetDialogFragmentFilterEmployeeRequests;
-import com.test.admin.servicedesk.Fragment.MyRequestsFragment;
-import com.test.admin.servicedesk.Fragment.SearchRequestsFragment;
-import com.test.admin.servicedesk.Fragment.SettingsFragment;
-import com.test.admin.servicedesk.Fragment.ViewSearchRequestsFragment;
+import com.test.admin.servicedesk.Fragment.MyRequests.MyRequestsFragment;
+import com.test.admin.servicedesk.Fragment.SearchRequestsFragment.SearchRequestsFragment;
+import com.test.admin.servicedesk.Fragment.SettingsFragment.SettingsFragment;
+import com.test.admin.servicedesk.Fragment.SearchRequestsFragment.ViewSearchRequestsFragment;
 import com.test.admin.servicedesk.Models.EmployeeRequest;
 import com.test.admin.servicedesk.Models.User;
-import com.test.admin.servicedesk.OnViewSearchRequestsFragmentListener;
-import com.test.admin.servicedesk.OnViewSearchRequestsFragmentSqlParams;
+import com.test.admin.servicedesk.Fragment.SearchRequestsFragment.OnViewSearchRequestsFragmentListener;
+import com.test.admin.servicedesk.Fragment.SearchRequestsFragment.OnViewSearchRequestsFragmentSqlParams;
 import com.test.admin.servicedesk.R;
 
 import java.util.ArrayList;

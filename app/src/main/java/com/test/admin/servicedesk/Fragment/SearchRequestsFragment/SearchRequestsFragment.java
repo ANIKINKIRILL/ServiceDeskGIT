@@ -1,4 +1,4 @@
-package com.test.admin.servicedesk.Fragment;
+package com.test.admin.servicedesk.Fragment.SearchRequestsFragment;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -25,8 +25,6 @@ import com.test.admin.servicedesk.Activity.MainActivity;
 import com.test.admin.servicedesk.Callback;
 import com.test.admin.servicedesk.Models.EmployeeRequest;
 import com.test.admin.servicedesk.Models.User;
-import com.test.admin.servicedesk.OnViewSearchRequestsFragmentListener;
-import com.test.admin.servicedesk.OnViewSearchRequestsFragmentSqlParams;
 import com.test.admin.servicedesk.R;
 import com.test.admin.servicedesk.ViewModel.SearchRequestsFragmentViewModel;
 
@@ -56,6 +54,11 @@ public class SearchRequestsFragment extends Fragment implements View.OnClickList
     private int START_PAGE = 1;
     public static OnViewSearchRequestsFragmentListener requestsFragmentListener;
     public static OnViewSearchRequestsFragmentSqlParams requestsFragmentSqlParams;
+    private LiveData<ArrayList<EmployeeRequest>> requests;
+
+
+    /*----------------------------------- LIFECYCLE --------------------------------------*/
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -63,6 +66,19 @@ public class SearchRequestsFragment extends Fragment implements View.OnClickList
         initViewModel();
         configActionBar();
     }
+
+
+
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_search_requests_fragment, container, false);
+        init(view);
+        return view;
+    }
+
+    /*------------------------------------ Class Methods --------------------------------------*/
+
 
     /**
      * Настройка ActionBar
@@ -72,14 +88,6 @@ public class SearchRequestsFragment extends Fragment implements View.OnClickList
         ActionBar actionBar = MainActivity.actionBar;
         actionBar.setDisplayShowCustomEnabled(true);
         actionBar.setCustomView(R.layout.custom_action_bar_search_requests_fragment);
-    }
-
-    @Nullable
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_search_requests_fragment, container, false);
-        init(view);
-        return view;
     }
 
     /**
@@ -225,32 +233,7 @@ public class SearchRequestsFragment extends Fragment implements View.OnClickList
         @Override
         public void execute(Object data) {
             progressDialog.dismiss();
-            LiveData<ArrayList<EmployeeRequest>> requests = (LiveData<ArrayList<EmployeeRequest>>) data;
-            AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
-            dialog.setTitle("Поиск");
-            dialog.setMessage("Найденные заявки: " + User.search_requests_amount);
-            // Если найденных заявок больше чем 0
-            if(requests.getValue().size() > 0) {
-                dialog.setPositiveButton("ПОКАЗАТЬ", (dialog1, which) -> {
-                    // Закрытие диалогового окна
-                    dialog1.dismiss();
-                    // Замена фрагмента
-                    FragmentManager fragmentManager = getFragmentManager();
-                    fragmentManager
-                            .beginTransaction()
-                            .replace(R.id.main_container, new ViewSearchRequestsFragment())
-                            .commit();
-                    // Передача списка с найденнами заявками ViewSearchRequestsFragment
-                    requestsFragmentListener.setRequests(requests.getValue());
-                    // Передача sql параметров на ViewSearchRequestsFragment
-                    requestsFragmentSqlParams.setSqlParams(sql_statement, sql_statement_count_rows);
-                });
-            }else{
-                dialog.setPositiveButton("ОТМЕНА", (dialog1, which) -> {
-                    dialog1.dismiss();
-                });
-            }
-            dialog.show();
+            requests = (LiveData<ArrayList<EmployeeRequest>>) data;
         }
     };
 
@@ -265,7 +248,7 @@ public class SearchRequestsFragment extends Fragment implements View.OnClickList
                     progressDialog.setMessage("Поиск заявок...");
                     progressDialog.show();
                     makeSqlStatement();
-                    viewModel.search_request(sql_statement, sql_statement_count_rows, START_PAGE, mResultCallback, getContext());
+                    viewModel.search_request(sql_statement, sql_statement_count_rows, START_PAGE, mResultCallback, getContext(), contactView);
                 }else{
                     AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
                     dialog.setTitle("Неверный ввод");
@@ -293,4 +276,41 @@ public class SearchRequestsFragment extends Fragment implements View.OnClickList
             Toast.makeText(context, "Ошибка! Обратитесь с администратору", Toast.LENGTH_SHORT).show();
         }
     }
+
+    /*------------------------ CONTACT --------------------------*/
+
+    private SearchRequestsFragmentContact.View contactView = new SearchRequestsFragmentContact.View() {
+        @Override
+        public void userHasSomeRequests() {
+            AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
+            dialog.setTitle("Поиск");
+            dialog.setMessage("Найденные заявки: " + User.search_requests_amount);
+            dialog.setPositiveButton("ПОКАЗАТЬ", (dialog1, which) -> {
+                // Закрытие диалогового окна
+                dialog1.dismiss();
+                // Замена фрагмента
+                FragmentManager fragmentManager = getFragmentManager();
+                fragmentManager
+                        .beginTransaction()
+                        .replace(R.id.main_container, new ViewSearchRequestsFragment())
+                        .commit();
+                // Передача списка с найденнами заявками ViewSearchRequestsFragment
+                requestsFragmentListener.setRequests(requests.getValue());
+                // Передача sql параметров на ViewSearchRequestsFragment
+                requestsFragmentSqlParams.setSqlParams(sql_statement, sql_statement_count_rows);
+            });
+            dialog.show();
+        }
+
+        @Override
+        public void userDoesNotHaveRequests() {
+            AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
+            dialog.setTitle("Поиск");
+            dialog.setMessage("Найденные заявки: " + User.search_requests_amount);
+            dialog.setPositiveButton("ОТМЕНА", (dialog1, which) -> dialog1.dismiss());
+            dialog.show();
+        }
+    };
+
+
 }

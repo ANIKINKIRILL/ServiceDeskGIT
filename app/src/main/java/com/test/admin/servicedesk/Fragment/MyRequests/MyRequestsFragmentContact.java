@@ -1,4 +1,4 @@
-package com.test.admin.servicedesk;
+package com.test.admin.servicedesk.Fragment.MyRequests;
 
 public interface MyRequestsFragmentContact {
     interface View {
