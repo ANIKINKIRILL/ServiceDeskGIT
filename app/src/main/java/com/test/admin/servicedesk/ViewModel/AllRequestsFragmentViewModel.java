@@ -6,6 +6,7 @@ import android.content.Context;
 import android.util.Log;
 
 import com.test.admin.servicedesk.Callback;
+import com.test.admin.servicedesk.Fragment.AllRequests.AllRequestsFragmentContact;
 import com.test.admin.servicedesk.Fragment.MyRequestsFragment;
 import com.test.admin.servicedesk.GetDataFromKfuServer;
 import com.test.admin.servicedesk.Models.EmployeeRequest;
@@ -21,6 +22,7 @@ public class AllRequestsFragmentViewModel extends ViewModel {
 
     private static final String TAG = "AllRequestsFragmentView";
     private static Callback externalGetRequestsCallback;
+    private AllRequestsFragmentContact.View view;
 
     /**
      * Получить текущие заявки
@@ -30,9 +32,10 @@ public class AllRequestsFragmentViewModel extends ViewModel {
      * @return                  LiveData из списка с текущими заявками
      */
 
-    public void get_current_requests(Context context, int page_number, int status_id, Callback callback){
+    public void get_current_requests(Context context, int page_number, int status_id, Callback callback, AllRequestsFragmentContact.View view){
         Log.d(TAG, "get_current_requests: called");
         externalGetRequestsCallback = callback;
+        this.view = view;
         Repository.getInstance(context).get_current_requests(page_number, status_id, mGetRequestsCallback);
     }
 
@@ -44,7 +47,7 @@ public class AllRequestsFragmentViewModel extends ViewModel {
      * передаем на {@link MyRequestsFragment} callback
      */
 
-    private static Callback mGetRequestsCallback = new Callback() {
+    private Callback mGetRequestsCallback = new Callback() {
         @Override
         public void execute(Object data) {
             ArrayList<EmployeeRequest> requests = new ArrayList<>();
@@ -86,6 +89,13 @@ public class AllRequestsFragmentViewModel extends ViewModel {
             MutableLiveData<ArrayList<EmployeeRequest>> mutableLiveData = new MutableLiveData<>();
             mutableLiveData.setValue(requests);
             externalGetRequestsCallback.execute(mutableLiveData);
+
+            if(requests.size() == 0){
+                view.userDoesNotHaveRequests();
+            }else{
+                view.userHasSomeRequests();
+            }
+
         }
     };
 

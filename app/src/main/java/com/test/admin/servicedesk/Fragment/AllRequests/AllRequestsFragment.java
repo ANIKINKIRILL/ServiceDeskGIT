@@ -1,4 +1,4 @@
-package com.test.admin.servicedesk.Fragment;
+package com.test.admin.servicedesk.Fragment.AllRequests;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -15,22 +15,22 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.test.admin.servicedesk.Activity.MainActivity;
 import com.test.admin.servicedesk.Callback;
 import com.test.admin.servicedesk.Models.EmployeeRequest;
 import com.test.admin.servicedesk.R;
 import com.test.admin.servicedesk.RecyclerViewScrollListener;
-import com.test.admin.servicedesk.Settings;
 import com.test.admin.servicedesk.Utils.EmployeeRequestsRecyclerViewAdapter;
 import com.test.admin.servicedesk.ViewModel.AllRequestsFragmentViewModel;
 
 import java.util.ArrayList;
+
+/**
+ * Фрагмент со всеми заявками ServiceDesk
+ *
+ */
 
 public class AllRequestsFragment extends Fragment{
 
@@ -49,6 +49,8 @@ public class AllRequestsFragment extends Fragment{
     private boolean isLastPage = false;
     private int currentPage = 1;
     public static int DEFAULT_STATUS_ID = 1;  // новые заявки
+
+    /*-------------------------- LIFECYCLE --------------------------*/
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -80,6 +82,8 @@ public class AllRequestsFragment extends Fragment{
         super.onResume();
         Log.d(TAG, "onResume: called" + DEFAULT_STATUS_ID);
     }
+
+    /*---------------------------- Class Methods ----------------------------*/
 
     /**
      * Найти ui компоненты
@@ -136,7 +140,7 @@ public class AllRequestsFragment extends Fragment{
         progressDialog.setMessage(getContext().getString(R.string.loadingText));
         progressDialog.setProgressDrawable(colorDrawable);
         progressDialog.show();
-        viewModel.get_current_requests(getContext(), page_number, status_id, callback);
+        viewModel.get_current_requests(getContext(), page_number, status_id, callback, contactView);
     }
 
     /**
@@ -153,28 +157,36 @@ public class AllRequestsFragment extends Fragment{
                 @Override
                 public void onChanged(@Nullable ArrayList<EmployeeRequest> employeeRequests) {
                     requestList.addAll(employeeRequests);
-                    Log.d(TAG, "onChanged: called requestListSize:" + requestList.size());
                     progressDialog.cancel();
-                    // Если у пользователя нет заявок
-                    if(employeeRequests.size() == 0){
-                        AlertDialog.Builder alertDialog = new AlertDialog.Builder(getContext());
-                        alertDialog.setTitle(context.getString(R.string.myRequests));
-                        alertDialog.setMessage(context.getString(R.string.noRequestsText));
-                        alertDialog.setPositiveButton(context.getText(R.string.ok_button), (dialog, which) -> dialog.dismiss());
-                        alertDialog.show();
-                    }else{
-                        // Создаем адаптер и RecyclerView для отображения заявок
-                        EmployeeRequestsRecyclerViewAdapter adapter =
-                                new EmployeeRequestsRecyclerViewAdapter(getContext(), requestList);
-                        recyclerView.setAdapter(adapter);
-                        if(currentPage != 1) {
-                            recyclerView.smoothScrollToPosition(requestList.size() - 7);
-                            Log.d(TAG, "onChanged: smooth scroll to " + Integer.toString(requestList.size() - 7));
-                        }
-                        isLoading = false;
-                    }
                 }
             });
+        }
+    };
+
+    /*----------------------- CONTACT -----------------------*/
+
+    private AllRequestsFragmentContact.View contactView = new AllRequestsFragmentContact.View() {
+        @Override
+        public void userDoesNotHaveRequests() {
+            // Если у пользователя нет заявок
+            AlertDialog.Builder alertDialog = new AlertDialog.Builder(getContext());
+            alertDialog.setTitle(context.getString(R.string.myRequests));
+            alertDialog.setMessage(context.getString(R.string.noRequestsText));
+            alertDialog.setPositiveButton(context.getText(R.string.ok_button), (dialog, which) -> dialog.dismiss());
+            alertDialog.show();
+        }
+
+        @Override
+        public void userHasSomeRequests() {
+            // Создаем адаптер и RecyclerView для отображения заявок
+            EmployeeRequestsRecyclerViewAdapter adapter =
+                    new EmployeeRequestsRecyclerViewAdapter(getContext(), requestList);
+            recyclerView.setAdapter(adapter);
+            if(currentPage != 1) {
+                recyclerView.smoothScrollToPosition(requestList.size() - 7);
+                Log.d(TAG, "onChanged: smooth scroll to " + Integer.toString(requestList.size() - 7));
+            }
+            isLoading = false;
         }
     };
 
