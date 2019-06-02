@@ -7,8 +7,9 @@
     android:layout_height="match_parent">
 
     <ProgressBar
-        android:visibility="invisible"
+        android:visibility="gone"
         android:id="@+id/progressBar"
+        android:backgroundTint="@android:color/white"
         android:layout_centerHorizontal="true"
         android:layout_below="@id/loginHint"
         android:layout_width="50dp"

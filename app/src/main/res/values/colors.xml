@@ -2,7 +2,7 @@
 <resources>
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorAccent">#4c75a3</color>
 
     <color name="kfuDefaultColor">#00549f</color>
     <color name="lightGrayColor">#59d8d8d9</color>
