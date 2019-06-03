@@ -12,15 +12,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <ProgressBar
-            android:visibility="gone"
-            android:id="@+id/progressBar"
-            android:backgroundTint="@android:color/white"
-            android:layout_centerHorizontal="true"
-            android:layout_below="@id/loginHint"
-            android:layout_width="50dp"
-            android:layout_height="50dp" />
-
         <TextView
             android:id="@+id/serviceDeskKFU"
             android:layout_marginTop="30dp"

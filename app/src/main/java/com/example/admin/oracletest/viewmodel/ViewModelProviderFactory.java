@@ -1,4 +1,4 @@
-package com.example.admin.oracletest;
+package com.example.admin.oracletest.viewmodel;
 
 import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProvider;

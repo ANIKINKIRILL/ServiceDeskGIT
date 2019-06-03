@@ -4,6 +4,8 @@ import android.app.Application;
 
 import com.bumptech.glide.RequestManager;
 import com.example.admin.oracletest.Constants;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import javax.inject.Singleton;
 
@@ -19,9 +21,10 @@ public class AppModule {
     @Singleton
     @Provides
     static Retrofit provideRetrofitInstance(Application application){
+        Gson gson = new GsonBuilder().setLenient().create();
         return new Retrofit.Builder()
                 .baseUrl(Constants.SERVER_IP)
-                .addConverterFactory(GsonConverterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create(gson))
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .build();
     }

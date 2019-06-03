@@ -2,7 +2,7 @@ package com.example.admin.oracletest.dependencyinjection.auth;
 
 import android.arch.lifecycle.ViewModel;
 
-import com.example.admin.oracletest.ViewModelKey;
+import com.example.admin.oracletest.viewmodel.ViewModelKey;
 import com.example.admin.oracletest.ui.auth.AuthViewModel;
 
 import dagger.Binds;

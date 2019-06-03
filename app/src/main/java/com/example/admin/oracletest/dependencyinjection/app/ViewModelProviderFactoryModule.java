@@ -2,7 +2,7 @@ package com.example.admin.oracletest.dependencyinjection.app;
 
 import android.arch.lifecycle.ViewModelProvider;
 
-import com.example.admin.oracletest.ViewModelProviderFactory;
+import com.example.admin.oracletest.viewmodel.ViewModelProviderFactory;
 
 import javax.inject.Singleton;
 
