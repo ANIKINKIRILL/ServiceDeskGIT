@@ -20,6 +20,7 @@ import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 import com.example.admin.oracletest.R;
 import com.example.admin.oracletest.models.User;
+import com.example.admin.oracletest.ui.forgetPassword.ForgetPasswordActivity;
 import com.example.admin.oracletest.viewmodel.ViewModelProviderFactory;
 
 import javax.inject.Inject;
@@ -164,6 +165,8 @@ public class AuthActivity extends DaggerAppCompatActivity implements View.OnClic
                 break;
             }
             case R.id.forgotPasswordButton:{
+                Intent intent = new Intent(this, ForgetPasswordActivity.class);
+                startActivity(intent);
                 break;
             }
         }
