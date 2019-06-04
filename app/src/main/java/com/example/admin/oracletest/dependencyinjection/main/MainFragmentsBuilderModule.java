@@ -1,5 +1,6 @@
 package com.example.admin.oracletest.dependencyinjection.main;
 
+import com.example.admin.oracletest.ui.main.BottomSheetDialogFragmentFilterEmployeeRequests;
 import com.example.admin.oracletest.ui.main.all_requests.AllRequestsFragment;
 import com.example.admin.oracletest.ui.main.settings.SettingsFragment;
 
@@ -14,5 +15,8 @@ public abstract class MainFragmentsBuilderModule {
 
     @ContributesAndroidInjector
     abstract AllRequestsFragment contributeAllRequestsFragment();
+
+    @ContributesAndroidInjector
+    abstract BottomSheetDialogFragmentFilterEmployeeRequests contributeBottomSheetDialogFragmentFilterEmployeeRequests();
 
 }

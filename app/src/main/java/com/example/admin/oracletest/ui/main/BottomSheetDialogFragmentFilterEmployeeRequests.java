@@ -18,31 +18,39 @@ import android.widget.Spinner;
 
 import com.example.admin.oracletest.R;
 import com.example.admin.oracletest.models.EmployeeRequest;
+import com.example.admin.oracletest.ui.main.all_requests.AllRequestsFragment;
 import com.example.admin.oracletest.ui.main.all_requests.AllRequestsFragmentViewModel;
+import com.example.admin.oracletest.viewmodel.ViewModelProviderFactory;
+
+import javax.inject.Inject;
+
+import dagger.android.support.DaggerAppCompatDialogFragment;
 
 /**
  *  Фрагмент с настроками для посика и фильтрации заявок
  */
 
-public class BottomSheetDialogFragmentFilterEmployeeRequests extends BottomSheetDialogFragment implements View.OnClickListener {
+public class BottomSheetDialogFragmentFilterEmployeeRequests extends DaggerAppCompatDialogFragment implements View.OnClickListener {
 
     private static final String TAG = "BottomSheetDialogFrag";
 
-    // Виджеты
+    // Ui
     private Spinner statusSpinner;
     private Button showResultButton;
-    //private EditText requestCodeEditText;
 
-    // Переменные
+    // Vars
     private AllRequestsFragmentViewModel viewModel;
     public static final int START_PAGE = 1;
     BottomSheetDialog dialog;
     private static int status_id = 1;
 
+    // Injections
+    @Inject
+    ViewModelProviderFactory providerFactory;
+
     @NonNull
-    @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-//        initViewModel();
+        initViewModel();
         dialog = new BottomSheetDialog(getActivity(), R.style.BottomSheetDialog);
         return dialog;
     }
@@ -85,7 +93,7 @@ public class BottomSheetDialogFragmentFilterEmployeeRequests extends BottomSheet
      */
 
     private void initViewModel() {
-        viewModel = ViewModelProviders.of(this).get(AllRequestsFragmentViewModel.class);
+        viewModel = ViewModelProviders.of(this, providerFactory).get(AllRequestsFragmentViewModel.class);
     }
 
     /**
@@ -143,6 +151,12 @@ public class BottomSheetDialogFragmentFilterEmployeeRequests extends BottomSheet
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.showResultButton: {
+                String selectedStatus = statusSpinner.getSelectedItem().toString().toLowerCase();
+                status_id = getStatusId(selectedStatus);
+                AllRequestsFragment.status_id = status_id;
+                MainActivity.createCounter++;
+                dialog.dismiss();
+                getActivity().recreate();
                 break;
             }
         }

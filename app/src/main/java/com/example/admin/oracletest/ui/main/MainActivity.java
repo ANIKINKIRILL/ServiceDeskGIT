@@ -34,6 +34,7 @@ public class MainActivity extends BaseActivity {
     // Переменные
     public static ActionBar actionBar;
     public static Menu menu;
+    public static int createCounter = 0;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -41,7 +42,9 @@ public class MainActivity extends BaseActivity {
         setContentView(R.layout.activity_activitymain);
         initActionBar();
         init();
-        setLaunchFragment();
+        if(AllRequestsFragment.status_id == 1 && createCounter == 0) {
+            setLaunchFragment();
+        }
     }
 
     /**

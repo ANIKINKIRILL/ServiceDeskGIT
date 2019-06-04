@@ -86,7 +86,7 @@ public class RequestsPageRecyclerAdapter extends RecyclerView.Adapter<RequestsPa
                 // Переходим на активити с детальной информацией о заявке
                 context.startActivity(intent);
                 */
-                Toast.makeText(viewHolder.itemView.getContext(), cod, Toast.LENGTH_SHORT).show();
+                Toast.makeText(viewHolder.itemView.getContext(), status, Toast.LENGTH_SHORT).show();
             }
         });
 
