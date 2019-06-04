@@ -14,11 +14,12 @@ import com.example.admin.oracletest.R;
  */
 
 public class ForgetPasswordActivity extends AppCompatActivity {
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_forget_password);
-        init();
+         init();
     }
 
     private void init(){
