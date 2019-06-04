@@ -1,6 +1,7 @@
 package com.example.admin.oracletest.ui.main.settings;
 
 import android.annotation.SuppressLint;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -13,6 +14,7 @@ import android.widget.Button;
 
 import com.example.admin.oracletest.R;
 import com.example.admin.oracletest.dependencyinjection.app.SessionManager;
+import com.example.admin.oracletest.viewmodel.ViewModelProviderFactory;
 
 import javax.inject.Inject;
 
@@ -33,6 +35,11 @@ public class SettingsFragment extends DaggerFragment implements View.OnClickList
     // Injections
     @Inject
     SessionManager sessionManager;
+    @Inject
+    ViewModelProviderFactory providerFactory;
+
+    // Vars
+    private SettingsFragmentViewModel viewModel;
 
     @Nullable
     @Override
@@ -44,6 +51,7 @@ public class SettingsFragment extends DaggerFragment implements View.OnClickList
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         init(view);
+        viewModel = ViewModelProviders.of(this, providerFactory).get(SettingsFragmentViewModel.class);
     }
 
     /**
