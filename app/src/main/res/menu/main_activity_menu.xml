@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/filterOptions"
+        android:title="Фильтры"
+        app:showAsAction="always"
+        android:icon="@drawable/ic_filter_list_white"/>
+
+    <item
+        android:id="@+id/clearSearchFilters"
+        android:title="Сбросить фильтры поиска"
+        app:showAsAction="always"
+        android:icon="@drawable/ic_clear"/>
+
+    <item
+        android:id="@+id/smoothScrollToTop"
+        android:title="Вернуться на вверх"
+        app:showAsAction="always"
+        android:icon="@drawable/ic_arrow_upward_white"/>
+
+</menu>

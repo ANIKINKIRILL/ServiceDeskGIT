@@ -48,7 +48,7 @@ public class AllRequestsFragment extends DaggerFragment {
     private RecyclerView recyclerView;
 
     // Vars
-    private AllRequestsViewModel viewModel;
+    private AllRequestsFragmentViewModel viewModel;
     private LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
     private boolean isLoading = false;
     private int currentPage = 1;
@@ -82,7 +82,7 @@ public class AllRequestsFragment extends DaggerFragment {
 
 
     private void initViewModel(){
-        viewModel = ViewModelProviders.of(this, providerFactory).get(AllRequestsViewModel.class);
+        viewModel = ViewModelProviders.of(this, providerFactory).get(AllRequestsFragmentViewModel.class);
     }
 
     private void initUiComponents(View view){

@@ -19,16 +19,16 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 
-public class AllRequestsViewModel extends ViewModel {
+public class AllRequestsFragmentViewModel extends ViewModel {
 
-    private static final String TAG = "AllRequestsViewModel";
+    private static final String TAG = "AllRequestsFragmentViewModel";
 
     // Injections
     RequestsApi requestsApi;
 
     @Inject
-    public AllRequestsViewModel(RequestsApi requestsApi){
-        Log.d(TAG, "AllRequestsViewModel: viewmodel is working...");
+    public AllRequestsFragmentViewModel(RequestsApi requestsApi){
+        Log.d(TAG, "AllRequestsFragmentViewModel: viewmodel is working...");
         this.requestsApi = requestsApi;
     }
 

@@ -18,10 +18,6 @@ import com.example.admin.oracletest.R;
 import com.example.admin.oracletest.ui.main.all_requests.AllRequestsFragment;
 import com.example.admin.oracletest.ui.main.settings.SettingsFragment;
 
-import java.util.Base64;
-
-import dagger.android.support.DaggerAppCompatActivity;
-
 /**
  * Activity with All Fragments (All Requests, My Requests, Map, Search, Settings)
  */
@@ -37,6 +33,7 @@ public class MainActivity extends BaseActivity {
 
     // Переменные
     public static ActionBar actionBar;
+    public static Menu menu;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -122,11 +119,26 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_activity_menu, menu);
+        MainActivity.menu = menu;
+        menu.findItem(R.id.clearSearchFilters).setVisible(false);
+        menu.findItem(R.id.smoothScrollToTop).setVisible(false);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.filterOptions:{
+                BottomSheetDialogFragmentFilterEmployeeRequests bottomSheetDialog = new BottomSheetDialogFragmentFilterEmployeeRequests();
+                bottomSheetDialog.show(getSupportFragmentManager(), getString(R.string.open_dialog));
+            }
+
+            case R.id.clearSearchFilters:{
+                break;
+            }
+
+        }
         return super.onOptionsItemSelected(item);
     }
 

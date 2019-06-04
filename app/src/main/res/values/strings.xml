@@ -33,5 +33,17 @@
     <string name="settings">settings</string>
     <string name="user_login">user_login</string>
     <string name="user_password">user_password</string>
+    <string name="searchParams">Параметры поиска</string>
+    <string name="requestStatus">Статус заявки</string>
+    <string name="showResults">Показать результаты</string>
+
+    <string-array name="requestStatusArray">
+        <item>Новая</item>
+        <item>Выполнена</item>
+        <item>Выполняется</item>
+        <item>Отменена</item>
+        <item>Приостановлена</item>
+        <item>Закрыта</item>
+    </string-array>
 
 </resources>
