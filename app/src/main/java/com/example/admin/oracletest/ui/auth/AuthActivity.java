@@ -21,6 +21,7 @@ import com.daimajia.androidanimations.library.YoYo;
 import com.example.admin.oracletest.R;
 import com.example.admin.oracletest.models.User;
 import com.example.admin.oracletest.ui.forgetPassword.ForgetPasswordActivity;
+import com.example.admin.oracletest.ui.main.MainActivity;
 import com.example.admin.oracletest.viewmodel.ViewModelProviderFactory;
 
 import javax.inject.Inject;
@@ -127,6 +128,9 @@ public class AuthActivity extends DaggerAppCompatActivity implements View.OnClic
                             showProgressDialog(false);
                             if(userAuthResource.data.isSuccessful()){
                                 Log.d(TAG, "onChanged: logged in");
+                                Intent intent = new Intent(AuthActivity.this, MainActivity.class);
+                                startActivity(intent);
+                                finish();
                             }else{
                                 YoYo.with(Techniques.Shake).duration(1000).repeat(0).playOn(loginButton);
                                 Toast.makeText(AuthActivity.this, getString(R.string.login_failed), Toast.LENGTH_SHORT).show();

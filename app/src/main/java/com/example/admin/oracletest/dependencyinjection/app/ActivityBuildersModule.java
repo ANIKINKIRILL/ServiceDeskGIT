@@ -3,6 +3,7 @@ package com.example.admin.oracletest.dependencyinjection.app;
 import com.example.admin.oracletest.dependencyinjection.auth.AuthModule;
 import com.example.admin.oracletest.dependencyinjection.auth.AuthScope;
 import com.example.admin.oracletest.dependencyinjection.auth.AuthViewModelModule;
+import com.example.admin.oracletest.dependencyinjection.main.MainFragmentsBuilderModule;
 import com.example.admin.oracletest.dependencyinjection.main.MainScope;
 import com.example.admin.oracletest.ui.auth.AuthActivity;
 import com.example.admin.oracletest.ui.main.MainActivity;
@@ -23,7 +24,11 @@ public abstract class ActivityBuildersModule {
     abstract AuthActivity contributeAuthActivity();
 
     @MainScope
-    @ContributesAndroidInjector
+    @ContributesAndroidInjector(
+            modules = {
+                    MainFragmentsBuilderModule.class
+            }
+    )
     abstract MainActivity contributeMainActivity();
 
 }
