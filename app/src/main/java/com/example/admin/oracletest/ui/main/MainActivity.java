@@ -13,8 +13,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
 
+import com.example.admin.oracletest.BaseActivity;
 import com.example.admin.oracletest.R;
 import com.example.admin.oracletest.ui.main.settings.SettingsFragment;
+
+import java.util.Base64;
 
 import dagger.android.support.DaggerAppCompatActivity;
 
@@ -22,7 +25,7 @@ import dagger.android.support.DaggerAppCompatActivity;
  * Activity with All Fragments (All Requests, My Requests, Map, Search, Settings)
  */
 
-public class MainActivity extends DaggerAppCompatActivity {
+public class MainActivity extends BaseActivity {
 
     private static final String TAG = "MainActivity";
 

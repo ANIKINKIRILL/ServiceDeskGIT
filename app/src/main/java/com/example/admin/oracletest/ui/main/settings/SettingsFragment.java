@@ -1,5 +1,6 @@
 package com.example.admin.oracletest.ui.main.settings;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -11,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.example.admin.oracletest.R;
+import com.example.admin.oracletest.dependencyinjection.app.SessionManager;
 
 import javax.inject.Inject;
 
@@ -28,10 +30,9 @@ public class SettingsFragment extends DaggerFragment implements View.OnClickList
     // Ui
     private Button exitButton;
 
+    // Injections
     @Inject
-    public SettingsFragment(){
-        Log.d(TAG, "SettingsFragment: working...");
-    }
+    SessionManager sessionManager;
 
     @Nullable
     @Override
@@ -59,6 +60,7 @@ public class SettingsFragment extends DaggerFragment implements View.OnClickList
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.exitButton:{
+                sessionManager.logout();
                 break;
             }
         }
