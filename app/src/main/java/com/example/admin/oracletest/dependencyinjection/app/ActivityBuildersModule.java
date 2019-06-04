@@ -3,7 +3,9 @@ package com.example.admin.oracletest.dependencyinjection.app;
 import com.example.admin.oracletest.dependencyinjection.auth.AuthModule;
 import com.example.admin.oracletest.dependencyinjection.auth.AuthScope;
 import com.example.admin.oracletest.dependencyinjection.auth.AuthViewModelModule;
+import com.example.admin.oracletest.dependencyinjection.main.MainScope;
 import com.example.admin.oracletest.ui.auth.AuthActivity;
+import com.example.admin.oracletest.ui.main.MainActivity;
 
 import dagger.Module;
 import dagger.android.ContributesAndroidInjector;
@@ -19,5 +21,9 @@ public abstract class ActivityBuildersModule {
             }
     )
     abstract AuthActivity contributeAuthActivity();
+
+    @MainScope
+    @ContributesAndroidInjector
+    abstract MainActivity contributeMainActivity();
 
 }

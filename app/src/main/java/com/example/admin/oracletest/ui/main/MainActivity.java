@@ -1,5 +1,8 @@
 package com.example.admin.oracletest.ui.main;
 
+import android.os.Bundle;
+import android.support.annotation.Nullable;
+
 import dagger.android.support.DaggerAppCompatActivity;
 
 /**
@@ -7,4 +10,9 @@ import dagger.android.support.DaggerAppCompatActivity;
  */
 
 public class MainActivity extends DaggerAppCompatActivity {
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
 }
