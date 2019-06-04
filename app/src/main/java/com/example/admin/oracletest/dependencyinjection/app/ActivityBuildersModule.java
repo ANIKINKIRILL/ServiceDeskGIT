@@ -4,6 +4,7 @@ import com.example.admin.oracletest.dependencyinjection.auth.AuthModule;
 import com.example.admin.oracletest.dependencyinjection.auth.AuthScope;
 import com.example.admin.oracletest.dependencyinjection.auth.AuthViewModelModule;
 import com.example.admin.oracletest.dependencyinjection.main.MainFragmentsBuilderModule;
+import com.example.admin.oracletest.dependencyinjection.main.MainModule;
 import com.example.admin.oracletest.dependencyinjection.main.MainScope;
 import com.example.admin.oracletest.dependencyinjection.main.MainViewModelModule;
 import com.example.admin.oracletest.ui.auth.AuthActivity;
@@ -28,7 +29,8 @@ public abstract class ActivityBuildersModule {
     @ContributesAndroidInjector(
             modules = {
                     MainFragmentsBuilderModule.class,
-                    MainViewModelModule.class
+                    MainViewModelModule.class,
+                    MainModule.class
             }
     )
     abstract MainActivity contributeMainActivity();

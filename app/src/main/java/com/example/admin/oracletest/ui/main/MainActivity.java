@@ -15,6 +15,7 @@ import android.widget.FrameLayout;
 
 import com.example.admin.oracletest.BaseActivity;
 import com.example.admin.oracletest.R;
+import com.example.admin.oracletest.ui.main.all_requests.AllRequestsFragment;
 import com.example.admin.oracletest.ui.main.settings.SettingsFragment;
 
 import java.util.Base64;
@@ -71,7 +72,7 @@ public class MainActivity extends BaseActivity {
      */
 
     private void setLaunchFragment(){
-        doFragmentTransaction(new SettingsFragment(), getString(R.string.settingsText));
+        doFragmentTransaction(new AllRequestsFragment(),  getString(R.string.allRequests));
     }
 
     /**
@@ -83,6 +84,7 @@ public class MainActivity extends BaseActivity {
         public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
             switch (menuItem.getItemId()){
                 case R.id.allRequests:{
+                    doFragmentTransaction(new AllRequestsFragment(), getString(R.string.allRequests));
                     break;
                 }
                 case R.id.myRequests:{

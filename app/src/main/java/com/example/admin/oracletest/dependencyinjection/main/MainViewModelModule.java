@@ -2,6 +2,8 @@ package com.example.admin.oracletest.dependencyinjection.main;
 
 import android.arch.lifecycle.ViewModel;
 
+import com.example.admin.oracletest.ui.main.all_requests.AllRequestsFragment;
+import com.example.admin.oracletest.ui.main.all_requests.AllRequestsViewModel;
 import com.example.admin.oracletest.ui.main.settings.SettingsFragmentViewModel;
 import com.example.admin.oracletest.viewmodel.ViewModelKey;
 
@@ -16,5 +18,10 @@ public abstract class MainViewModelModule {
     @IntoMap
     @ViewModelKey(SettingsFragmentViewModel.class)
     abstract ViewModel bindSettingsViewModel(SettingsFragmentViewModel viewModel);
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(AllRequestsViewModel.class)
+    abstract ViewModel bindAllRequestsViewModel(AllRequestsViewModel viewModel);
 
 }

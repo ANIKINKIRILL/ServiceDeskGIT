@@ -8,6 +8,7 @@ import android.arch.lifecycle.ViewModel;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
+import com.example.admin.oracletest.Constants;
 import com.example.admin.oracletest.dependencyinjection.app.SessionManager;
 import com.example.admin.oracletest.models.User;
 import com.example.admin.oracletest.network.auth.AuthApi;
@@ -59,7 +60,7 @@ public class AuthViewModel extends ViewModel {
                     @Override
                     public AuthResource<User> apply(User user) throws Exception {
                         if (user.getUserId() == -1) {
-                            return AuthResource.error("Произошла ошибка. Обратитесь к разработчику", user);
+                            return AuthResource.error(Constants.API_ERROR_WHILE_LOADING, user);
                         }
                         return AuthResource.authenticated(user);
                     }

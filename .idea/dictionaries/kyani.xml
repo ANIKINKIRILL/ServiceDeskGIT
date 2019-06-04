@@ -2,11 +2,14 @@
   <dictionary name="kyani">
     <words>
       <w>anikin</w>
+      <w>declarant</w>
       <w>firebase</w>
       <w>rxandroid</w>
       <w>rxcalladapter</w>
       <w>rxjava</w>
+      <w>servicedesk</w>
       <w>viewmodel</w>
+      <w>zaavitel</w>
     </words>
   </dictionary>
 </component>
