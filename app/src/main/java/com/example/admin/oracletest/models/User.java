@@ -1,5 +1,8 @@
 package com.example.admin.oracletest.models;
 
+import android.content.SharedPreferences;
+
+import com.example.admin.oracletest.BaseApplication;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -8,6 +11,8 @@ import com.google.gson.annotations.SerializedName;
  */
 
 public class User {
+
+    /*---------------------- Retrofit ------------------------*/
 
     @SerializedName("successful")
     @Expose
@@ -33,7 +38,12 @@ public class User {
     @Expose
     private String lastname;
 
+    /*---------------------- User Data ----------------------*/
+
     public static int myRequestsAmount = 0;
+
+    public static String userLogin;
+    public static String userPassword;
 
     public User(boolean successful, int userId, int employee_id, String firstname, String middlename, String lastname) {
         this.successful = successful;
