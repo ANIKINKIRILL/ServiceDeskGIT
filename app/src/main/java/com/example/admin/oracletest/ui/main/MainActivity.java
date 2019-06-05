@@ -16,6 +16,7 @@ import android.widget.FrameLayout;
 import com.example.admin.oracletest.BaseActivity;
 import com.example.admin.oracletest.R;
 import com.example.admin.oracletest.ui.main.all_requests.AllRequestsFragment;
+import com.example.admin.oracletest.ui.main.my_requests.MyRequestsFragment;
 import com.example.admin.oracletest.ui.main.settings.SettingsFragment;
 
 /**
@@ -48,7 +49,7 @@ public class MainActivity extends BaseActivity {
     }
 
     /**
-     * Инициализация
+     * Init ui
      */
 
     private void init(){
@@ -58,7 +59,7 @@ public class MainActivity extends BaseActivity {
     }
 
     /**
-     * Инициализация ActionBar
+     * Init ActionBar
      */
 
     private void initActionBar(){
@@ -68,7 +69,7 @@ public class MainActivity extends BaseActivity {
     }
 
     /**
-     * Установка самого первого фрагмента при запуске MainActivity
+     * Set launch fragment
      */
 
     private void setLaunchFragment(){
@@ -76,7 +77,7 @@ public class MainActivity extends BaseActivity {
     }
 
     /**
-     * Слушатель для нижнего навигацинного меню
+     * Listener for bottom menu
      */
 
     BottomNavigationView.OnNavigationItemSelectedListener onNavigationItemSelectedListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -88,6 +89,7 @@ public class MainActivity extends BaseActivity {
                     break;
                 }
                 case R.id.myRequests:{
+                    doFragmentTransaction(new MyRequestsFragment(), getString(R.string.myRequests));
                     break;
                 }
                 case R.id.map:{
@@ -106,9 +108,9 @@ public class MainActivity extends BaseActivity {
     };
 
     /**
-     * Замена FrameLayout на Fragment
-     * @param fragment Fragment который поменятся c FrameLayout
-     * @param actionBarTitle Название странички
+     * Replace FrameLayout with Fragment
+     * @param fragment Fragment which will be replaced with FrameLayout
+     * @param actionBarTitle fragment title
      */
 
     private void doFragmentTransaction(Fragment fragment, String actionBarTitle){

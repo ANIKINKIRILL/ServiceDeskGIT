@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.admin.oracletest.R;
 import com.example.admin.oracletest.models.EmployeeRequest;
@@ -74,6 +75,7 @@ public class AllRequestsFragment extends DaggerFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        Log.d(TAG, "onViewCreated: called");
         initUiComponents(view);
         get_current_requests();
     }
@@ -93,6 +95,7 @@ public class AllRequestsFragment extends DaggerFragment {
 
         recyclerView = view.findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(linearLayoutManager);
+        recyclerView.setHasFixedSize(true);
         recyclerView.addItemDecoration(new RequestsPageRecyclerItemDecoration(10));
         recyclerView.setOnScrollListener(recyclerViewScrollListener);
     }
@@ -131,6 +134,7 @@ public class AllRequestsFragment extends DaggerFragment {
                     }
                     case ERROR:{
                         Log.d(TAG, "onChanged: error");
+                        Toast.makeText(getContext(), "error", Toast.LENGTH_SHORT).show();
                         break;
                     }
                 }

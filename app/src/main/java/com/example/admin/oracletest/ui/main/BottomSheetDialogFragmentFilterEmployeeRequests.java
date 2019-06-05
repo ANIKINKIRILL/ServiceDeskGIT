@@ -20,6 +20,7 @@ import com.example.admin.oracletest.R;
 import com.example.admin.oracletest.models.EmployeeRequest;
 import com.example.admin.oracletest.ui.main.all_requests.AllRequestsFragment;
 import com.example.admin.oracletest.ui.main.all_requests.AllRequestsFragmentViewModel;
+import com.example.admin.oracletest.ui.main.my_requests.MyRequestsFragment;
 import com.example.admin.oracletest.viewmodel.ViewModelProviderFactory;
 
 import javax.inject.Inject;
@@ -39,7 +40,6 @@ public class BottomSheetDialogFragmentFilterEmployeeRequests extends DaggerAppCo
     private Button showResultButton;
 
     // Vars
-    private AllRequestsFragmentViewModel viewModel;
     public static final int START_PAGE = 1;
     BottomSheetDialog dialog;
     private static int status_id = 1;
@@ -50,7 +50,6 @@ public class BottomSheetDialogFragmentFilterEmployeeRequests extends DaggerAppCo
 
     @NonNull
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        initViewModel();
         dialog = new BottomSheetDialog(getActivity(), R.style.BottomSheetDialog);
         return dialog;
     }
@@ -86,14 +85,6 @@ public class BottomSheetDialogFragmentFilterEmployeeRequests extends DaggerAppCo
         showResultButton = view.findViewById(R.id.showResultButton);
 
         showResultButton.setOnClickListener(this);
-    }
-
-    /**
-     * Получить {@link AllRequestsFragmentViewModel}
-     */
-
-    private void initViewModel() {
-        viewModel = ViewModelProviders.of(this, providerFactory).get(AllRequestsFragmentViewModel.class);
     }
 
     /**
@@ -154,6 +145,7 @@ public class BottomSheetDialogFragmentFilterEmployeeRequests extends DaggerAppCo
                 String selectedStatus = statusSpinner.getSelectedItem().toString().toLowerCase();
                 status_id = getStatusId(selectedStatus);
                 AllRequestsFragment.status_id = status_id;
+                MyRequestsFragment.status_id = status_id;
                 MainActivity.createCounter++;
                 dialog.dismiss();
                 getActivity().recreate();

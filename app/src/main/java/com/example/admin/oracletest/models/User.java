@@ -33,6 +33,8 @@ public class User {
     @Expose
     private String lastname;
 
+    public static int myRequestsAmount = 0;
+
     public User(boolean successful, int userId, int employee_id, String firstname, String middlename, String lastname) {
         this.successful = successful;
         this.userId = userId;
