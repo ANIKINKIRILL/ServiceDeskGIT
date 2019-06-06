@@ -32,8 +32,8 @@ public abstract class BaseActivity extends DaggerAppCompatActivity {
                 assert userAuthResource != null;
                 switch (userAuthResource.status){
                     case NOT_AUTHENTICATED:{
-                        User.userLogin = "";
-                        User.userPassword = "";
+                        User.setUserLogin("");
+                        User.setUserPassword("");
                         Intent intent = new Intent(BaseActivity.this, AuthActivity.class);
                         startActivity(intent);
                         finish();

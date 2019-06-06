@@ -1,10 +1,15 @@
 package com.example.admin.oracletest.models;
 
+import android.app.Application;
+import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.example.admin.oracletest.BaseApplication;
+import com.example.admin.oracletest.R;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+
+import javax.inject.Inject;
 
 /**
  * User. This class represents engineer in the ServiceDesk
@@ -43,8 +48,14 @@ public class User {
     public static int myRequestsAmount = 0;
     public static int search_requests_amount = 0;
 
-    public static String userLogin = "";
-    public static String userPassword = "";
+    public static String userLogin;
+    public static String userPassword;
+
+    static SharedPreferences sharedPreferences;
+
+    static {
+        sharedPreferences = BaseApplication.getContext().getSharedPreferences(BaseApplication.getContext().getString(R.string.settings), Context.MODE_PRIVATE);
+    }
 
     public User(boolean successful, int userId, int employee_id, String firstname, String middlename, String lastname) {
         this.successful = successful;
@@ -56,6 +67,26 @@ public class User {
     }
 
     public User(){}
+
+    public static void setUserLogin(String userLogin) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(BaseApplication.getContext().getString(R.string.user_login), userLogin);
+        editor.apply();
+    }
+
+    public static void setUserPassword(String userPassword) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(BaseApplication.getContext().getString(R.string.user_password), userPassword);
+        editor.apply();
+    }
+
+    public static String getUserLogin() {
+        return sharedPreferences.getString(BaseApplication.getContext().getString(R.string.user_login), "");
+    }
+
+    public static String getUserPassword() {
+        return sharedPreferences.getString(BaseApplication.getContext().getString(R.string.user_password), "");
+    }
 
     public boolean isSuccessful() {
         return successful;

@@ -63,10 +63,8 @@ public class AuthActivity extends DaggerAppCompatActivity implements View.OnClic
     @Override
     protected void onStart() {
         super.onStart();
-        login.setText(User.userLogin);
-        password.setText(User.userPassword);
-        Log.d(TAG, "onStart: " + User.userLogin);
-        Log.d(TAG, "onStart: " + User.userPassword);
+        login.setText(User.getUserLogin());
+        password.setText(User.getUserPassword());
     }
 
     /**
@@ -147,8 +145,8 @@ public class AuthActivity extends DaggerAppCompatActivity implements View.OnClic
                             break;
                         }
                         case ERROR:{
-                            User.userLogin = "";
-                            User.userPassword = "";
+                            User.setUserLogin("");
+                            User.setUserPassword("");
                             showProgressDialog(false);
                             break;
                         }
@@ -157,8 +155,8 @@ public class AuthActivity extends DaggerAppCompatActivity implements View.OnClic
                             break;
                         }
                         case NOT_AUTHENTICATED:{
-                            User.userLogin = "";
-                            User.userPassword = "";
+                            User.setUserLogin("");
+                            User.setUserPassword("");
                             showProgressDialog(false);
                             break;
                         }
@@ -169,8 +167,8 @@ public class AuthActivity extends DaggerAppCompatActivity implements View.OnClic
     }
 
     private void authenticateUser(){
-        User.userLogin = login.getText().toString().trim();
-        User.userPassword = password.getText().toString().trim();
+        User.setUserLogin(login.getText().toString().trim());
+        User.setUserPassword(password.getText().toString().trim());
         viewModel.authenticateUser(login.getText().toString().trim(), password.getText().toString().trim());
     }
 
