@@ -3,9 +3,12 @@ package com.example.admin.oracletest.ui.main.search;
 import android.app.ProgressDialog;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,6 +18,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.admin.oracletest.R;
 import com.example.admin.oracletest.models.EmployeeRequest;
@@ -60,6 +64,8 @@ public class SearchFragment extends DaggerFragment implements View.OnClickListen
     private String sql_statement = "SELECT * FROM TECH_CENTER$DB.REQUEST ";
     private String sql_statement_count_rows = "SELECT COUNT(ID) FROM TECH_CENTER$DB.REQUEST ";
     private int start_page = 1;
+    public static OnViewSearchRequestsFragmentListener requestsFragmentListener;
+    public static OnViewSearchRequestsFragmentSqlParams requestsFragmentSqlParams;
 
     @Nullable
     @Override
@@ -212,12 +218,7 @@ public class SearchFragment extends DaggerFragment implements View.OnClickListen
                                 progressDialog.dismiss();
                                 Log.d(TAG, "onChanged: SUCCESS");
                                 List<EmployeeRequest> requests = new ArrayList<>(Arrays.asList(requestsPageGetRequestsResource.data.getRequests()));
-                                Log.d(TAG, "onChanged: " + requests.size());
-                                AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
-                                dialog.setTitle("Поиск");
-                                dialog.setMessage("Найденные заявки: " + User.search_requests_amount);
-                                dialog.setPositiveButton("ПОКАЗАТЬ", (dialog1, which) -> dialog1.dismiss());
-                                dialog.show();
+                                showSuccessAlertDialog(requests);
                                 break;
                             }
                         }
@@ -238,6 +239,35 @@ public class SearchFragment extends DaggerFragment implements View.OnClickListen
         }catch (Exception e){
             Log.d(TAG, "clearAllWidgetsData: " + e.getMessage());
         }
+    }
+
+    /**
+     * Success dialog. When user search is correct and result
+     * can be shown
+     */
+
+    private void showSuccessAlertDialog(List<EmployeeRequest> requests){
+        AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
+        dialog.setTitle("Поиск");
+        dialog.setMessage("Найденные заявки: " + User.search_requests_amount);
+        dialog.setPositiveButton("ПОКАЗАТЬ", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // Закрытие диалогового окна
+                dialog.dismiss();
+                // Замена фрагмента
+                FragmentManager fragmentManager = getFragmentManager();
+                fragmentManager
+                        .beginTransaction()
+                        .replace(R.id.main_container, new ViewSearchFragment())
+                        .commit();
+                // Передача списка с найденнами заявками ViewSearchRequestsFragment
+                requestsFragmentListener.setRequests(requests);
+                // Передача sql параметров на ViewSearchRequestsFragment
+                requestsFragmentSqlParams.setSqlParams(sql_statement, sql_statement_count_rows);
+            }
+        });
+        dialog.show();
     }
 
     /**
@@ -272,6 +302,7 @@ public class SearchFragment extends DaggerFragment implements View.OnClickListen
             case R.id.search_button:{
                 // Проверка если хотя бы 1 ввод есть
                 if(isValid()){
+                    User.search_requests_amount = 0;
                     progressDialog = new ProgressDialog(getContext());
                     progressDialog.setMessage("Поиск заявок...");
                     progressDialog.show();
@@ -282,6 +313,21 @@ public class SearchFragment extends DaggerFragment implements View.OnClickListen
                 }
                 break;
             }
+        }
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        /**
+         * Если класс {@link com.test.admin.servicedesk.Activity.MainActivity} (на котором нах-ся фрагменты) не implements интерфесы
+         * {@link OnViewSearchRequestsFragmentSqlParams} и {@link OnViewSearchRequestsFragmentListener}
+         */
+        if(context instanceof OnViewSearchRequestsFragmentListener && context instanceof OnViewSearchRequestsFragmentSqlParams){
+            requestsFragmentListener = (OnViewSearchRequestsFragmentListener) context;
+            requestsFragmentSqlParams = (OnViewSearchRequestsFragmentSqlParams) context;
+        }else{
+            Toast.makeText(context, "Ошибка! Обратитесь с администратору", Toast.LENGTH_SHORT).show();
         }
     }
 }

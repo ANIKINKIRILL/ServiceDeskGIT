@@ -46,28 +46,29 @@ public class RequestsPageRecyclerAdapter extends RecyclerView.Adapter<RequestsPa
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
         // Получаем EmployeeRequest
         EmployeeRequest request = employeeRequestList.get(i);
-        // Извлекаем данные заявки и устанавливаем их в виджеты
-        final String cod = Integer.toString(request.getCod());
-        final String date_of_reg = request.getRequest_date();
-        final String date_of_realization = request.getDate_of_realization();
-        final String declarant_fio = request.getDeclarant_fio();
-        final String post = request.getPost();
-        final String building_kfu_name = request.getBuilding_kfu().getName();
-        final String roomNumber = request.getRoom_number();
-        final String phone = request.getPhone();
-        final String body = request.getInfo();
-        final String status = request.getStatus().getStatus_name();
-        final String emp_fio = request.getEmp_fio();
-        // Устанавливаем данные в виджеты
-        viewHolder.requestCodeValue.setText(cod);
-        viewHolder.requestDateOfRegistrationValue.setText(date_of_reg);
-        viewHolder.requestDateOfRealizationValue.setText(date_of_realization);
-        viewHolder.requestZaavitelValue.setText(declarant_fio);
-        viewHolder.requestBuildingKfu_NameValue.setText(building_kfu_name);
-        // Обработка нажатия на карточку
-        viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        if(request != null) {
+            // Извлекаем данные заявки и устанавливаем их в виджеты
+            final String cod = Integer.toString(request.getCod());
+            final String date_of_reg = request.getRequest_date();
+            final String date_of_realization = request.getDate_of_realization();
+            final String declarant_fio = request.getDeclarant_fio();
+            final String post = request.getPost();
+            final String building_kfu_name = request.getBuilding_kfu().getName();
+            final String roomNumber = request.getRoom_number();
+            final String phone = request.getPhone();
+            final String body = request.getInfo();
+            final String status = request.getStatus().getStatus_name();
+            final String emp_fio = request.getEmp_fio();
+            // Устанавливаем данные в виджеты
+            viewHolder.requestCodeValue.setText(cod);
+            viewHolder.requestDateOfRegistrationValue.setText(date_of_reg);
+            viewHolder.requestDateOfRealizationValue.setText(date_of_realization);
+            viewHolder.requestZaavitelValue.setText(declarant_fio);
+            viewHolder.requestBuildingKfu_NameValue.setText(building_kfu_name);
+            // Обработка нажатия на карточку
+            viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
                 /*
                 // Открытие активити с более детальной информацией о заявке
                 Intent intent = new Intent(context, DetailRequestActivity.class);
@@ -86,9 +87,10 @@ public class RequestsPageRecyclerAdapter extends RecyclerView.Adapter<RequestsPa
                 // Переходим на активити с детальной информацией о заявке
                 context.startActivity(intent);
                 */
-                Toast.makeText(viewHolder.itemView.getContext(), status, Toast.LENGTH_SHORT).show();
-            }
-        });
+                    Toast.makeText(viewHolder.itemView.getContext(), status, Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
 
     }
 

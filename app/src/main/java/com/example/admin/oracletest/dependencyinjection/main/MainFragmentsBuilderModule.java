@@ -4,6 +4,7 @@ import com.example.admin.oracletest.ui.main.BottomSheetDialogFragmentFilterEmplo
 import com.example.admin.oracletest.ui.main.all_requests.AllRequestsFragment;
 import com.example.admin.oracletest.ui.main.my_requests.MyRequestsFragment;
 import com.example.admin.oracletest.ui.main.search.SearchFragment;
+import com.example.admin.oracletest.ui.main.search.ViewSearchFragment;
 import com.example.admin.oracletest.ui.main.settings.SettingsFragment;
 
 import dagger.Module;
@@ -26,5 +27,8 @@ public abstract class MainFragmentsBuilderModule {
 
     @ContributesAndroidInjector
     abstract SearchFragment contributeSearchFragment();
+
+    @ContributesAndroidInjector
+    abstract ViewSearchFragment contributeViewSearchFragment();
 
 }

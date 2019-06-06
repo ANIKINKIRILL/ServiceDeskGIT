@@ -15,16 +15,22 @@ import android.widget.FrameLayout;
 
 import com.example.admin.oracletest.BaseActivity;
 import com.example.admin.oracletest.R;
+import com.example.admin.oracletest.models.EmployeeRequest;
 import com.example.admin.oracletest.ui.main.all_requests.AllRequestsFragment;
 import com.example.admin.oracletest.ui.main.my_requests.MyRequestsFragment;
+import com.example.admin.oracletest.ui.main.search.OnViewSearchRequestsFragmentListener;
+import com.example.admin.oracletest.ui.main.search.OnViewSearchRequestsFragmentSqlParams;
 import com.example.admin.oracletest.ui.main.search.SearchFragment;
+import com.example.admin.oracletest.ui.main.search.ViewSearchFragment;
 import com.example.admin.oracletest.ui.main.settings.SettingsFragment;
+
+import java.util.List;
 
 /**
  * Activity with All Fragments (All Requests, My Requests, Map, Search, Settings)
  */
 
-public class MainActivity extends BaseActivity {
+public class MainActivity extends BaseActivity implements OnViewSearchRequestsFragmentListener, OnViewSearchRequestsFragmentSqlParams {
 
     private static final String TAG = "MainActivity";
 
@@ -162,4 +168,18 @@ public class MainActivity extends BaseActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * Methods For Communication between {@link com.example.admin.oracletest.ui.main.search.SearchFragment} and
+     * {@link com.example.admin.oracletest.ui.main.search.ViewSearchFragment}
+     */
+
+    @Override
+    public void setRequests(List<EmployeeRequest> requests) {
+        ViewSearchFragment.setRequests(requests);
+    }
+
+    @Override
+    public void setSqlParams(String p_sql_statement, String p_sql_statement_count_rows) {
+        ViewSearchFragment.setSqlParams(p_sql_statement, p_sql_statement_count_rows);
+    }
 }
