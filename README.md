@@ -1,7 +1,6 @@
 ﻿# ServiceDeskGIT
 Приложение ServiceDesk
-IAS SCHEMA : ias$db OcxSvhSD
-MOBILE SCHEMA : mobile$db   qtRbhKga
+
 
 После релиза2 дата 25.05.2019
 
