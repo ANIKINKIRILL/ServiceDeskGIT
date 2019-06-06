@@ -36,6 +36,18 @@
     <string name="searchParams">Параметры поиска</string>
     <string name="requestStatus">Статус заявки</string>
     <string name="showResults">Показать результаты</string>
+    <string name="number">Номер</string>
+    <string name="date_of_req_reg">Дата регистрации</string>
+    <string name="pick_date">Выбрать дату</string>
+    <string name="date_of_closing">Дата закрытия</string>
+    <string name="podrazdelenie">Подразделение</string>
+    <string name="location_address">Местонахождения (адрес)</string>
+    <string name="otdel_employees">Отдел (исполнителей заявки)</string>
+    <string name="emp_fio">ФИО Исполнителя</string>
+    <string name="reg_user">Заявку зарегистрировал</string>
+    <string name="request_type">Тип заявки (работ)</string>
+    <string name="type">Тип</string>
+    <string name="request_info">Текст заявки</string>
 
     <string-array name="requestStatusArray">
         <item>Новая</item>

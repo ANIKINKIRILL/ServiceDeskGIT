@@ -26,6 +26,10 @@ public class RequestsPage {
     @Expose
     private EmployeeRequest requests[];
 
+    @SerializedName("requests_amount")
+    @Expose
+    private int requests_amount;
+
     public RequestsPage(boolean successful, int v_p_start, int v_p_end, EmployeeRequest[] requests) {
         this.successful = successful;
         this.v_p_start = v_p_start;
@@ -34,6 +38,14 @@ public class RequestsPage {
     }
 
     public RequestsPage(){}
+
+    public int getRequests_amount() {
+        return requests_amount;
+    }
+
+    public void setRequests_amount(int requests_amount) {
+        this.requests_amount = requests_amount;
+    }
 
     public boolean isSuccessful() {
         return successful;

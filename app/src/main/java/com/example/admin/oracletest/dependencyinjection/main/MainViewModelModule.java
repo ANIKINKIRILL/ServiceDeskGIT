@@ -4,6 +4,8 @@ import android.arch.lifecycle.ViewModel;
 
 import com.example.admin.oracletest.ui.main.all_requests.AllRequestsFragmentViewModel;
 import com.example.admin.oracletest.ui.main.my_requests.MyRequestsFragmentViewModel;
+import com.example.admin.oracletest.ui.main.search.SearchFragment;
+import com.example.admin.oracletest.ui.main.search.SearchFragmentViewModel;
 import com.example.admin.oracletest.ui.main.settings.SettingsFragmentViewModel;
 import com.example.admin.oracletest.viewmodel.ViewModelKey;
 
@@ -28,5 +30,10 @@ public abstract class MainViewModelModule {
     @IntoMap
     @ViewModelKey(MyRequestsFragmentViewModel.class)
     abstract ViewModel bindMyRequestsFragmentViewModel(MyRequestsFragmentViewModel viewModel);
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(SearchFragmentViewModel.class)
+    abstract ViewModel bindSearchFragmentViewModel(SearchFragmentViewModel viewModel);
 
 }

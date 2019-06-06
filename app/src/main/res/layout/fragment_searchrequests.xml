@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:overScrollMode="never"
+    android:layout_width="match_parent"
+    android:layout_marginStart="15sp"
+    android:layout_marginEnd="15sp"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:layout_marginTop="5dp"
+            android:id="@+id/requestCode"
+            android:textSize="17sp"
+            android:text="@string/requestNumber"
+            android:layout_marginBottom="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <EditText
+            android:id="@+id/requestCodeValue"
+            android:singleLine="true"
+            android:textSize="15sp"
+            android:inputType="numberDecimal"
+            android:textCursorDrawable="@drawable/edit_text_gray_color_cursor"
+            android:hint="@string/number"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/requestDateOfRegistration"
+            android:textSize="17sp"
+            android:text="@string/date_of_req_reg"
+            android:layout_marginBottom="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/requestDateOfRegistrationValue"
+            android:singleLine="true"
+            android:textSize="15sp"
+            android:padding="14dp"
+            android:textCursorDrawable="@drawable/edit_text_gray_color_cursor"
+            android:hint="@string/pick_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/requestDateOfRealization"
+            android:textSize="17sp"
+            android:text="@string/date_of_closing"
+            android:layout_marginBottom="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/requestDateOfRealizationValue"
+            android:singleLine="true"
+            android:padding="14dp"
+            android:textSize="15sp"
+            android:textCursorDrawable="@drawable/edit_text_gray_color_cursor"
+            android:hint="@string/pick_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/requestZaavitel"
+            android:textSize="17sp"
+            android:text="@string/zaavitel"
+            android:layout_marginBottom="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <EditText
+            android:id="@+id/requestZaavitelValue"
+            android:singleLine="true"
+            android:textSize="15sp"
+            android:textCursorDrawable="@drawable/edit_text_gray_color_cursor"
+            android:hint="@string/zaavitel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/requestPodrazdelenie"
+            android:textSize="17sp"
+            android:text="@string/podrazdelenie"
+            android:layout_marginBottom="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <EditText
+            android:id="@+id/requestPodrazdelenieValue"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/podrazdelenie"
+            android:singleLine="true"
+            android:textCursorDrawable="@drawable/edit_text_gray_color_cursor"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/requestLocation"
+            android:textSize="17sp"
+            android:text="@string/location_address"
+            android:layout_marginBottom="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <EditText
+            android:id="@+id/requestLocationValue"
+            android:singleLine="true"
+            android:textSize="15sp"
+            android:textCursorDrawable="@drawable/edit_text_gray_color_cursor"
+            android:hint="@string/building_kfu_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/requestRoomNumber"
+            android:textSize="17sp"
+            android:text="@string/roomNumber"
+            android:layout_marginBottom="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <EditText
+            android:id="@+id/requestRoomNumberValue"
+            android:singleLine="true"
+            android:textSize="15sp"
+            android:textCursorDrawable="@drawable/edit_text_gray_color_cursor"
+            android:hint="@string/roomNumber"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/requestOtdel"
+            android:textSize="17sp"
+            android:text="@string/otdel_employees"
+            android:layout_marginBottom="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <Spinner
+            android:id="@+id/requestOtdelValue"
+            android:singleLine="true"
+            android:textSize="15sp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/requestEmployeeFio"
+            android:textSize="17sp"
+            android:text="@string/emp_fio"
+            android:layout_marginBottom="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <Spinner
+            android:id="@+id/requestEmployeeFioValue"
+            android:singleLine="true"
+            android:textSize="15sp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/requestStatus"
+            android:textSize="17sp"
+            android:text="@string/requestStatus"
+            android:layout_marginBottom="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <Spinner
+            android:id="@+id/requestStatusValue"
+            android:singleLine="true"
+            android:textSize="15sp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/requestRegUser"
+            android:textSize="17sp"
+            android:text="@string/reg_user"
+            android:layout_marginBottom="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <Spinner
+            android:id="@+id/requestRegUserValue"
+            android:singleLine="true"
+            android:textSize="15sp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/requestType"
+            android:textSize="17sp"
+            android:text="@string/request_type"
+            android:layout_marginBottom="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <EditText
+            android:id="@+id/requestTypeValue"
+            android:singleLine="true"
+            android:textSize="15sp"
+            android:textCursorDrawable="@drawable/edit_text_gray_color_cursor"
+            android:hint="@string/type"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/requestInfo"
+            android:textSize="17sp"
+            android:text="@string/request_info"
+            android:layout_marginBottom="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <EditText
+            android:id="@+id/requestInfoValue"
+            android:textSize="15sp"
+            android:textCursorDrawable="@drawable/edit_text_gray_color_cursor"
+            android:layout_width="match_parent"
+            android:layout_height="50dp" />
+
+        <Button
+            android:id="@+id/search_button"
+            android:background="@drawable/button_round_corners"
+            android:textColor="@android:color/white"
+            android:text="@string/showResults"
+            android:layout_width="match_parent"
+            android:layout_marginStart="15sp"
+            android:layout_marginEnd="15sp"
+            android:layout_marginBottom="15dp"
+            android:layout_height="50dp" />
+
+    </LinearLayout>
+
+</android.support.v4.widget.NestedScrollView>

@@ -65,6 +65,8 @@ public class AuthActivity extends DaggerAppCompatActivity implements View.OnClic
         super.onStart();
         login.setText(User.userLogin);
         password.setText(User.userPassword);
+        Log.d(TAG, "onStart: " + User.userLogin);
+        Log.d(TAG, "onStart: " + User.userPassword);
     }
 
     /**

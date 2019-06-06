@@ -17,6 +17,7 @@ import com.example.admin.oracletest.BaseActivity;
 import com.example.admin.oracletest.R;
 import com.example.admin.oracletest.ui.main.all_requests.AllRequestsFragment;
 import com.example.admin.oracletest.ui.main.my_requests.MyRequestsFragment;
+import com.example.admin.oracletest.ui.main.search.SearchFragment;
 import com.example.admin.oracletest.ui.main.settings.SettingsFragment;
 
 /**
@@ -86,20 +87,33 @@ public class MainActivity extends BaseActivity {
             switch (menuItem.getItemId()){
                 case R.id.allRequests:{
                     doFragmentTransaction(new AllRequestsFragment(), getString(R.string.allRequests));
+                    menu.findItem(R.id.filterOptions).setVisible(true);
+                    menu.findItem(R.id.clearSearchFilters).setVisible(false);
+                    menu.findItem(R.id.smoothScrollToTop).setVisible(false);
                     break;
                 }
                 case R.id.myRequests:{
                     doFragmentTransaction(new MyRequestsFragment(), getString(R.string.myRequests));
+                    menu.findItem(R.id.filterOptions).setVisible(true);
+                    menu.findItem(R.id.clearSearchFilters).setVisible(false);
+                    menu.findItem(R.id.smoothScrollToTop).setVisible(false);
                     break;
                 }
                 case R.id.map:{
                     break;
                 }
                 case R.id.search:{
+                    doFragmentTransaction(new SearchFragment(), getString(R.string.search));
+                    menu.findItem(R.id.clearSearchFilters).setVisible(true);
+                    menu.findItem(R.id.filterOptions).setVisible(false);
+                    menu.findItem(R.id.smoothScrollToTop).setVisible(false);
                     break;
                 }
                 case R.id.settings:{
                     doFragmentTransaction(new SettingsFragment(), getString(R.string.settingsText));
+                    menu.findItem(R.id.filterOptions).setVisible(false);
+                    menu.findItem(R.id.clearSearchFilters).setVisible(false);
+                    menu.findItem(R.id.smoothScrollToTop).setVisible(false);
                     break;
                 }
             }
@@ -140,6 +154,7 @@ public class MainActivity extends BaseActivity {
             }
 
             case R.id.clearSearchFilters:{
+                SearchFragment.clearAllWidgetsData();
                 break;
             }
 

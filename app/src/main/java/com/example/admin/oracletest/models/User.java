@@ -41,9 +41,10 @@ public class User {
     /*---------------------- User Data ----------------------*/
 
     public static int myRequestsAmount = 0;
+    public static int search_requests_amount = 0;
 
-    public static String userLogin;
-    public static String userPassword;
+    public static String userLogin = "";
+    public static String userPassword = "";
 
     public User(boolean successful, int userId, int employee_id, String firstname, String middlename, String lastname) {
         this.successful = successful;
