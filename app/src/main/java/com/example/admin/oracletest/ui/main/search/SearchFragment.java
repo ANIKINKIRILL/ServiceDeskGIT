@@ -269,7 +269,7 @@ public class SearchFragment extends DaggerFragment implements View.OnClickListen
                 FragmentManager fragmentManager = getFragmentManager();
                 fragmentManager
                         .beginTransaction()
-                        .replace(R.id.main_container, new ViewSearchFragment())
+                        .replace(R.id.main_container, new ViewSearchFragment(), getString(R.string.view_search_fragment_tag))
                         .commit();
                 // Передача списка с найденнами заявками ViewSearchRequestsFragment
                 requestsFragmentListener.setRequests(requests);

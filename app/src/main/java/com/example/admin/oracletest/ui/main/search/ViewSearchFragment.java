@@ -1,5 +1,6 @@
 package com.example.admin.oracletest.ui.main.search;
 
+import android.app.ActionBar;
 import android.app.ProgressDialog;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
@@ -7,6 +8,8 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -42,7 +45,7 @@ import dagger.android.support.DaggerFragment;
  * and user can see his searched requests on the screen
  */
 
-public class ViewSearchFragment extends DaggerFragment implements MenuItem.OnMenuItemClickListener{
+public class ViewSearchFragment extends DaggerFragment{
 
     // Injections
     @Inject
@@ -50,7 +53,7 @@ public class ViewSearchFragment extends DaggerFragment implements MenuItem.OnMen
 
     // Ui
     private LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
-    private RecyclerView recyclerView;
+    public static RecyclerView recyclerView;
     private ProgressDialog progressDialog;
 
     // Vars
@@ -93,7 +96,8 @@ public class ViewSearchFragment extends DaggerFragment implements MenuItem.OnMen
 
     private void configureActionBar(){
         MainActivity.menu.findItem(R.id.clearSearchFilters).setVisible(false);
-        MainActivity.menu.findItem(R.id.smoothScrollToTop).setVisible(true).setOnMenuItemClickListener(this);
+        MainActivity.actionBar.setHomeButtonEnabled(true);
+        MainActivity.actionBar.setDisplayHomeAsUpEnabled(true);
     }
 
     /**
@@ -179,6 +183,9 @@ public class ViewSearchFragment extends DaggerFragment implements MenuItem.OnMen
         alertDialog.show();
     }
 
+    public static void smoothScrollToTopPosition(){
+        recyclerView.smoothScrollToPosition(0);
+    }
 
     /**
      * Метод пришёл с {@link SearchFragment} -> {@link com.example.admin.oracletest.ui.main.MainActivity} -> сюда
@@ -234,15 +241,4 @@ public class ViewSearchFragment extends DaggerFragment implements MenuItem.OnMen
         }
     };
 
-
-    @Override
-    public boolean onMenuItemClick(MenuItem item) {
-        switch (item.getItemId()){
-            case R.id.smoothScrollToTop:{
-                recyclerView.smoothScrollToPosition(0);
-                break;
-            }
-        }
-        return true;
-    }
 }

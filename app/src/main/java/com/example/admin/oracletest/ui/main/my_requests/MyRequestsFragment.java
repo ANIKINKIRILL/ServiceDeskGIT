@@ -44,7 +44,7 @@ public class MyRequestsFragment extends DaggerFragment {
     private static final String TAG = "MyRequestsFragment";
 
     // Виджеты
-    private RecyclerView recyclerView;
+    public static RecyclerView recyclerView;
     private ProgressDialog progressDialog;
     private LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
 
@@ -182,6 +182,10 @@ public class MyRequestsFragment extends DaggerFragment {
         if(currentPage != 1) {
             recyclerView.smoothScrollToPosition(requestList.size() - 7);
         }
+    }
+
+    public static void smoothScrollToTopPosition(){
+        recyclerView.smoothScrollToPosition(0);
     }
 
     private void showProgressDialog(boolean isVisible){

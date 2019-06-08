@@ -50,6 +50,13 @@
     <string name="type">Тип</string>
     <string name="request_info">Текст заявки</string>
 
+    <string name="all_requests_fragment_tag">ALL REQUESTS</string>
+    <string name="my_requests_fragment_tag">MY REQUESTS</string>
+    <string name="map_fragment_tag">MAP</string>
+    <string name="search_fragment_tag">SEARCH</string>
+    <string name="view_search_fragment_tag">VIEW SEARCH</string>
+    <string name="settings_fragment_tag">SETTINGS</string>
+
     <string-array name="requestStatusArray">
         <item>Новая</item>
         <item>Выполнена</item>

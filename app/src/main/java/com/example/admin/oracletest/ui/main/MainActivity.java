@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
@@ -80,7 +81,21 @@ public class MainActivity extends BaseActivity implements OnViewSearchRequestsFr
      */
 
     private void setLaunchFragment(){
-        doFragmentTransaction(new AllRequestsFragment(),  getString(R.string.allRequests));
+        doFragmentTransaction(new AllRequestsFragment(),  getString(R.string.allRequests), getString(R.string.all_requests_fragment_tag));
+    }
+
+    /**
+     * Check if fragment with tag is visible
+     * @param tag   fragment tag
+     * @return      true if visible, otherwise false
+     */
+
+    private boolean isFragmentVisible(String tag){
+        Fragment fragment = getSupportFragmentManager().findFragmentByTag(tag);
+        if(fragment != null && fragment.isVisible()){
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -92,34 +107,42 @@ public class MainActivity extends BaseActivity implements OnViewSearchRequestsFr
         public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
             switch (menuItem.getItemId()){
                 case R.id.allRequests:{
-                    doFragmentTransaction(new AllRequestsFragment(), getString(R.string.allRequests));
-                    menu.findItem(R.id.filterOptions).setVisible(true);
-                    menu.findItem(R.id.clearSearchFilters).setVisible(false);
-                    menu.findItem(R.id.smoothScrollToTop).setVisible(false);
+                    if(isFragmentVisible(getString(R.string.all_requests_fragment_tag))){
+                        AllRequestsFragment.smoothScrollToTopPosition();
+                    }else {
+                        doFragmentTransaction(new AllRequestsFragment(), getString(R.string.allRequests), getString(R.string.all_requests_fragment_tag));
+                        menu.findItem(R.id.filterOptions).setVisible(true);
+                        menu.findItem(R.id.clearSearchFilters).setVisible(false);
+                    }
                     break;
                 }
                 case R.id.myRequests:{
-                    doFragmentTransaction(new MyRequestsFragment(), getString(R.string.myRequests));
-                    menu.findItem(R.id.filterOptions).setVisible(true);
-                    menu.findItem(R.id.clearSearchFilters).setVisible(false);
-                    menu.findItem(R.id.smoothScrollToTop).setVisible(false);
+                    if(isFragmentVisible(getString(R.string.my_requests_fragment_tag))) {
+                        MyRequestsFragment.smoothScrollToTopPosition();
+                    }else {
+                        doFragmentTransaction(new MyRequestsFragment(), getString(R.string.myRequests), getString(R.string.my_requests_fragment_tag));
+                        menu.findItem(R.id.filterOptions).setVisible(true);
+                        menu.findItem(R.id.clearSearchFilters).setVisible(false);
+                    }
                     break;
                 }
                 case R.id.map:{
                     break;
                 }
                 case R.id.search:{
-                    doFragmentTransaction(new SearchFragment(), getString(R.string.search));
-                    menu.findItem(R.id.clearSearchFilters).setVisible(true);
-                    menu.findItem(R.id.filterOptions).setVisible(false);
-                    menu.findItem(R.id.smoothScrollToTop).setVisible(false);
+                    if(isFragmentVisible(getString(R.string.view_search_fragment_tag))){
+                        ViewSearchFragment.smoothScrollToTopPosition();
+                    }else {
+                        doFragmentTransaction(new SearchFragment(), getString(R.string.search), getString(R.string.search_fragment_tag));
+                        menu.findItem(R.id.clearSearchFilters).setVisible(true);
+                        menu.findItem(R.id.filterOptions).setVisible(false);
+                    }
                     break;
                 }
                 case R.id.settings:{
-                    doFragmentTransaction(new SettingsFragment(), getString(R.string.settingsText));
+                    doFragmentTransaction(new SettingsFragment(), getString(R.string.settingsText), getString(R.string.settings_fragment_tag));
                     menu.findItem(R.id.filterOptions).setVisible(false);
                     menu.findItem(R.id.clearSearchFilters).setVisible(false);
-                    menu.findItem(R.id.smoothScrollToTop).setVisible(false);
                     break;
                 }
             }
@@ -133,10 +156,10 @@ public class MainActivity extends BaseActivity implements OnViewSearchRequestsFr
      * @param actionBarTitle fragment title
      */
 
-    private void doFragmentTransaction(Fragment fragment, String actionBarTitle){
+    private void doFragmentTransaction(Fragment fragment, String actionBarTitle, String tag){
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.main_container, fragment).commit();
+        fragmentTransaction.replace(R.id.main_container, fragment, tag).commit();
         actionBar.setDisplayShowCustomEnabled(false);
         actionBar.setTitle(actionBarTitle);
         actionBar.setElevation(0);
@@ -147,7 +170,6 @@ public class MainActivity extends BaseActivity implements OnViewSearchRequestsFr
         getMenuInflater().inflate(R.menu.main_activity_menu, menu);
         MainActivity.menu = menu;
         menu.findItem(R.id.clearSearchFilters).setVisible(false);
-        menu.findItem(R.id.smoothScrollToTop).setVisible(false);
         return true;
     }
 
@@ -161,6 +183,15 @@ public class MainActivity extends BaseActivity implements OnViewSearchRequestsFr
 
             case R.id.clearSearchFilters:{
                 SearchFragment.clearAllWidgetsData();
+                break;
+            }
+            case android.R.id.home:{
+                if(isFragmentVisible(getString(R.string.view_search_fragment_tag))){
+                    doFragmentTransaction(new SearchFragment(), getString(R.string.search), getString(R.string.search_fragment_tag));
+                    actionBar.setDisplayHomeAsUpEnabled(false);
+                    menu.findItem(R.id.clearSearchFilters).setVisible(true);
+                    menu.findItem(R.id.filterOptions).setVisible(false);
+                }
                 break;
             }
 

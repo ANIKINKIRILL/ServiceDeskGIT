@@ -45,7 +45,7 @@ public class AllRequestsFragment extends DaggerFragment {
 
     // Ui
     private ProgressDialog progressDialog;
-    private RecyclerView recyclerView;
+    private static RecyclerView recyclerView;
 
     // Vars
     private AllRequestsFragmentViewModel viewModel;
@@ -171,6 +171,10 @@ public class AllRequestsFragment extends DaggerFragment {
         if(currentPage != 1) {
             recyclerView.smoothScrollToPosition(requestList.size() - 7);
         }
+    }
+
+    public static void smoothScrollToTopPosition(){
+        recyclerView.smoothScrollToPosition(0);
     }
 
     /**
