@@ -9,6 +9,7 @@ import com.example.admin.oracletest.dependencyinjection.main.MainScope;
 import com.example.admin.oracletest.dependencyinjection.main.MainViewModelModule;
 import com.example.admin.oracletest.ui.auth.AuthActivity;
 import com.example.admin.oracletest.ui.main.MainActivity;
+import com.example.admin.oracletest.ui.request_details.DetailRequestActivity;
 
 import dagger.Module;
 import dagger.android.ContributesAndroidInjector;
@@ -34,5 +35,12 @@ public abstract class ActivityBuildersModule {
             }
     )
     abstract MainActivity contributeMainActivity();
+
+    @ContributesAndroidInjector(
+            modules = {
+
+            }
+    )
+    abstract DetailRequestActivity contributeDetailRequestActivity();
 
 }

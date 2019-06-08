@@ -14,7 +14,7 @@ public interface RequestsApi {
      */
 
     @GET("SERVICEDESK_MOBILE_TEST.GET_CURRENT_REQUESTS")
-    Flowable<RequestsPage> getCurrentRequests(
+    Call<RequestsPage> getCurrentRequests(
             @Query("p_page_number") int page_number,
             @Query("p_status_id") int status_id
     );
@@ -24,7 +24,7 @@ public interface RequestsApi {
      */
 
     @GET("SERVICEDESK_MOBILE_TEST.GET_EMPLOYEE_REQUESTS")
-    Flowable<RequestsPage> getMyRequests(
+    Call<RequestsPage> getMyRequests(
             @Query("p_emp_id") int emp_id,
             @Query("p_page_number") int page_number,
             @Query("p_status_id") int status_id
@@ -35,7 +35,7 @@ public interface RequestsApi {
      */
 
     @GET("SERVICEDESK_MOBILE_TEST.SEARCH_REQUEST")
-    Flowable<RequestsPage> searchRequests(
+    Call<RequestsPage> searchRequests(
             @Query("p_sql_statement") String sql_statement,
             @Query("p_sql_statement_count_rows") String sql_statement_rows_count,
             @Query("p_page_number") int page_number

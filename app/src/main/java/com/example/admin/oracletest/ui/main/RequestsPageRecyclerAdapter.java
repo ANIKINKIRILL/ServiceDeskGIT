@@ -1,6 +1,9 @@
 package com.example.admin.oracletest.ui.main;
 
+import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +13,8 @@ import android.widget.Toast;
 
 import com.example.admin.oracletest.R;
 import com.example.admin.oracletest.models.EmployeeRequest;
+import com.example.admin.oracletest.ui.main.all_requests.AllRequestsFragment;
+import com.example.admin.oracletest.ui.request_details.DetailRequestActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +22,7 @@ import java.util.List;
 public class RequestsPageRecyclerAdapter extends RecyclerView.Adapter<RequestsPageRecyclerAdapter.ViewHolder> {
 
     private List<EmployeeRequest> employeeRequestList;
+    private Context context;
 
     class ViewHolder extends RecyclerView.ViewHolder{
         private TextView requestCodeValue,requestDateOfRegistrationValue,requestDateOfRealizationValue,
@@ -39,6 +45,7 @@ public class RequestsPageRecyclerAdapter extends RecyclerView.Adapter<RequestsPa
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.employee_request_item, viewGroup,false);
+        context = viewGroup.getContext();
         return new ViewHolder(view);
     }
 
@@ -69,25 +76,22 @@ public class RequestsPageRecyclerAdapter extends RecyclerView.Adapter<RequestsPa
             viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                /*
-                // Открытие активити с более детальной информацией о заявке
-                Intent intent = new Intent(context, DetailRequestActivity.class);
-                // Передаем в intent данные
-                intent.putExtra(context.getString(R.string.requestNumber), cod);
-                intent.putExtra(context.getString(R.string.date_of_reg), date_of_reg);
-                intent.putExtra(context.getString(R.string.date_of_realization), date_of_realization);
-                intent.putExtra(context.getString(R.string.zaavitel), declarant_fio);
-                intent.putExtra(context.getString(R.string.post), post);
-                intent.putExtra(context.getString(R.string.roomNumber), roomNumber);
-                intent.putExtra(context.getString(R.string.phone), phone);
-                intent.putExtra(context.getString(R.string.body), body);
-                intent.putExtra(context.getString(R.string.building_kfu_name), building_kfu_name);
-                intent.putExtra(context.getString(R.string.requestStatus), status);
-                intent.putExtra(context.getString(R.string.emp_fio), emp_fio);
-                // Переходим на активити с детальной информацией о заявке
-                context.startActivity(intent);
-                */
-                    Toast.makeText(viewHolder.itemView.getContext(), status, Toast.LENGTH_SHORT).show();
+                    // Открытие активити с более детальной информацией о заявке
+                    Intent intent = new Intent(context, DetailRequestActivity.class);
+                    // Передаем в intent данные
+                    intent.putExtra(context.getString(R.string.requestNumber), cod);
+                    intent.putExtra(context.getString(R.string.date_of_reg), date_of_reg);
+                    intent.putExtra(context.getString(R.string.date_of_realization), date_of_realization);
+                    intent.putExtra(context.getString(R.string.zaavitel), declarant_fio);
+                    intent.putExtra(context.getString(R.string.post), post);
+                    intent.putExtra(context.getString(R.string.roomNumber), roomNumber);
+                    intent.putExtra(context.getString(R.string.phone), phone);
+                    intent.putExtra(context.getString(R.string.body), body);
+                    intent.putExtra(context.getString(R.string.building_kfu_name), building_kfu_name);
+                    intent.putExtra(context.getString(R.string.requestStatus), status);
+                    intent.putExtra(context.getString(R.string.emp_fio), emp_fio);
+                    // Переходим на активити с детальной информацией о заявке
+                    context.startActivity(intent);
                 }
             });
         }

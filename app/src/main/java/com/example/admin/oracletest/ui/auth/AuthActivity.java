@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -27,6 +28,8 @@ import com.example.admin.oracletest.viewmodel.ViewModelProviderFactory;
 import javax.inject.Inject;
 
 import dagger.android.support.DaggerAppCompatActivity;
+
+import static com.example.admin.oracletest.BaseApplication.getContext;
 
 /**
  * Authentication users activity
@@ -77,8 +80,13 @@ public class AuthActivity extends DaggerAppCompatActivity implements View.OnClic
         login = findViewById(R.id.login);
         password = findViewById(R.id.password);
 
+//        progressDialog = new ProgressDialog(this);
+//        progressDialog.setMessage("Входим в Ваш аккаунт");
+
+        ColorDrawable colorDrawable = new ColorDrawable(getContext().getResources().getColor(R.color.kfuDefaultColor));
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Входим в Ваш аккаунт");
+        progressDialog.setProgressDrawable(colorDrawable);
 
         loginButton.setOnClickListener(this);
         forgotPassword.setOnClickListener(this);
@@ -148,6 +156,8 @@ public class AuthActivity extends DaggerAppCompatActivity implements View.OnClic
                             User.setUserLogin("");
                             User.setUserPassword("");
                             showProgressDialog(false);
+//                            showServerErrorAlertDialog();
+                            Toast.makeText(AuthActivity.this, "Произошла ошибка. Обратитесь в тех.поддержку", Toast.LENGTH_SHORT).show();
                             break;
                         }
                         case LOADING:{
@@ -164,6 +174,17 @@ public class AuthActivity extends DaggerAppCompatActivity implements View.OnClic
                 }
             }
         });
+    }
+
+    /**
+     * If error happened
+     */
+
+    private void showServerErrorAlertDialog(){
+        android.support.v7.app.AlertDialog.Builder alertDialog = new android.support.v7.app.AlertDialog.Builder(this);
+        alertDialog.setMessage("Произошла ошибка. Обратитесь в тех.поддержку");
+        alertDialog.setPositiveButton(getContext().getText(R.string.write_to_tech_support), (dialog, which) -> dialog.dismiss());
+        alertDialog.show();
     }
 
     private void authenticateUser(){

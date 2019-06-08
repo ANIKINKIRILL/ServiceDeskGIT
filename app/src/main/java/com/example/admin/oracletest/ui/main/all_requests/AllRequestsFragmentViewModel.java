@@ -1,23 +1,16 @@
 package com.example.admin.oracletest.ui.main.all_requests;
 
-import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.LiveDataReactiveStreams;
-import android.arch.lifecycle.MediatorLiveData;
-import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModel;
-import android.support.annotation.Nullable;
 import android.util.Log;
 
-import com.example.admin.oracletest.Constants;
+import com.example.admin.oracletest.Callback;
 import com.example.admin.oracletest.models.RequestsPage;
 import com.example.admin.oracletest.network.main.RequestsApi;
-import com.example.admin.oracletest.ui.main.GetRequestsResource;
 
 import javax.inject.Inject;
 
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.Function;
-import io.reactivex.schedulers.Schedulers;
+import retrofit2.Call;
+import retrofit2.Response;
 
 public class AllRequestsFragmentViewModel extends ViewModel {
 
@@ -38,28 +31,20 @@ public class AllRequestsFragmentViewModel extends ViewModel {
      * @param status_id status id of requests user wanna get
      */
 
-    public LiveData<GetRequestsResource<RequestsPage>> get_current_requests(int page, int status_id){
-        return LiveDataReactiveStreams.fromPublisher(
-                requestsApi.getCurrentRequests(page, status_id)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .onErrorReturn(new Function<Throwable, RequestsPage>() {
-                    @Override
-                    public RequestsPage apply(Throwable throwable) throws Exception {
-                        RequestsPage errorRequestPage = new RequestsPage();
-                        errorRequestPage.setSuccessful(false);
-                        return errorRequestPage;
-                    }
-                })
-                .map(new Function<RequestsPage, GetRequestsResource<RequestsPage>>() {
-                    @Override
-                    public GetRequestsResource<RequestsPage> apply(RequestsPage requestsPage) throws Exception {
-                        if(requestsPage.isSuccessful()){
-                            return GetRequestsResource.success(requestsPage);
-                        }
-                        return GetRequestsResource.error(Constants.API_ERROR_WHILE_LOADING, requestsPage);
-                    }
-                })
-        );
+    public void get_current_requests(int page, int status_id, Callback callback){
+        Log.d(TAG, "get_current_requests: called");
+        requestsApi.getCurrentRequests(page, status_id).enqueue(new retrofit2.Callback<RequestsPage>() {
+            @Override
+            public void onResponse(Call<RequestsPage> call, Response<RequestsPage> response) {
+                Log.d(TAG, "onResponse: called");
+                callback.result(response.body());
+            }
+
+            @Override
+            public void onFailure(Call<RequestsPage> call, Throwable t) {
+                Log.d(TAG, "onFailure: called " + t.getMessage());
+                callback.result(null);
+            }
+        });
     }
 }

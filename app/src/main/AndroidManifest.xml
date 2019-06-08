@@ -36,6 +36,14 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".ui.request_details.DetailRequestActivity"
+            android:theme="@style/AppThemeNoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.DetailRequestActivity"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
+
     </application>
 
 </manifest>

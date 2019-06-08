@@ -16,6 +16,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.admin.oracletest.Callback;
 import com.example.admin.oracletest.R;
 import com.example.admin.oracletest.models.EmployeeRequest;
 import com.example.admin.oracletest.models.RequestsPage;
@@ -124,37 +125,43 @@ public class ViewSearchFragment extends DaggerFragment implements MenuItem.OnMen
         recyclerView.setAdapter(adapter);
     }
 
+    private void showProgressDialog(boolean isVisible){
+        if(isVisible){
+            progressDialog.show();
+        }else{
+            progressDialog.dismiss();
+        }
+    }
+
     /**
      * Get next page of requests
      */
 
     private void searchRequests(){
-        progressDialog.show();
-        viewModel.searchRequests(ViewSearchFragment.p_sql_statement, ViewSearchFragment.p_sql_statement_count_rows, currentPage).observe(this, new Observer<GetRequestsResource<RequestsPage>>() {
+        showProgressDialog(true);
+        viewModel.searchRequests(ViewSearchFragment.p_sql_statement, ViewSearchFragment.p_sql_statement_count_rows, currentPage, new Callback() {
             @Override
-            public void onChanged(@Nullable GetRequestsResource<RequestsPage> requestsPageGetRequestsResource) {
-                if(requestsPageGetRequestsResource != null){
-                    switch (requestsPageGetRequestsResource.status){
-                        case ERROR:{
-                            progressDialog.dismiss();
-                            showErrorAlertDialog();
-                            break;
+            public void result(Object data) {
+                showProgressDialog(false);
+                if(data != null){
+                    RequestsPage requestsPage = (RequestsPage) data;
+                    EmployeeRequest[] employeeRequests = requestsPage.getRequests();
+                    if(employeeRequests.length > 0) {
+                        List<EmployeeRequest> requests = new ArrayList<>(Arrays.asList(employeeRequests));
+                        requestList.addAll(requests);
+                        RequestsPageRecyclerAdapter adapter =
+                                new RequestsPageRecyclerAdapter(requestList);
+                        recyclerView.setAdapter(adapter);
+                        isLoading = false;
+                        // Скролл вниз до след. загруженного элемента
+                        if(currentPage != 1) {
+                            recyclerView.smoothScrollToPosition(requestList.size() - 7);
                         }
-                        case SUCCESS:{
-                            progressDialog.dismiss();
-                            List<EmployeeRequest> requests = new ArrayList<>(Arrays.asList(requestsPageGetRequestsResource.data.getRequests()));
-                            requestList.addAll(requests);
-                            RequestsPageRecyclerAdapter adapter =
-                                    new RequestsPageRecyclerAdapter(requestList);
-                            recyclerView.setAdapter(adapter);
-                            isLoading = false;
-                            // Скролл вниз до след. загруженного элемента
-                            if(currentPage != 1) {
-                                recyclerView.smoothScrollToPosition(requestList.size() - 7);
-                            }
-                            break;
-                        }
+                    }else{
+                        showErrorAlertDialog();
                     }
+                }else{
+                    showErrorAlertDialog();
                 }
             }
         });

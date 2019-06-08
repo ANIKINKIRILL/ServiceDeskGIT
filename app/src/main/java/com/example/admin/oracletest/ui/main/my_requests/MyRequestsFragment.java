@@ -17,6 +17,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.admin.oracletest.Callback;
 import com.example.admin.oracletest.R;
 import com.example.admin.oracletest.dependencyinjection.app.SessionManager;
 import com.example.admin.oracletest.models.EmployeeRequest;
@@ -72,12 +73,15 @@ public class MyRequestsFragment extends DaggerFragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_myrequests, container, false);
-        Log.d(TAG, "onCreateView: called");
-        initUiComponents(view);
         context = container.getContext();
+        return inflater.inflate(R.layout.fragment_myrequests, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        initUiComponents(view);
         get_emp_requests();
-        return view;
     }
 
     /*---------------------------------- Methods ------------------------------------*/
@@ -114,44 +118,70 @@ public class MyRequestsFragment extends DaggerFragment {
 
     private void get_emp_requests(){
         showProgressDialog(true);
-        viewModel.get_my_requests(sessionManager.getAuthUser().getValue().data.getUserId(), currentPage, status_id)
-                .observe(this, new Observer<GetRequestsResource<RequestsPage>>() {
-                    @Override
-                    public void onChanged(@Nullable GetRequestsResource<RequestsPage> requestsPageGetRequestsResource) {
-                        if(requestsPageGetRequestsResource != null){
-                            switch (requestsPageGetRequestsResource.status){
-                                case ERROR:{
-                                    Log.d(TAG, "onChanged: ERROR");
-                                    showProgressDialog(false);
-                                    showErrorAlertDialog();
-                                    break;
-                                }
-                                case SUCCESS:{
-                                    Log.d(TAG, "onChanged: SUCCESS");
-                                    List<EmployeeRequest> requests = new ArrayList<>(Arrays.asList(requestsPageGetRequestsResource.data.getRequests()));
-                                    requestList.addAll(requests);
-                                    RequestsPageRecyclerAdapter adapter = new RequestsPageRecyclerAdapter(requestList);
-                                    recyclerView.setAdapter(adapter);
-                                    isLoading = false;
-                                    showProgressDialog(false);
-                                    if(currentPage != 1) {
-                                        recyclerView.smoothScrollToPosition(requestList.size() - 7);
-                                    }
-                                    break;
-                                }
-                            }
-                        }
+        viewModel.get_my_requests(getCurrentUserId(), currentPage, status_id, new Callback() {
+            @Override
+            public void result(Object data) {
+                showProgressDialog(false);
+                if(data != null){
+                    RequestsPage requestsPage = (RequestsPage) data;
+                    EmployeeRequest[] employeeRequests = requestsPage.getRequests();
+                    if(employeeRequests.length > 0) {
+                        List<EmployeeRequest> requests = new ArrayList<>(Arrays.asList(employeeRequests));
+                        updateRecyclerView(requests);
+                    }else{
+                        showEmptyRequestsListAlertDialog();
                     }
-                });
+                }else{
+                    showEmptyRequestsListAlertDialog();
+                }
+            }
+        });
     }
 
-    private void showErrorAlertDialog(){
+    private int getCurrentUserId(){
+        return sessionManager.getAuthUser().getValue().data.getUserId();
+    }
+
+    /**
+     * If user`s requests list is empty
+     * therefore user ain`t got any requests
+     * or it is the last page of requests with this status
+     */
+
+    private void showEmptyRequestsListAlertDialog(){
         String status = get_status_name(status_id);
-        AlertDialog.Builder alertDialog = new AlertDialog.Builder(getContext());
+        android.support.v7.app.AlertDialog.Builder alertDialog = new android.support.v7.app.AlertDialog.Builder(getContext());
         alertDialog.setTitle(context.getString(R.string.myRequests));
         alertDialog.setMessage("У Вас нет заявок со статусом '" + status + "'");
         alertDialog.setPositiveButton(context.getText(R.string.ok_button), (dialog, which) -> dialog.dismiss());
         alertDialog.show();
+    }
+
+    /**
+     * If error happened
+     */
+
+    private void showServerErrorAlertDialog(){
+        android.support.v7.app.AlertDialog.Builder alertDialog = new android.support.v7.app.AlertDialog.Builder(getContext());
+        alertDialog.setMessage("Произошла ошибка. Обратитесь в тех.поддержку");
+        alertDialog.setPositiveButton(getContext().getText(R.string.write_to_tech_support), (dialog, which) -> dialog.dismiss());
+        alertDialog.show();
+    }
+
+    /**
+     * Update recyclerview when load new requests from server
+     * @param requests      new requests
+     */
+
+    private void updateRecyclerView(List<EmployeeRequest> requests){
+        requestList.addAll(requests);
+        RequestsPageRecyclerAdapter adapter = new RequestsPageRecyclerAdapter(requestList);
+        recyclerView.setAdapter(adapter);
+        showProgressDialog(false);
+        isLoading = false;
+        if(currentPage != 1) {
+            recyclerView.smoothScrollToPosition(requestList.size() - 7);
+        }
     }
 
     private void showProgressDialog(boolean isVisible){

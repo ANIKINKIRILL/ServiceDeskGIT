@@ -5,6 +5,7 @@ import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -20,6 +21,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.admin.oracletest.Callback;
 import com.example.admin.oracletest.R;
 import com.example.admin.oracletest.models.EmployeeRequest;
 import com.example.admin.oracletest.models.RequestsPage;
@@ -86,6 +88,11 @@ public class SearchFragment extends DaggerFragment implements View.OnClickListen
      */
 
     private void init(View view){
+        ColorDrawable colorDrawable = new ColorDrawable(getContext().getResources().getColor(R.color.kfuDefaultColor));
+        progressDialog = new ProgressDialog(getContext());
+        progressDialog.setMessage("Поиск заявок...");
+        progressDialog.setProgressDrawable(colorDrawable);
+
         code = view.findViewById(R.id.requestCodeValue);
         reg_date = view.findViewById(R.id.requestDateOfRegistrationValue);
         closing_date = view.findViewById(R.id.requestDateOfRealizationValue);
@@ -148,6 +155,14 @@ public class SearchFragment extends DaggerFragment implements View.OnClickListen
         return editText.getText().toString().trim();
     }
 
+    private void showProgressDialog(boolean isVisible){
+        if(isVisible){
+            progressDialog.show();
+        }else{
+            progressDialog.dismiss();
+        }
+    }
+
     /**
      * Создать SQL запрос
      * для основного запроса 'sql_statement'
@@ -202,29 +217,25 @@ public class SearchFragment extends DaggerFragment implements View.OnClickListen
     }
 
     private void searchRequests(){
-        viewModel.searchRequests(sql_statement, sql_statement_count_rows, start_page)
-            .observe(this, new Observer<GetRequestsResource<RequestsPage>>() {
-                @Override
-                public void onChanged(@Nullable GetRequestsResource<RequestsPage> requestsPageGetRequestsResource) {
-                    if(requestsPageGetRequestsResource != null){
-                        switch (requestsPageGetRequestsResource.status){
-                            case ERROR:{
-                                Log.d(TAG, "onChanged: ERROR");
-                                progressDialog.dismiss();
-                                showErrorAlertDialog();
-                                break;
-                            }
-                            case SUCCESS:{
-                                progressDialog.dismiss();
-                                Log.d(TAG, "onChanged: SUCCESS");
-                                List<EmployeeRequest> requests = new ArrayList<>(Arrays.asList(requestsPageGetRequestsResource.data.getRequests()));
-                                showSuccessAlertDialog(requests);
-                                break;
-                            }
-                        }
+        showProgressDialog(true);
+        viewModel.searchRequests(sql_statement, sql_statement_count_rows, start_page, new Callback() {
+            @Override
+            public void result(Object data) {
+                showProgressDialog(false);
+                if(data != null){
+                    RequestsPage requestsPage = (RequestsPage) data;
+                    EmployeeRequest[] employeeRequests = requestsPage.getRequests();
+                    if(employeeRequests.length > 0) {
+                        List<EmployeeRequest> requests = new ArrayList<>(Arrays.asList(employeeRequests));
+                        showSuccessAlertDialog(requests);
+                    }else{
+                        showErrorAlertDialog();
                     }
+                }else{
+                    showErrorAlertDialog();
                 }
-            });
+            }
+        });
     }
 
     /**
@@ -234,7 +245,6 @@ public class SearchFragment extends DaggerFragment implements View.OnClickListen
     public static void clearAllWidgetsData(){
         try {
             code.getText().clear();
-            zaavitel.getText().clear();
             roomNumber.getText().clear();
         }catch (Exception e){
             Log.d(TAG, "clearAllWidgetsData: " + e.getMessage());
@@ -247,7 +257,7 @@ public class SearchFragment extends DaggerFragment implements View.OnClickListen
      */
 
     private void showSuccessAlertDialog(List<EmployeeRequest> requests){
-        AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
+        android.support.v7.app.AlertDialog.Builder dialog = new android.support.v7.app.AlertDialog.Builder(getContext());
         dialog.setTitle("Поиск");
         dialog.setMessage("Найденные заявки: " + User.search_requests_amount);
         dialog.setPositiveButton("ПОКАЗАТЬ", new DialogInterface.OnClickListener() {
@@ -275,7 +285,7 @@ public class SearchFragment extends DaggerFragment implements View.OnClickListen
      */
 
     private void showErrorInputAlertDialog(){
-        AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
+        android.support.v7.app.AlertDialog.Builder dialog = new android.support.v7.app.AlertDialog.Builder(getContext());
         dialog.setTitle("Неверный ввод");
         dialog.setMessage("Мы не сможем найти заявки без параметров. Введите какие-нибудь данные");
         dialog.setPositiveButton("OK", (dialogInterface, which) -> dialogInterface.dismiss());
@@ -288,7 +298,7 @@ public class SearchFragment extends DaggerFragment implements View.OnClickListen
      */
 
     private void showErrorAlertDialog(){
-        AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
+        android.support.v7.app.AlertDialog.Builder dialog = new android.support.v7.app.AlertDialog.Builder(getContext());
         dialog.setTitle("Поиск");
         dialog.setMessage("Найденные заявки: " + User.search_requests_amount);
         dialog.setPositiveButton("ОТМЕНА", (dialog1, which) -> dialog1.dismiss());
@@ -303,9 +313,6 @@ public class SearchFragment extends DaggerFragment implements View.OnClickListen
                 // Проверка если хотя бы 1 ввод есть
                 if(isValid()){
                     User.search_requests_amount = 0;
-                    progressDialog = new ProgressDialog(getContext());
-                    progressDialog.setMessage("Поиск заявок...");
-                    progressDialog.show();
                     makeSqlStatement();
                     searchRequests();
                 }else{

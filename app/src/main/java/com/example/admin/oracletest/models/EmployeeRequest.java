@@ -56,7 +56,7 @@ public class EmployeeRequest {
     @SerializedName("building_kfu")
     @Expose
     private RequestBuildingKfu building_kfu;       // адрес КФУ
-    @SerializedName("room_number")
+    @SerializedName("room_num")
     @Expose
     private String room_number;     // комната
     @SerializedName("image")

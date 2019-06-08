@@ -24,6 +24,7 @@
     <string name="complete_request">Завершить</string>
     <string name="exit">Выйти</string>
     <string name="ok_button">ОК</string>
+    <string name="write_to_tech_support">Тех. поддрежка</string>
     <string name="description_done_job">Описание выполненных работ:</string>
     <string name="open_dialog">открыть диалог</string>
     <string name="close_dialog">закрыть диалог</string>

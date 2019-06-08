@@ -5,6 +5,7 @@ import android.arch.lifecycle.LiveDataReactiveStreams;
 import android.arch.lifecycle.ViewModel;
 import android.util.Log;
 
+import com.example.admin.oracletest.Callback;
 import com.example.admin.oracletest.models.EmployeeRequest;
 import com.example.admin.oracletest.models.RequestsPage;
 import com.example.admin.oracletest.models.User;
@@ -19,6 +20,8 @@ import io.reactivex.FlowableSubscriber;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
+import retrofit2.Call;
+import retrofit2.Response;
 
 public class MyRequestsFragmentViewModel extends ViewModel {
 
@@ -38,32 +41,23 @@ public class MyRequestsFragmentViewModel extends ViewModel {
      * @param status_id status id of requests user wanna get
      */
 
-    public LiveData<GetRequestsResource<RequestsPage>> get_my_requests(int emp_id, int page, int status_id){
-        return LiveDataReactiveStreams.fromPublisher(
-                requestsApi.getMyRequests(emp_id, page, status_id)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .onErrorReturn(new Function<Throwable, RequestsPage>() {
-                    @Override
-                    public RequestsPage apply(Throwable throwable) throws Exception {
-                        RequestsPage errorRequestPage = new RequestsPage();
-                        errorRequestPage.setRequests(new EmployeeRequest[] {});
-                        return errorRequestPage;
-                    }
-                })
-                .map(new Function<RequestsPage, GetRequestsResource<RequestsPage>>() {
-                    @Override
-                    public GetRequestsResource<RequestsPage> apply(RequestsPage requestsPage) throws Exception {
-                        if(requestsPage.getRequests().length == 0){
-                            Log.d(TAG, "apply: error");
-                            return GetRequestsResource.error("No data found", requestsPage);
-                        }
-                        Log.d(TAG, "apply: success");
-                        User.myRequestsAmount = requestsPage.getRequests().length;
-                        return GetRequestsResource.success(requestsPage);
-                    }
-                })
-        );
+    public void get_my_requests(int emp_id, int page, int status_id, Callback callback){
+        Log.d(TAG, "get_my_requests: called");
+        Log.d(TAG, "get_my_requests: " + requestsApi.getMyRequests(emp_id, page, status_id).request().url().toString());
+        requestsApi.getMyRequests(emp_id, page, status_id).enqueue(new retrofit2.Callback<RequestsPage>() {
+            @Override
+            public void onResponse(Call<RequestsPage> call, Response<RequestsPage> response) {
+                Log.d(TAG, "onResponse: called");
+                User.myRequestsAmount = response.body().getRequests().length;
+                callback.result(response.body());
+            }
+
+            @Override
+            public void onFailure(Call<RequestsPage> call, Throwable t) {
+                Log.d(TAG, "onFailure: called " + t.getMessage());
+                callback.result(null);
+            }
+        });
     }
 
 
