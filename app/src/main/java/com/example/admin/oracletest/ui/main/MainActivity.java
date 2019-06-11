@@ -161,6 +161,7 @@ public class MainActivity extends BaseActivity implements OnViewSearchRequestsFr
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.main_container, fragment, tag).commit();
         actionBar.setDisplayShowCustomEnabled(false);
+        actionBar.setDisplayHomeAsUpEnabled(false);
         actionBar.setTitle(actionBarTitle);
         actionBar.setElevation(0);
     }

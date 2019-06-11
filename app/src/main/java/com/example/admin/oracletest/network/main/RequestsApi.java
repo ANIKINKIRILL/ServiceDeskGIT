@@ -36,8 +36,8 @@ public interface RequestsApi {
 
     @GET("SERVICEDESK_MOBILE_TEST.SEARCH_REQUEST")
     Call<RequestsPage> searchRequests(
-            @Query("p_sql_statement") String sql_statement,
-            @Query("p_sql_statement_count_rows") String sql_statement_rows_count,
+            @Query(value = "p_sql_statement", encoded = true) String sql_statement,
+            @Query(value = "p_sql_statement_count_rows", encoded = true) String sql_statement_rows_count,
             @Query("p_page_number") int page_number
     );
 
