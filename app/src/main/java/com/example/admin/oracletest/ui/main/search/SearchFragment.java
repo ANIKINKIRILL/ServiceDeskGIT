@@ -1,7 +1,6 @@
 package com.example.admin.oracletest.ui.main.search;
 
 import android.app.ProgressDialog;
-import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -10,7 +9,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
-import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,11 +24,8 @@ import com.example.admin.oracletest.R;
 import com.example.admin.oracletest.models.EmployeeRequest;
 import com.example.admin.oracletest.models.RequestsPage;
 import com.example.admin.oracletest.models.User;
-import com.example.admin.oracletest.ui.main.GetRequestsResource;
-import com.example.admin.oracletest.ui.main.RequestsPageRecyclerAdapter;
 import com.example.admin.oracletest.viewmodel.ViewModelProviderFactory;
 
-import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -319,6 +314,15 @@ public class SearchFragment extends DaggerFragment implements View.OnClickListen
         searchRequests();
     }
 
+    /**
+     * Set registration date
+     * @param date  date to set
+     */
+
+    public static void setReg_date(String date){
+        reg_date.setText(date);
+    }
+
     @Override
     public void onClick(View v) {
         switch (v.getId()){
@@ -333,7 +337,7 @@ public class SearchFragment extends DaggerFragment implements View.OnClickListen
                 break;
             }
             case R.id.requestDateOfRegistrationValue:{
-                BottomSheetDialogFragmentSearchRequestPickDate pickDateDialog = new BottomSheetDialogFragmentSearchRequestPickDate();
+                BottomSheetDialogFragmentSearchRequestPickRegDate pickDateDialog = new BottomSheetDialogFragmentSearchRequestPickRegDate();
                 pickDateDialog.show(getActivity().getSupportFragmentManager(), getString(R.string.open_dialog));
                 break;
             }

@@ -57,9 +57,9 @@
             android:layout_height="50dp" />
 
         <TextView
-            android:id="@+id/cancelButton"
+            android:id="@+id/deleteButton"
             android:layout_weight="50"
-            android:text="@string/cancel"
+            android:text="@string/delete"
             android:gravity="center"
             android:textSize="18sp"
             android:background="@color/kfuDefaultColor"

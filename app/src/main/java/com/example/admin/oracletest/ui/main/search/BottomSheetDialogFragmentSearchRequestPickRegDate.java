@@ -7,10 +7,13 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetDialogFragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.NumberPicker;
+import android.widget.TextView;
 
 import com.example.admin.oracletest.R;
 
@@ -18,10 +21,16 @@ import com.example.admin.oracletest.R;
  * Fragment with date picker for {@link SearchFragment}
  */
 
-public class BottomSheetDialogFragmentSearchRequestPickDate extends BottomSheetDialogFragment{
+public class BottomSheetDialogFragmentSearchRequestPickRegDate extends BottomSheetDialogFragment implements View.OnClickListener {
+
+    private static final String TAG = "BotSheetSerReqPickDate";
 
     // UI
     private NumberPicker dayPicker, monthPicker, yearPicker;
+    private TextView okButton, deleteButton;
+
+    // Vars
+    private static String date = "";
 
     @Nullable
     @Override
@@ -35,6 +44,11 @@ public class BottomSheetDialogFragmentSearchRequestPickDate extends BottomSheetD
         dayPicker = view.findViewById(R.id.dayPicker);
         monthPicker = view.findViewById(R.id.monthPicker);
         yearPicker = view.findViewById(R.id.yearPicker);
+        okButton = view.findViewById(R.id.okButton);
+        deleteButton = view.findViewById(R.id.deleteButton);
+
+        okButton.setOnClickListener(this);
+        deleteButton.setOnClickListener(this);
 
         setNumberPickersConfigurationSettings();
     }
@@ -59,4 +73,23 @@ public class BottomSheetDialogFragmentSearchRequestPickDate extends BottomSheetD
         yearPicker.setWrapSelectorWheel(true);
     }
 
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.okButton:{
+                date = String.format("%d/%d/%d", dayPicker.getValue(), monthPicker.getValue(), yearPicker.getValue());
+                SearchFragment.setReg_date(date);
+                Log.d(TAG, "onClick: pickedDate" + date);
+                dismiss();
+                break;
+            }
+            case R.id.deleteButton:{
+                date = "";
+                SearchFragment.setReg_date(date);
+                dismiss();
+                break;
+            }
+        }
+
+    }
 }
