@@ -110,6 +110,7 @@ public class SearchFragment extends DaggerFragment implements View.OnClickListen
         searchButton = view.findViewById(R.id.search_button);
 
         searchButton.setOnClickListener(this);
+        reg_date.setOnClickListener(this);
 
     }
 
@@ -306,6 +307,18 @@ public class SearchFragment extends DaggerFragment implements View.OnClickListen
         dialog.show();
     }
 
+    /**
+     * If user input is valid
+     * do {@link User} search_request_amount value make zero value
+     * makeSqlString and search in {@link SearchFragmentViewModel}
+     */
+
+    private void onSuccessSearchButton(){
+        User.search_requests_amount = 0;
+        makeSqlStatement();
+        searchRequests();
+    }
+
     @Override
     public void onClick(View v) {
         switch (v.getId()){
@@ -313,12 +326,15 @@ public class SearchFragment extends DaggerFragment implements View.OnClickListen
             case R.id.search_button:{
                 // Проверка если хотя бы 1 ввод есть
                 if(isValid()){
-                    User.search_requests_amount = 0;
-                    makeSqlStatement();
-                    searchRequests();
+                    onSuccessSearchButton();
                 }else{
                     showErrorInputAlertDialog();
                 }
+                break;
+            }
+            case R.id.requestDateOfRegistrationValue:{
+                BottomSheetDialogFragmentSearchRequestPickDate pickDateDialog = new BottomSheetDialogFragmentSearchRequestPickDate();
+                pickDateDialog.show(getActivity().getSupportFragmentManager(), getString(R.string.open_dialog));
                 break;
             }
         }

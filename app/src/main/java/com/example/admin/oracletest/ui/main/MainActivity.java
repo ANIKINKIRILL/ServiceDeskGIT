@@ -39,7 +39,6 @@ public class MainActivity extends BaseActivity implements OnViewSearchRequestsFr
     BottomNavigationView bottomNavigationView;
     FrameLayout mainContainer;
 
-
     // Переменные
     public static ActionBar actionBar;
     public static Menu menu;

@@ -56,6 +56,7 @@
     <string name="search_fragment_tag">SEARCH</string>
     <string name="view_search_fragment_tag">VIEW SEARCH</string>
     <string name="settings_fragment_tag">SETTINGS</string>
+    <string name="cancel">Отмена</string>
 
     <string-array name="requestStatusArray">
         <item>Новая</item>

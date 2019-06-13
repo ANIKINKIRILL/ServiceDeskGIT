@@ -2,6 +2,7 @@
   <dictionary name="kyani">
     <words>
       <w>anikin</w>
+      <w>bottomsheet</w>
       <w>declarant</w>
       <w>dependencyinjection</w>
       <w>firebase</w>
