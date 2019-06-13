@@ -91,7 +91,7 @@ public class SearchFragment extends DaggerFragment implements View.OnClickListen
 
         code = view.findViewById(R.id.requestCodeValue);
         reg_date = view.findViewById(R.id.requestDateOfRegistrationValue);
-        closing_date = view.findViewById(R.id.requestDateOfRealizationValue);
+        closing_date = view.findViewById(R.id.requestDateOfClosingValue);
         zaavitel = view.findViewById(R.id.requestZaavitelValue);
         podrazdilenie = view.findViewById(R.id.requestPodrazdelenieValue);
         location = view.findViewById(R.id.requestLocationValue);
@@ -106,6 +106,7 @@ public class SearchFragment extends DaggerFragment implements View.OnClickListen
 
         searchButton.setOnClickListener(this);
         reg_date.setOnClickListener(this);
+        closing_date.setOnClickListener(this);
 
     }
 
@@ -138,7 +139,9 @@ public class SearchFragment extends DaggerFragment implements View.OnClickListen
         &&
         info.getText().toString().trim().isEmpty()
         &&
-        reg_date.getText().toString().trim().isEmpty()){
+        reg_date.getText().toString().trim().isEmpty()
+        &&
+        closing_date.getText().toString().trim().isEmpty()){
             return false;
         }
         return true;
@@ -202,6 +205,23 @@ public class SearchFragment extends DaggerFragment implements View.OnClickListen
                 sql_statement_count_rows += " AND REQUEST_DATE LIKE TO_DATE('" + getTextFromTextView(reg_date) + "', 'DD/MM/YYYY')";
             }else {
                 sql_statement_count_rows += "WHERE REQUEST_DATE LIKE TO_DATE('" + getTextFromTextView(reg_date) + "', 'DD/MM/YYYY')";
+            }
+
+        }
+
+        // DATE OF CLOSING
+
+        if(!getTextFromTextView(closing_date).isEmpty()){
+            if(sql_statement.contains("WHERE")) {
+                sql_statement += " AND DATE_OF_CLOSING LIKE TO_DATE('" + getTextFromTextView(closing_date) + "', 'DD/MM/YYYY')";
+            }else {
+                sql_statement += "WHERE DATE_OF_CLOSING LIKE TO_DATE('" + getTextFromTextView(closing_date) + "', 'DD/MM/YYYY')";
+            }
+
+            if(sql_statement_count_rows.contains("WHERE")) {
+                sql_statement_count_rows += " AND DATE_OF_CLOSING LIKE TO_DATE('" + getTextFromTextView(closing_date) + "', 'DD/MM/YYYY')";
+            }else {
+                sql_statement_count_rows += "WHERE DATE_OF_CLOSING LIKE TO_DATE('" + getTextFromTextView(closing_date) + "', 'DD/MM/YYYY')";
             }
 
         }
@@ -281,6 +301,7 @@ public class SearchFragment extends DaggerFragment implements View.OnClickListen
             roomNumber.getText().clear();
             zaavitel.getText().clear();
             reg_date.setText("");
+            closing_date.setText("");
         }catch (Exception e){
             Log.d(TAG, "clearAllWidgetsData: " + e.getMessage());
         }
@@ -361,6 +382,15 @@ public class SearchFragment extends DaggerFragment implements View.OnClickListen
         reg_date.setText(date);
     }
 
+    /**
+     * Set closing date
+     * @param date  date to set
+     */
+
+    public static void setClosing_date(String date){
+        closing_date.setText(date);
+    }
+
     @Override
     public void onClick(View v) {
         switch (v.getId()){
@@ -376,6 +406,11 @@ public class SearchFragment extends DaggerFragment implements View.OnClickListen
             }
             case R.id.requestDateOfRegistrationValue:{
                 BottomSheetDialogFragmentSearchRequestPickRegDate pickDateDialog = new BottomSheetDialogFragmentSearchRequestPickRegDate();
+                pickDateDialog.show(getActivity().getSupportFragmentManager(), getString(R.string.open_dialog));
+                break;
+            }
+            case R.id.requestDateOfClosingValue:{
+                BottomSheetDialogFragmentSearchRequestPickDateOfClosing pickDateDialog = new BottomSheetDialogFragmentSearchRequestPickDateOfClosing();
                 pickDateDialog.show(getActivity().getSupportFragmentManager(), getString(R.string.open_dialog));
                 break;
             }
