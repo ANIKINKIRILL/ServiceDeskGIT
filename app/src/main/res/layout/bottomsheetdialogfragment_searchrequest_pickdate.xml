@@ -5,19 +5,40 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <DatePicker
-        android:theme="@style/AppTheme"
-        android:id="@+id/datePicker"
-        android:layout_marginBottom="20dp"
+    <LinearLayout
+        android:id="@+id/datePickerLayout"
+        android:weightSum="60"
+        android:layout_marginTop="15dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content">
+        <NumberPicker
+            android:id="@+id/dayPicker"
+            android:layout_weight="20"
+            android:theme="@style/AppTheme"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <NumberPicker
+            android:id="@+id/monthPicker"
+            android:layout_weight="20"
+            android:theme="@style/AppTheme"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <NumberPicker
+            android:id="@+id/yearPicker"
+            android:layout_weight="20"
+            android:theme="@style/AppTheme"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/buttonsLayout"
-        android:layout_below="@id/datePicker"
-        android:layout_marginStart="5dp"
-        android:layout_marginEnd="5dp"
-        android:layout_marginBottom="10dp"
+        android:layout_below="@id/datePickerLayout"
+        android:layout_marginTop="20dp"
         android:weightSum="100"
         android:orientation="horizontal"
         android:layout_width="match_parent"
@@ -29,8 +50,8 @@
             android:layout_marginEnd="5dp"
             android:text="@string/ok_button"
             android:gravity="center"
-            android:textSize="20sp"
-            android:background="@drawable/button_round_corners"
+            android:textSize="18sp"
+            android:background="@color/kfuDefaultColor"
             android:textColor="@android:color/white"
             android:layout_width="match_parent"
             android:layout_height="50dp" />
@@ -40,8 +61,8 @@
             android:layout_weight="50"
             android:text="@string/cancel"
             android:gravity="center"
-            android:textSize="20sp"
-            android:background="@drawable/button_round_corners"
+            android:textSize="18sp"
+            android:background="@color/kfuDefaultColor"
             android:textColor="@android:color/white"
             android:layout_width="match_parent"
             android:layout_height="50dp" />
