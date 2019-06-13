@@ -136,7 +136,9 @@ public class SearchFragment extends DaggerFragment implements View.OnClickListen
         &&
         type.getText().toString().trim().isEmpty()
         &&
-        info.getText().toString().trim().isEmpty()){
+        info.getText().toString().trim().isEmpty()
+        &&
+        reg_date.getText().toString().trim().isEmpty()){
             return false;
         }
         return true;
@@ -150,6 +152,16 @@ public class SearchFragment extends DaggerFragment implements View.OnClickListen
 
     private String getTextFromEditText(EditText editText){
         return editText.getText().toString().trim();
+    }
+
+    /**
+     * Получить текст с TextView
+     * @param textView      textView с которого хотим получить текст
+     * @return полученный текст с editText
+     */
+
+    private String getTextFromTextView(TextView textView){
+        return textView.getText().toString().trim();
     }
 
     private void showProgressDialog(boolean isVisible){
@@ -169,10 +181,32 @@ public class SearchFragment extends DaggerFragment implements View.OnClickListen
     private void makeSqlStatement(){
         sql_statement = "SELECT * FROM TECH_CENTER$DB.REQUEST ";
         sql_statement_count_rows = "SELECT COUNT(ID) FROM TECH_CENTER$DB.REQUEST ";
+
+        // CODE
+
         if(!getTextFromEditText(code).isEmpty()){
             sql_statement += "WHERE COD = " + getTextFromEditText(code);
             sql_statement_count_rows += "WHERE COD = " + getTextFromEditText(code);
         }
+
+        // DATE OF REGISTRATION
+
+        if(!getTextFromTextView(reg_date).isEmpty()){
+            if(sql_statement.contains("WHERE")) {
+                sql_statement += " AND REQUEST_DATE LIKE TO_DATE('" + getTextFromTextView(reg_date) + "', 'DD/MM/YYYY')";
+            }else {
+                sql_statement += "WHERE REQUEST_DATE LIKE TO_DATE('" + getTextFromTextView(reg_date) + "', 'DD/MM/YYYY')";
+            }
+
+            if(sql_statement_count_rows.contains("WHERE")) {
+                sql_statement_count_rows += " AND REQUEST_DATE LIKE TO_DATE('" + getTextFromTextView(reg_date) + "', 'DD/MM/YYYY')";
+            }else {
+                sql_statement_count_rows += "WHERE REQUEST_DATE LIKE TO_DATE('" + getTextFromTextView(reg_date) + "', 'DD/MM/YYYY')";
+            }
+
+        }
+
+        // DECLARANT_FIO
 
         if(!getTextFromEditText(zaavitel).isEmpty()){
             try {
@@ -191,6 +225,8 @@ public class SearchFragment extends DaggerFragment implements View.OnClickListen
                 Log.d(TAG, "makeSqlStatement: " + e.getMessage());
             }
         }
+
+        // ROOM_NUM
 
         if(!getTextFromEditText(roomNumber).isEmpty()){
             if(sql_statement.contains("WHERE")) {
@@ -243,6 +279,8 @@ public class SearchFragment extends DaggerFragment implements View.OnClickListen
         try {
             code.getText().clear();
             roomNumber.getText().clear();
+            zaavitel.getText().clear();
+            reg_date.setText("");
         }catch (Exception e){
             Log.d(TAG, "clearAllWidgetsData: " + e.getMessage());
         }
