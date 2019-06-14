@@ -1,9 +1,8 @@
 package com.example.admin.oracletest.network.main;
 
-import com.example.admin.oracletest.models.Locations;
+import com.example.admin.oracletest.models.KfuBuildingsLocationsPage;
 import com.example.admin.oracletest.models.RequestsPage;
 
-import io.reactivex.Flowable;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
@@ -47,6 +46,6 @@ public interface RequestsApi {
      */
 
     @GET("SERVICEDESK_MOBILE_TEST.SEARCH_REQUEST")
-    Call<Locations> getLocationNames();
+    Call<KfuBuildingsLocationsPage> getLocationNames();
 
 }
