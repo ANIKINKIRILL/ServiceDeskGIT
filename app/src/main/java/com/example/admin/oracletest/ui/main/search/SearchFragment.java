@@ -83,6 +83,7 @@ public class SearchFragment extends DaggerFragment implements View.OnClickListen
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        adapter = new ArrayAdapter<>(view.getContext(), android.R.layout.simple_list_item_1, locationNames);
         init(view);
     }
 
@@ -115,6 +116,9 @@ public class SearchFragment extends DaggerFragment implements View.OnClickListen
         searchButton.setOnClickListener(this);
         reg_date.setOnClickListener(this);
         closing_date.setOnClickListener(this);
+
+        location.setAdapter(adapter);
+
     }
 
     /**
