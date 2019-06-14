@@ -10,6 +10,7 @@ import android.util.Log;
 
 import com.example.admin.oracletest.Constants;
 import com.example.admin.oracletest.dependencyinjection.app.SessionManager;
+import com.example.admin.oracletest.models.KfuBuildingLocation;
 import com.example.admin.oracletest.models.KfuBuildingsLocationsPage;
 import com.example.admin.oracletest.models.User;
 import com.example.admin.oracletest.network.auth.AuthApi;
@@ -53,11 +54,13 @@ public class AuthViewModel extends ViewModel {
             @Override
             public void onResponse(Call<KfuBuildingsLocationsPage> call, Response<KfuBuildingsLocationsPage> response) {
                 Log.d(TAG, "onResponse: called");
+                Constants.locations = response.body().getLocations();
             }
 
             @Override
             public void onFailure(Call<KfuBuildingsLocationsPage> call, Throwable t) {
                 Log.d(TAG, "onFailure: called");
+                Constants.locations = new KfuBuildingLocation[0];
             }
         });
     }

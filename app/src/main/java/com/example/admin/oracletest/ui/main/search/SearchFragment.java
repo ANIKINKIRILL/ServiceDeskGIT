@@ -22,8 +22,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.admin.oracletest.Callback;
+import com.example.admin.oracletest.Constants;
 import com.example.admin.oracletest.R;
 import com.example.admin.oracletest.models.EmployeeRequest;
+import com.example.admin.oracletest.models.KfuBuildingLocation;
 import com.example.admin.oracletest.models.RequestsPage;
 import com.example.admin.oracletest.models.User;
 import com.example.admin.oracletest.viewmodel.ViewModelProviderFactory;
@@ -67,6 +69,7 @@ public class SearchFragment extends DaggerFragment implements View.OnClickListen
     public static OnViewSearchRequestsFragmentListener requestsFragmentListener;
     public static OnViewSearchRequestsFragmentSqlParams requestsFragmentSqlParams;
     public ArrayAdapter<String> adapter;
+    private KfuBuildingLocation[] locations = Constants.locations;
 
     @Nullable
     @Override
