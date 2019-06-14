@@ -1,5 +1,6 @@
 package com.example.admin.oracletest.network.main;
 
+import com.example.admin.oracletest.models.Locations;
 import com.example.admin.oracletest.models.RequestsPage;
 
 import io.reactivex.Flowable;
@@ -40,5 +41,12 @@ public interface RequestsApi {
             @Query(value = "p_sql_statement_count_rows", encoded = true) String sql_statement_rows_count,
             @Query("p_page_number") int page_number
     );
+
+    /**
+     * Get building kfu location names for autocompletetextview in {@link com.example.admin.oracletest.ui.main.search.SearchFragment}
+     */
+
+    @GET("SERVICEDESK_MOBILE_TEST.SEARCH_REQUEST")
+    Call<Locations> getLocationNames();
 
 }

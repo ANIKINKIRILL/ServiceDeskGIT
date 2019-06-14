@@ -13,6 +13,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -50,12 +52,12 @@ public class SearchFragment extends DaggerFragment implements View.OnClickListen
     ViewModelProviderFactory providerFactory;
 
     // Ui
-    private static EditText code, zaavitel, podrazdilenie,
-            location, roomNumber, type, info;
+    private static EditText code, zaavitel, podrazdilenie, roomNumber, type, info;
     private static TextView reg_date, closing_date;
     private static Spinner otdel, emp_fio, status, reg_user;
     private static Button searchButton;
     private ProgressDialog progressDialog;
+    private static AutoCompleteTextView location;
 
     // Vars
     private SearchFragmentViewModel viewModel;
@@ -64,6 +66,7 @@ public class SearchFragment extends DaggerFragment implements View.OnClickListen
     private int start_page = 1;
     public static OnViewSearchRequestsFragmentListener requestsFragmentListener;
     public static OnViewSearchRequestsFragmentSqlParams requestsFragmentSqlParams;
+    public ArrayAdapter<String> adapter;
 
     @Nullable
     @Override
@@ -107,7 +110,6 @@ public class SearchFragment extends DaggerFragment implements View.OnClickListen
         searchButton.setOnClickListener(this);
         reg_date.setOnClickListener(this);
         closing_date.setOnClickListener(this);
-
     }
 
     /**
@@ -246,6 +248,26 @@ public class SearchFragment extends DaggerFragment implements View.OnClickListen
             }
         }
 
+        // LOCATION
+
+        if(!getTextFromEditText(location).isEmpty()){
+            try {
+                if (sql_statement.contains("WHERE")) {
+                    sql_statement += " AND TECH_CENTER$DB.REQUEST.BUILDING_KFU_ID = (SELECT ID FROM TECH_CENTER$DB.BUILDING_KFU WHERE INSTR(TECH_CENTER$DB.BUILDING_KFU.ADRES_NAME, '" + URLEncoder.encode(getTextFromEditText(location), "Cp1251") +"') > 0 AND ROWNUM < 2)";
+                } else {
+                    sql_statement += "WHERE TECH_CENTER$DB.REQUEST.BUILDING_KFU_ID = (SELECT ID FROM TECH_CENTER$DB.BUILDING_KFU WHERE INSTR(TECH_CENTER$DB.BUILDING_KFU.ADRES_NAME, '" + URLEncoder.encode(getTextFromEditText(location), "Cp1251") +"') > 0 AND ROWNUM < 2)";
+                }
+
+                if (sql_statement_count_rows.contains("WHERE")) {
+                    sql_statement_count_rows += " AND TECH_CENTER$DB.REQUEST.BUILDING_KFU_ID = (SELECT ID FROM TECH_CENTER$DB.BUILDING_KFU WHERE INSTR(TECH_CENTER$DB.BUILDING_KFU.ADRES_NAME, '" + URLEncoder.encode(getTextFromEditText(location), "Cp1251") +"') > 0 AND ROWNUM < 2)";
+                } else {
+                    sql_statement_count_rows += "WHERE TECH_CENTER$DB.REQUEST.BUILDING_KFU_ID = (SELECT ID FROM TECH_CENTER$DB.BUILDING_KFU WHERE INSTR(TECH_CENTER$DB.BUILDING_KFU.ADRES_NAME, '" + URLEncoder.encode(getTextFromEditText(location), "Cp1251") +"') > 0 AND ROWNUM < 2)";
+                }
+            }catch (Exception e){
+                Log.d(TAG, "makeSqlStatement: " + e.getMessage());
+            }
+        }
+
         // ROOM_NUM
 
         if(!getTextFromEditText(roomNumber).isEmpty()){
@@ -302,6 +324,7 @@ public class SearchFragment extends DaggerFragment implements View.OnClickListen
             zaavitel.getText().clear();
             reg_date.setText("");
             closing_date.setText("");
+            location.getText().clear();
         }catch (Exception e){
             Log.d(TAG, "clearAllWidgetsData: " + e.getMessage());
         }

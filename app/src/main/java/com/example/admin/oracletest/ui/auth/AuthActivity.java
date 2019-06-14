@@ -146,6 +146,7 @@ public class AuthActivity extends DaggerAppCompatActivity implements View.OnClic
                                 Intent intent = new Intent(AuthActivity.this, MainActivity.class);
                                 startActivity(intent);
                                 finish();
+                                // LOADING LOCATIONS FROM SERVER
                             }else{
                                 YoYo.with(Techniques.Shake).duration(1000).repeat(0).playOn(loginButton);
                                 Toast.makeText(AuthActivity.this, getString(R.string.login_failed), Toast.LENGTH_SHORT).show();

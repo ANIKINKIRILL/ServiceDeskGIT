@@ -109,10 +109,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
-        <EditText
+        <AutoCompleteTextView
             android:id="@+id/requestLocationValue"
             android:singleLine="true"
             android:textSize="15sp"
+            android:completionThreshold="1"
+            android:completionHint="Выберите адрес"
             android:textCursorDrawable="@drawable/edit_text_gray_color_cursor"
             android:hint="@string/building_kfu_name"
             android:layout_width="match_parent"
