@@ -45,7 +45,7 @@ public interface RequestsApi {
      * Get building kfu location names for autocompletetextview in {@link com.example.admin.oracletest.ui.main.search.SearchFragment}
      */
 
-    @GET("SERVICEDESK_MOBILE_TEST.SEARCH_REQUEST")
-    Call<KfuBuildingsLocationsPage> getLocationNames();
+    @GET("SERVICEDESK_MOBILE_TEST.GET_KFU_BUILDINGS_LOCATIONS")
+    Call<KfuBuildingsLocationsPage> getKfuBuildingsLocationNames();
 
 }
