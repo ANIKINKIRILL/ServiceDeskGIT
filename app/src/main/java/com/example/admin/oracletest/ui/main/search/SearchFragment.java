@@ -70,11 +70,13 @@ public class SearchFragment extends DaggerFragment implements View.OnClickListen
     public static OnViewSearchRequestsFragmentSqlParams requestsFragmentSqlParams;
     public ArrayAdapter<String> adapter;
     private KfuBuildingLocation[] locations = Constants.locations;
+    private String[] locationNames = new String[locations.length];
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         initViewModel();
+        populateLocationNames();
         return inflater.inflate(R.layout.fragment_searchrequests, container, false);
     }
 
@@ -121,6 +123,17 @@ public class SearchFragment extends DaggerFragment implements View.OnClickListen
 
     private void initViewModel(){
         viewModel = ViewModelProviders.of(this, providerFactory).get(SearchFragmentViewModel.class);
+    }
+
+    /**
+     * Put adres_name from each location object in locations array to
+     * locationNames array
+     */
+
+    private void populateLocationNames(){
+        for(int i = 0; i < locations.length; i++){
+            locationNames[i] = locations[i].getAdres_name();
+        }
     }
 
     /**
