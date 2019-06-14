@@ -10,8 +10,10 @@ import android.util.Log;
 
 import com.example.admin.oracletest.Constants;
 import com.example.admin.oracletest.dependencyinjection.app.SessionManager;
+import com.example.admin.oracletest.models.KfuBuildingsLocationsPage;
 import com.example.admin.oracletest.models.User;
 import com.example.admin.oracletest.network.auth.AuthApi;
+import com.example.admin.oracletest.network.main.RequestsApi;
 
 import javax.inject.Inject;
 
@@ -35,12 +37,29 @@ public class AuthViewModel extends ViewModel {
 
     // Injections
     private AuthApi authApi;
+    private RequestsApi requestsApi;
     private SessionManager sessionManager;
 
     @Inject
-    public AuthViewModel(AuthApi authApi, SessionManager sessionManager){
+    public AuthViewModel(AuthApi authApi, RequestsApi requestsApi, SessionManager sessionManager){
         this.authApi = authApi;
+        this.requestsApi = requestsApi;
         this.sessionManager = sessionManager;
+    }
+
+    public void getKfuBuildingsLocationNames(){
+        Log.d(TAG, "getKfuBuildingsLocationNames: " + requestsApi.getKfuBuildingsLocationNames().request().url().toString());
+        requestsApi.getKfuBuildingsLocationNames().enqueue(new Callback<KfuBuildingsLocationsPage>() {
+            @Override
+            public void onResponse(Call<KfuBuildingsLocationsPage> call, Response<KfuBuildingsLocationsPage> response) {
+                Log.d(TAG, "onResponse: called");
+            }
+
+            @Override
+            public void onFailure(Call<KfuBuildingsLocationsPage> call, Throwable t) {
+                Log.d(TAG, "onFailure: called");
+            }
+        });
     }
 
     public void authenticateUser(String login, String password){

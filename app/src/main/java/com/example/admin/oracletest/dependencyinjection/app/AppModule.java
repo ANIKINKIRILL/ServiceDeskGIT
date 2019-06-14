@@ -4,6 +4,8 @@ import android.app.Application;
 
 import com.bumptech.glide.RequestManager;
 import com.example.admin.oracletest.Constants;
+import com.example.admin.oracletest.dependencyinjection.main.MainScope;
+import com.example.admin.oracletest.network.main.RequestsApi;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -27,6 +29,12 @@ public class AppModule {
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .build();
+    }
+
+    @Singleton
+    @Provides
+    static RequestsApi provideRequestsApi(Retrofit retrofit){
+        return retrofit.create(RequestsApi.class);
     }
 
 }

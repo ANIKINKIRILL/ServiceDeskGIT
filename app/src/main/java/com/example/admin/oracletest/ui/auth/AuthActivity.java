@@ -20,7 +20,9 @@ import android.widget.Toast;
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 import com.example.admin.oracletest.R;
+import com.example.admin.oracletest.models.KfuBuildingsLocationsPage;
 import com.example.admin.oracletest.models.User;
+import com.example.admin.oracletest.network.main.RequestsApi;
 import com.example.admin.oracletest.ui.forgetPassword.ForgetPasswordActivity;
 import com.example.admin.oracletest.ui.main.MainActivity;
 import com.example.admin.oracletest.viewmodel.ViewModelProviderFactory;
@@ -28,6 +30,9 @@ import com.example.admin.oracletest.viewmodel.ViewModelProviderFactory;
 import javax.inject.Inject;
 
 import dagger.android.support.DaggerAppCompatActivity;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 import static com.example.admin.oracletest.BaseApplication.getContext;
 
@@ -42,6 +47,9 @@ public class AuthActivity extends DaggerAppCompatActivity implements View.OnClic
     // Injections
     @Inject
     ViewModelProviderFactory providerFactory;
+
+    @Inject
+    RequestsApi requestsApi;
 
     // UI
     private TextView forgotPassword;
@@ -147,6 +155,7 @@ public class AuthActivity extends DaggerAppCompatActivity implements View.OnClic
                                 startActivity(intent);
                                 finish();
                                 // LOADING LOCATIONS FROM SERVER
+                                getKfuBuildingsLocationNames();
                             }else{
                                 YoYo.with(Techniques.Shake).duration(1000).repeat(0).playOn(loginButton);
                                 Toast.makeText(AuthActivity.this, getString(R.string.login_failed), Toast.LENGTH_SHORT).show();
@@ -192,6 +201,14 @@ public class AuthActivity extends DaggerAppCompatActivity implements View.OnClic
         User.setUserLogin(login.getText().toString().trim());
         User.setUserPassword(password.getText().toString().trim());
         viewModel.authenticateUser(login.getText().toString().trim(), password.getText().toString().trim());
+    }
+
+    /**
+     * Get kfu buildings location names
+     */
+
+    private void getKfuBuildingsLocationNames(){
+        viewModel.getKfuBuildingsLocationNames();
     }
 
     @Override

@@ -9,10 +9,4 @@ import retrofit2.Retrofit;
 @Module
 public class MainModule {
 
-    @MainScope
-    @Provides
-    static RequestsApi provideRequestsApi(Retrofit retrofit){
-        return retrofit.create(RequestsApi.class);
-    }
-
 }
