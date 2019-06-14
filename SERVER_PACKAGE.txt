@@ -786,5 +786,66 @@ CREATE OR REPLACE PACKAGE BODY IAS$DB.SERVICEDESK_MOBILE_TEST AS
     HTP.p('}');  
   END;
   
+  PROCEDURE get_kfu_buildings_locations
+
+  /**********************************
+
+        Функция получает список адресов зданий всех филиалов КФУ
+
+  ***********************************/
+
+  AS
+
+  locations_amount INTEGER;  -- общее кол-во адресов
+  counter INTEGER := 0; -- счетчик, чтобы понять ставить запятую или не ствить ее после } в списке
+
+  BEGIN
+    OWA_UTIL.MIME_HEADER ('application/json;charset=windows-1251');
+    HTP.p('{');
+    SELECT COUNT(ID) INTO locations_amount FROM TECH_CENTER$DB.BUILDING_KFU;
+    HTP.p('     locations_amount:' || locations_amount || ',');
+    HTP.p('     locations:[');
+    FOR buidling IN (SELECT * FROM TECH_CENTER$DB.BUILDING_KFU ORDER BY (ID) DESC) LOOP
+
+        counter := counter + 1;
+
+        HTP.p('         {');
+
+        HTP.p('             id:' || buidling.ID || ',');
+
+        IF(buidling.ADRES_NAME IS NULL OR buidling.ADRES_NAME = '') THEN
+            HTP.p('             adres_name:"null",');
+        ELSE
+            HTP.p('             adres_name:"' || buidling.ADRES_NAME || '",');
+        END IF;
+
+        IF(buidling.NUMERATION IS NULL OR buidling.NUMERATION = '') THEN
+            HTP.p('             numerations:-1,');
+        ELSE
+            HTP.p('             numerations:' || buidling.NUMERATION || ',');
+        END IF;
+
+        IF(buidling.PARENT_ID IS NULL OR buidling.PARENT_ID = '') THEN
+            HTP.p('             parent_id:-1,');
+        ELSE
+            HTP.p('             parent_id:' || buidling.PARENT_ID || ',');
+        END IF;
+
+        IF(buidling.STATUS IS NULL OR buidling.STATUS = '') THEN
+            HTP.p('             status:-1');
+        ELSE
+            HTP.p('             status:' || buidling.STATUS);
+        END IF;
+
+        IF(counter = locations_amount) THEN
+            HTP.p('         }');
+        ELSE
+            HTP.p('         },');
+        END IF;
+    END LOOP;
+    HTP.p('     ]');
+    HTP.p('}');
+  END;
+
 END SERVICEDESK_MOBILE_TEST;
 /
