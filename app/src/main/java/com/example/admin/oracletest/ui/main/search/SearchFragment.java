@@ -68,7 +68,8 @@ public class SearchFragment extends DaggerFragment implements View.OnClickListen
     private int start_page = 1;
     public static OnViewSearchRequestsFragmentListener requestsFragmentListener;
     public static OnViewSearchRequestsFragmentSqlParams requestsFragmentSqlParams;
-    public ArrayAdapter<String> adapter;
+    public ArrayAdapter<String> locationsNamesAdapter;
+    public ArrayAdapter techGroupsAdapter;
     private KfuBuildingLocation[] locations = Constants.locations;
     private String[] locationNames = new String[locations.length];
 
@@ -83,7 +84,9 @@ public class SearchFragment extends DaggerFragment implements View.OnClickListen
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        adapter = new ArrayAdapter<>(view.getContext(), android.R.layout.simple_list_item_1, locationNames);
+        locationsNamesAdapter = new ArrayAdapter<>(view.getContext(), android.R.layout.simple_list_item_1, locationNames);
+        techGroupsAdapter = new ArrayAdapter<>(view.getContext(), android.R.layout.simple_list_item_1, getActivity().getResources().getStringArray(R.array.tech_groups));
+        techGroupsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         init(view);
     }
 
@@ -117,7 +120,9 @@ public class SearchFragment extends DaggerFragment implements View.OnClickListen
         reg_date.setOnClickListener(this);
         closing_date.setOnClickListener(this);
 
-        location.setAdapter(adapter);
+        location.setAdapter(locationsNamesAdapter);
+
+        otdel.setAdapter(techGroupsAdapter);
 
     }
 

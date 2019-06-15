@@ -69,6 +69,7 @@
     </string-array>
 
     <string-array name="tech_groups">
+        <item></item>
         <item>Отдел обслуживания компьютерной техники</item>
         <item>Инженерная служба</item>
         <item>Диспетчерская служба</item>
