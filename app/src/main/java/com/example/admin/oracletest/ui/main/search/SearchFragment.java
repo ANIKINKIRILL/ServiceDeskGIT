@@ -168,7 +168,9 @@ public class SearchFragment extends DaggerFragment implements View.OnClickListen
         &&
         reg_date.getText().toString().trim().isEmpty()
         &&
-        closing_date.getText().toString().trim().isEmpty()){
+        closing_date.getText().toString().trim().isEmpty()
+        &&
+        otdel.getSelectedItem().toString().trim().isEmpty()){
             return false;
         }
         return true;
@@ -350,6 +352,7 @@ public class SearchFragment extends DaggerFragment implements View.OnClickListen
             reg_date.setText("");
             closing_date.setText("");
             location.getText().clear();
+            otdel.setSelection(0);
         }catch (Exception e){
             Log.d(TAG, "clearAllWidgetsData: " + e.getMessage());
         }
