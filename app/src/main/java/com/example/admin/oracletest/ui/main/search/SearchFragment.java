@@ -415,7 +415,7 @@ public class SearchFragment extends DaggerFragment implements View.OnClickListen
                 // Передача sql параметров на ViewSearchRequestsFragment
                 requestsFragmentSqlParams.setSqlParams(sql_statement, sql_statement_count_rows);
             }
-        });
+        }).setNegativeButton("ОТМЕНА", (dialog1, which) -> dialog1.dismiss());
         dialog.show();
     }
 
