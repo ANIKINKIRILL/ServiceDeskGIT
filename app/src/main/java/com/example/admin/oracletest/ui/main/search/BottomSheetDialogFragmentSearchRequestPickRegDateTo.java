@@ -1,8 +1,5 @@
 package com.example.admin.oracletest.ui.main.search;
 
-import android.app.Dialog;
-import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -11,17 +8,16 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.NumberPicker;
 import android.widget.TextView;
 
 import com.example.admin.oracletest.R;
 
 /**
- * Fragment with date picker for {@link SearchFragment}
+ * Fragment with date picker for {@link SearchFragment} to date
  */
 
-public class BottomSheetDialogFragmentSearchRequestPickRegDate extends BottomSheetDialogFragment implements View.OnClickListener {
+public class BottomSheetDialogFragmentSearchRequestPickRegDateTo extends BottomSheetDialogFragment implements View.OnClickListener {
 
     private static final String TAG = "BotSheetSerReqPickDate";
 
@@ -78,14 +74,14 @@ public class BottomSheetDialogFragmentSearchRequestPickRegDate extends BottomShe
         switch (v.getId()){
             case R.id.okButton:{
                 date = String.format("%d/%d/%d", dayPicker.getValue(), monthPicker.getValue(), yearPicker.getValue());
-                SearchFragment.setReg_date(date);
+                SearchFragment.setReg_dateTo(date);
                 Log.d(TAG, "onClick: pickedDate" + date);
                 dismiss();
                 break;
             }
             case R.id.deleteButton:{
                 date = "";
-                SearchFragment.setReg_date(date);
+                SearchFragment.setReg_dateTo(date);
                 dismiss();
                 break;
             }
