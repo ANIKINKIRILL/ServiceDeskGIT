@@ -69,6 +69,7 @@ public class SearchFragment extends DaggerFragment implements View.OnClickListen
     public static OnViewSearchRequestsFragmentListener requestsFragmentListener;
     public static OnViewSearchRequestsFragmentSqlParams requestsFragmentSqlParams;
     public ArrayAdapter<String> locationsNamesAdapter;
+    public ArrayAdapter<String> statusAdapter;
     public ArrayAdapter techGroupsAdapter;
     private KfuBuildingLocation[] locations = Constants.locations;
     private String[] locationNames = new String[locations.length];
@@ -85,6 +86,8 @@ public class SearchFragment extends DaggerFragment implements View.OnClickListen
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         locationsNamesAdapter = new ArrayAdapter<>(view.getContext(), android.R.layout.simple_list_item_1, locationNames);
+        statusAdapter = new ArrayAdapter<>(view.getContext(), android.R.layout.simple_list_item_1, getActivity().getResources().getStringArray(R.array.requestStatusArrayWithEmptySelection));
+        statusAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 //        techGroupsAdapter = new ArrayAdapter<>(view.getContext(), android.R.layout.simple_list_item_1, getActivity().getResources().getStringArray(R.array.tech_groups));
 //        techGroupsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         init(view);
@@ -123,6 +126,8 @@ public class SearchFragment extends DaggerFragment implements View.OnClickListen
         location.setAdapter(locationsNamesAdapter);
 
 //        otdel.setAdapter(techGroupsAdapter);
+
+        status.setAdapter(statusAdapter);
 
     }
 
@@ -168,7 +173,9 @@ public class SearchFragment extends DaggerFragment implements View.OnClickListen
         &&
         reg_date.getText().toString().trim().isEmpty()
         &&
-        closing_date.getText().toString().trim().isEmpty()){
+        closing_date.getText().toString().trim().isEmpty()
+        &&
+        status.getSelectedItem().toString().trim().isEmpty()){
             return false;
         }
         return true;
@@ -360,6 +367,7 @@ public class SearchFragment extends DaggerFragment implements View.OnClickListen
             closing_date.setText("");
             location.getText().clear();
 //            otdel.setSelection(0);
+            status.setSelection(0);
         }catch (Exception e){
             Log.d(TAG, "clearAllWidgetsData: " + e.getMessage());
         }

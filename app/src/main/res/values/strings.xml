@@ -68,6 +68,16 @@
         <item>Закрыта</item>
     </string-array>
 
+    <string-array name="requestStatusArrayWithEmptySelection">
+        <item></item>
+        <item>Новая</item>
+        <item>Выполнена</item>
+        <item>Выполняется</item>
+        <item>Отменена</item>
+        <item>Приостановлена</item>
+        <item>Закрыта</item>
+    </string-array>
+
     <string-array name="tech_groups">
         <item></item>
         <item>Отдел обслуживания компьютерной техники</item>
