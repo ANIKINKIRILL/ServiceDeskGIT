@@ -105,7 +105,7 @@ public class SearchFragment extends DaggerFragment implements View.OnClickListen
         progressDialog.setProgressDrawable(colorDrawable);
 
         code = view.findViewById(R.id.requestCodeValue);
-        reg_date = view.findViewById(R.id.requestDateOfRegistrationValue);
+//        reg_date = view.findViewById(R.id.requestDateOfRegistrationValue);
         closing_date = view.findViewById(R.id.requestDateOfClosingValue);
         zaavitel = view.findViewById(R.id.requestZaavitelValue);
         podrazdilenie = view.findViewById(R.id.requestPodrazdelenieValue);
@@ -120,7 +120,7 @@ public class SearchFragment extends DaggerFragment implements View.OnClickListen
         searchButton = view.findViewById(R.id.search_button);
 
         searchButton.setOnClickListener(this);
-        reg_date.setOnClickListener(this);
+//        reg_date.setOnClickListener(this);
         closing_date.setOnClickListener(this);
 
         location.setAdapter(locationsNamesAdapter);
@@ -170,8 +170,8 @@ public class SearchFragment extends DaggerFragment implements View.OnClickListen
         type.getText().toString().trim().isEmpty()
         &&
         info.getText().toString().trim().isEmpty()
-        &&
-        reg_date.getText().toString().trim().isEmpty()
+//        &&
+//        reg_date.getText().toString().trim().isEmpty()
         &&
         closing_date.getText().toString().trim().isEmpty()
         &&
@@ -238,20 +238,20 @@ public class SearchFragment extends DaggerFragment implements View.OnClickListen
 
         // DATE OF REGISTRATION
 
-        if(!getTextFromTextView(reg_date).isEmpty()){
-            if(sql_statement.contains("WHERE")) {
-                sql_statement += " AND REQUEST_DATE LIKE TO_DATE('" + getTextFromTextView(reg_date) + "', 'DD/MM/YYYY')";
-            }else {
-                sql_statement += "WHERE REQUEST_DATE LIKE TO_DATE('" + getTextFromTextView(reg_date) + "', 'DD/MM/YYYY')";
-            }
-
-            if(sql_statement_count_rows.contains("WHERE")) {
-                sql_statement_count_rows += " AND REQUEST_DATE LIKE TO_DATE('" + getTextFromTextView(reg_date) + "', 'DD/MM/YYYY')";
-            }else {
-                sql_statement_count_rows += "WHERE REQUEST_DATE LIKE TO_DATE('" + getTextFromTextView(reg_date) + "', 'DD/MM/YYYY')";
-            }
-
-        }
+//        if(!getTextFromTextView(reg_date).isEmpty()){
+//            if(sql_statement.contains("WHERE")) {
+//                sql_statement += " AND REQUEST_DATE LIKE TO_DATE('" + getTextFromTextView(reg_date) + "', 'DD/MM/YYYY')";
+//            }else {
+//                sql_statement += "WHERE REQUEST_DATE LIKE TO_DATE('" + getTextFromTextView(reg_date) + "', 'DD/MM/YYYY')";
+//            }
+//
+//            if(sql_statement_count_rows.contains("WHERE")) {
+//                sql_statement_count_rows += " AND REQUEST_DATE LIKE TO_DATE('" + getTextFromTextView(reg_date) + "', 'DD/MM/YYYY')";
+//            }else {
+//                sql_statement_count_rows += "WHERE REQUEST_DATE LIKE TO_DATE('" + getTextFromTextView(reg_date) + "', 'DD/MM/YYYY')";
+//            }
+//
+//        }
 
         // DATE OF CLOSING
 
@@ -380,7 +380,7 @@ public class SearchFragment extends DaggerFragment implements View.OnClickListen
             code.getText().clear();
             roomNumber.getText().clear();
             zaavitel.getText().clear();
-            reg_date.setText("");
+//            reg_date.setText("");
             closing_date.setText("");
             location.getText().clear();
 //            otdel.setSelection(0);
@@ -462,7 +462,7 @@ public class SearchFragment extends DaggerFragment implements View.OnClickListen
      */
 
     public static void setReg_date(String date){
-        reg_date.setText(date);
+//        reg_date.setText(date);
     }
 
     /**
@@ -525,11 +525,11 @@ public class SearchFragment extends DaggerFragment implements View.OnClickListen
                 }
                 break;
             }
-            case R.id.requestDateOfRegistrationValue:{
-                BottomSheetDialogFragmentSearchRequestPickRegDate pickDateDialog = new BottomSheetDialogFragmentSearchRequestPickRegDate();
-                pickDateDialog.show(getActivity().getSupportFragmentManager(), getString(R.string.open_dialog));
-                break;
-            }
+//            case R.id.requestDateOfRegistrationValue:{
+//                BottomSheetDialogFragmentSearchRequestPickRegDate pickDateDialog = new BottomSheetDialogFragmentSearchRequestPickRegDate();
+//                pickDateDialog.show(getActivity().getSupportFragmentManager(), getString(R.string.open_dialog));
+//                break;
+//            }
             case R.id.requestDateOfClosingValue:{
                 BottomSheetDialogFragmentSearchRequestPickDateOfClosing pickDateDialog = new BottomSheetDialogFragmentSearchRequestPickDateOfClosing();
                 pickDateDialog.show(getActivity().getSupportFragmentManager(), getString(R.string.open_dialog));
