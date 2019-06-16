@@ -55,7 +55,7 @@ public class SearchFragment extends DaggerFragment implements View.OnClickListen
 
     // Ui
     private static EditText code, zaavitel, podrazdilenie, roomNumber, type, info;
-    private static TextView reg_date_from, reg_date_to, closing_date;
+    private static TextView reg_date_from, reg_date_to, closing_date_from, closing_date_to;
     private static Spinner otdel, emp_fio, status, reg_user;
     private static Button searchButton;
     private ProgressDialog progressDialog;
@@ -107,7 +107,8 @@ public class SearchFragment extends DaggerFragment implements View.OnClickListen
         code = view.findViewById(R.id.requestCodeValue);
         reg_date_from = view.findViewById(R.id.requestDateOfRegistrationValueFrom);
         reg_date_to = view.findViewById(R.id.requestDateOfRegistrationValueTo);
-        closing_date = view.findViewById(R.id.requestDateOfClosingValue);
+        closing_date_from = view.findViewById(R.id.requestDateOfClosingValueFrom);
+        closing_date_to = view.findViewById(R.id.requestDateOfClosingValueTo);
         zaavitel = view.findViewById(R.id.requestZaavitelValue);
         podrazdilenie = view.findViewById(R.id.requestPodrazdelenieValue);
         location = view.findViewById(R.id.requestLocationValue);
@@ -123,7 +124,8 @@ public class SearchFragment extends DaggerFragment implements View.OnClickListen
         searchButton.setOnClickListener(this);
         reg_date_from.setOnClickListener(this);
         reg_date_to.setOnClickListener(this);
-        closing_date.setOnClickListener(this);
+        closing_date_from.setOnClickListener(this);
+        closing_date_to.setOnClickListener(this);
 
         location.setAdapter(locationsNamesAdapter);
 
@@ -175,7 +177,7 @@ public class SearchFragment extends DaggerFragment implements View.OnClickListen
         &&
         (reg_date_from.getText().toString().trim().isEmpty() || reg_date_to.getText().toString().isEmpty())
         &&
-        closing_date.getText().toString().trim().isEmpty()
+        (closing_date_from.getText().toString().trim().isEmpty() || closing_date_to.getText().toString().isEmpty())
         &&
         status.getSelectedItem().toString().trim().isEmpty()){
             return false;
@@ -257,17 +259,17 @@ public class SearchFragment extends DaggerFragment implements View.OnClickListen
 
         // DATE OF CLOSING
 
-        if(!getTextFromTextView(closing_date).isEmpty()){
+        if(!getTextFromTextView(closing_date_from).isEmpty() && !getTextFromTextView(closing_date_to).isEmpty()){
             if(sql_statement.contains("WHERE")) {
-                sql_statement += " AND DATE_OF_CLOSING LIKE TO_DATE('" + getTextFromTextView(closing_date) + "', 'DD/MM/YYYY')";
+                sql_statement += " AND DATE_OF_CLOSING BETWEEN TO_DATE('" + getTextFromTextView(closing_date_from) + "', 'DD/MM/YYYY') AND TO_DATE('" + getTextFromTextView(closing_date_to) + "', 'DD/MM/YYYY')";
             }else {
-                sql_statement += "WHERE DATE_OF_CLOSING LIKE TO_DATE('" + getTextFromTextView(closing_date) + "', 'DD/MM/YYYY')";
+                sql_statement += "WHERE DATE_OF_CLOSING BETWEEN TO_DATE('" + getTextFromTextView(closing_date_from) + "', 'DD/MM/YYYY') AND TO_DATE('" + getTextFromTextView(closing_date_to) + "', 'DD/MM/YYYY')";
             }
 
             if(sql_statement_count_rows.contains("WHERE")) {
-                sql_statement_count_rows += " AND DATE_OF_CLOSING LIKE TO_DATE('" + getTextFromTextView(closing_date) + "', 'DD/MM/YYYY')";
+                sql_statement_count_rows += " AND DATE_OF_CLOSING BETWEEN TO_DATE('" + getTextFromTextView(closing_date_from) + "', 'DD/MM/YYYY') AND TO_DATE('" + getTextFromTextView(closing_date_to) + "', 'DD/MM/YYYY')";
             }else {
-                sql_statement_count_rows += "WHERE DATE_OF_CLOSING LIKE TO_DATE('" + getTextFromTextView(closing_date) + "', 'DD/MM/YYYY')";
+                sql_statement_count_rows += "WHERE DATE_OF_CLOSING BETWEEN TO_DATE('" + getTextFromTextView(closing_date_from) + "', 'DD/MM/YYYY') AND TO_DATE('" + getTextFromTextView(closing_date_to) + "', 'DD/MM/YYYY')";
             }
 
         }
@@ -384,7 +386,8 @@ public class SearchFragment extends DaggerFragment implements View.OnClickListen
             zaavitel.getText().clear();
             reg_date_from.setText("");
             reg_date_to.setText("");
-            closing_date.setText("");
+            closing_date_from.setText("");
+            closing_date_to.setText("");
             location.getText().clear();
 //            otdel.setSelection(0);
             status.setSelection(0);
@@ -478,12 +481,21 @@ public class SearchFragment extends DaggerFragment implements View.OnClickListen
     }
 
     /**
-     * Set closing date
+     * Set closing from date
      * @param date  date to set
      */
 
-    public static void setClosing_date(String date){
-        closing_date.setText(date);
+    public static void setClosing_dateFrom(String date){
+        closing_date_from.setText(date);
+    }
+
+    /**
+     * Set closing to date
+     * @param date  date to set
+     */
+
+    public static void setClosing_dateTo(String date){
+        closing_date_to.setText(date);
     }
 
     /**
@@ -547,8 +559,13 @@ public class SearchFragment extends DaggerFragment implements View.OnClickListen
                 pickDateDialog.show(getActivity().getSupportFragmentManager(), getString(R.string.open_dialog));
                 break;
             }
-            case R.id.requestDateOfClosingValue:{
-                BottomSheetDialogFragmentSearchRequestPickDateOfClosing pickDateDialog = new BottomSheetDialogFragmentSearchRequestPickDateOfClosing();
+            case R.id.requestDateOfClosingValueFrom:{
+                BottomSheetDialogFragmentSearchRequestPickDateOfClosingFrom pickDateDialog = new BottomSheetDialogFragmentSearchRequestPickDateOfClosingFrom();
+                pickDateDialog.show(getActivity().getSupportFragmentManager(), getString(R.string.open_dialog));
+                break;
+            }
+            case R.id.requestDateOfClosingValueTo:{
+                BottomSheetDialogFragmentSearchRequestPickDateOfClosingTo pickDateDialog = new BottomSheetDialogFragmentSearchRequestPickDateOfClosingTo();
                 pickDateDialog.show(getActivity().getSupportFragmentManager(), getString(R.string.open_dialog));
                 break;
             }

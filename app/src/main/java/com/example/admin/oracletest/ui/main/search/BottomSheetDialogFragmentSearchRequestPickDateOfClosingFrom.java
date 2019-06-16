@@ -14,10 +14,10 @@ import android.widget.TextView;
 import com.example.admin.oracletest.R;
 
 /**
- * Fragment with date picker for {@link SearchFragment}
+ * Fragment with date picker for {@link SearchFragment} from date
  */
 
-public class BottomSheetDialogFragmentSearchRequestPickDateOfClosing extends BottomSheetDialogFragment implements View.OnClickListener {
+public class BottomSheetDialogFragmentSearchRequestPickDateOfClosingFrom extends BottomSheetDialogFragment implements View.OnClickListener {
 
     private static final String TAG = "BotSheetSerReqPickDate";
 
@@ -74,14 +74,14 @@ public class BottomSheetDialogFragmentSearchRequestPickDateOfClosing extends Bot
         switch (v.getId()){
             case R.id.okButton:{
                 date = String.format("%d/%d/%d", dayPicker.getValue(), monthPicker.getValue(), yearPicker.getValue());
-                SearchFragment.setClosing_date(date);
+                SearchFragment.setClosing_dateFrom(date);
                 Log.d(TAG, "onClick: pickedDate" + date);
                 dismiss();
                 break;
             }
             case R.id.deleteButton:{
                 date = "";
-                SearchFragment.setClosing_date(date);
+                SearchFragment.setClosing_dateFrom(date);
                 dismiss();
                 break;
             }
