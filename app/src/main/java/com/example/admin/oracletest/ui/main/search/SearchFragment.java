@@ -208,7 +208,7 @@ public class SearchFragment extends DaggerFragment implements View.OnClickListen
      */
 
     private String getTextFromSpinner(Spinner spinner){
-        return spinner.getSelectedItem().toString().trim();
+        return spinner.getSelectedItem().toString().trim().toLowerCase();
     }
 
     private void showProgressDialog(boolean isVisible){
@@ -323,6 +323,23 @@ public class SearchFragment extends DaggerFragment implements View.OnClickListen
                 sql_statement_count_rows += " AND ROOM_NUM = '" + getTextFromEditText(roomNumber) + "'";
             }else {
                 sql_statement_count_rows += "WHERE ROOM_NUM = '" + getTextFromEditText(roomNumber) + "'";
+            }
+        }
+
+        // STATUS
+
+        if(!getTextFromSpinner(status).isEmpty()){
+            int status_id = getStatusId(getTextFromSpinner(status));
+            if(sql_statement.contains("WHERE")) {
+                sql_statement += " AND STATUS_ID = " + status_id;
+            }else {
+                sql_statement += "WHERE STATUS_ID = " + status_id;
+            }
+
+            if(sql_statement_count_rows.contains("WHERE")) {
+                sql_statement_count_rows += " AND STATUS_ID = " + status_id;
+            }else {
+                sql_statement_count_rows += "WHERE STATUS_ID = " + status_id;
             }
         }
 
@@ -455,6 +472,44 @@ public class SearchFragment extends DaggerFragment implements View.OnClickListen
 
     public static void setClosing_date(String date){
         closing_date.setText(date);
+    }
+
+    /**
+     * Получить id статуса заявки
+     *
+     * @param statusName название статуса
+     * @return id статуса
+     */
+
+    private int getStatusId(String statusName) {
+        int status_id = 1;
+        switch (statusName) {
+            case EmployeeRequest.NEW: {
+                status_id = 1;
+                break;
+            }
+            case EmployeeRequest.DONE: {
+                status_id = 2;
+                break;
+            }
+            case EmployeeRequest.IN_PROGRESS: {
+                status_id = 3;
+                break;
+            }
+            case EmployeeRequest.CANCELED: {
+                status_id = 4;
+                break;
+            }
+            case EmployeeRequest.STOPPED: {
+                status_id = 5;
+                break;
+            }
+            case EmployeeRequest.CLOSED: {
+                status_id = 6;
+                break;
+            }
+        }
+        return status_id;
     }
 
     @Override
