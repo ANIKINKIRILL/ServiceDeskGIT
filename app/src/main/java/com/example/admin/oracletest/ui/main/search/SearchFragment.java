@@ -85,8 +85,8 @@ public class SearchFragment extends DaggerFragment implements View.OnClickListen
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         locationsNamesAdapter = new ArrayAdapter<>(view.getContext(), android.R.layout.simple_list_item_1, locationNames);
-        techGroupsAdapter = new ArrayAdapter<>(view.getContext(), android.R.layout.simple_list_item_1, getActivity().getResources().getStringArray(R.array.tech_groups));
-        techGroupsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//        techGroupsAdapter = new ArrayAdapter<>(view.getContext(), android.R.layout.simple_list_item_1, getActivity().getResources().getStringArray(R.array.tech_groups));
+//        techGroupsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         init(view);
     }
 
@@ -122,7 +122,7 @@ public class SearchFragment extends DaggerFragment implements View.OnClickListen
 
         location.setAdapter(locationsNamesAdapter);
 
-        otdel.setAdapter(techGroupsAdapter);
+//        otdel.setAdapter(techGroupsAdapter);
 
     }
 
@@ -168,9 +168,7 @@ public class SearchFragment extends DaggerFragment implements View.OnClickListen
         &&
         reg_date.getText().toString().trim().isEmpty()
         &&
-        closing_date.getText().toString().trim().isEmpty()
-        &&
-        otdel.getSelectedItem().toString().trim().isEmpty()){
+        closing_date.getText().toString().trim().isEmpty()){
             return false;
         }
         return true;
@@ -194,6 +192,16 @@ public class SearchFragment extends DaggerFragment implements View.OnClickListen
 
     private String getTextFromTextView(TextView textView){
         return textView.getText().toString().trim();
+    }
+
+    /**
+     * Получить текст с Spinner
+     * @param spinner      spinner с которого хотим получить текст
+     * @return полученный текст с spinner
+     */
+
+    private String getTextFromSpinner(Spinner spinner){
+        return spinner.getSelectedItem().toString().trim();
     }
 
     private void showProgressDialog(boolean isVisible){
@@ -309,7 +317,6 @@ public class SearchFragment extends DaggerFragment implements View.OnClickListen
             }else {
                 sql_statement_count_rows += "WHERE ROOM_NUM = '" + getTextFromEditText(roomNumber) + "'";
             }
-
         }
 
         sql_statement = sql_statement + " ORDER BY (ID) DESC";
@@ -352,7 +359,7 @@ public class SearchFragment extends DaggerFragment implements View.OnClickListen
             reg_date.setText("");
             closing_date.setText("");
             location.getText().clear();
-            otdel.setSelection(0);
+//            otdel.setSelection(0);
         }catch (Exception e){
             Log.d(TAG, "clearAllWidgetsData: " + e.getMessage());
         }
