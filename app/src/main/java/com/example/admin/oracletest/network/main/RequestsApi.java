@@ -3,6 +3,7 @@ package com.example.admin.oracletest.network.main;
 import com.example.admin.oracletest.models.KfuBuildingsLocationsPage;
 import com.example.admin.oracletest.models.RequestsPage;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
@@ -47,5 +48,12 @@ public interface RequestsApi {
 
     @GET("SERVICEDESK_MOBILE_TEST.GET_KFU_BUILDINGS_LOCATIONS")
     Call<KfuBuildingsLocationsPage> getKfuBuildingsLocationNames();
+
+    /**
+     * Get tech groups for spinner in {@link com.example.admin.oracletest.ui.main.search.SearchFragment}
+     */
+
+    @GET("SERVICEDESK_MOBILE_TEST.GET_TECH_GROUPS")
+    Call<ResponseBody> getTechGroups();
 
 }
