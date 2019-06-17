@@ -868,11 +868,13 @@ CREATE OR REPLACE PACKAGE BODY IAS$DB.SERVICEDESK_MOBILE_TEST AS
 
   HTP.p('     tech_groups_amount:' || tech_groups_amount || ',');
 
+  HTP.p('     tech_groups:[');
+
   FOR tech_group_rec IN (SELECT * FROM TECH_CENTER$DB.TECH_GROUP WHERE PARENT_COD = -1 OR PARENT_COD = 4 OR PARENT_COD = 7) LOOP
 
   counter := counter + 1;
 
-  HTP.p('     {');
+  HTP.p('       {');
   HTP.p('         cod:' || tech_group_rec.cod || ',');
   HTP.p('         name:"' || tech_group_rec.name || '",');
   HTP.p('         status:' || tech_group_rec.status || ',');
@@ -886,12 +888,15 @@ CREATE OR REPLACE PACKAGE BODY IAS$DB.SERVICEDESK_MOBILE_TEST AS
   END IF;
 
   IF(counter = tech_groups_amount) THEN
-    HTP.p('     }');
+    HTP.p('       }');
   ELSE
-    HTP.p('     },');
+    HTP.p('       },');
   END IF;
 
   END LOOP;
+
+  HTP.p('     ]');
+
   HTP.p('}');
   END;
 
