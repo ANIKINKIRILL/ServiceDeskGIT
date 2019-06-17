@@ -156,6 +156,8 @@ public class AuthActivity extends DaggerAppCompatActivity implements View.OnClic
                                 finish();
                                 // LOADING LOCATIONS FROM SERVER
                                 getKfuBuildingsLocationNames();
+                                // LOADING TECH GROUPS FROM SERVER
+                                getTechGroups();
                             }else{
                                 YoYo.with(Techniques.Shake).duration(1000).repeat(0).playOn(loginButton);
                                 Toast.makeText(AuthActivity.this, getString(R.string.login_failed), Toast.LENGTH_SHORT).show();
@@ -209,6 +211,14 @@ public class AuthActivity extends DaggerAppCompatActivity implements View.OnClic
 
     private void getKfuBuildingsLocationNames(){
         viewModel.getKfuBuildingsLocationNames();
+    }
+
+    /**
+     * Get tech groups
+     */
+
+    private void getTechGroups(){
+
     }
 
     @Override
