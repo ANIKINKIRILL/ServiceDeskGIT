@@ -1,6 +1,7 @@
 package com.example.admin.oracletest;
 
 import com.example.admin.oracletest.models.KfuBuildingLocation;
+import com.example.admin.oracletest.models.TechGroup;
 
 /**
  * Application constants
@@ -14,5 +15,7 @@ public class Constants {
     public static final String API_ERROR_WHILE_LOADING = "Произошла ошибка. Обратитесь к разработчику";
 
     public static KfuBuildingLocation[] locations;
+
+    public static TechGroup[] techGroups;
 
 }
