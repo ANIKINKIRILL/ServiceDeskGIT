@@ -2,6 +2,7 @@ package com.example.admin.oracletest.network.main;
 
 import com.example.admin.oracletest.models.KfuBuildingsLocationsPage;
 import com.example.admin.oracletest.models.RequestsPage;
+import com.example.admin.oracletest.models.TechGroupsPage;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -54,6 +55,6 @@ public interface RequestsApi {
      */
 
     @GET("SERVICEDESK_MOBILE_TEST.GET_TECH_GROUPS")
-    Call<ResponseBody> getTechGroups();
+    Call<TechGroupsPage> getTechGroups();
 
 }
