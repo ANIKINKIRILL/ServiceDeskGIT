@@ -12,6 +12,7 @@ import com.example.admin.oracletest.Constants;
 import com.example.admin.oracletest.dependencyinjection.app.SessionManager;
 import com.example.admin.oracletest.models.KfuBuildingLocation;
 import com.example.admin.oracletest.models.KfuBuildingsLocationsPage;
+import com.example.admin.oracletest.models.TechGroupsPage;
 import com.example.admin.oracletest.models.User;
 import com.example.admin.oracletest.network.auth.AuthApi;
 import com.example.admin.oracletest.network.main.RequestsApi;
@@ -61,6 +62,21 @@ public class AuthViewModel extends ViewModel {
             public void onFailure(Call<KfuBuildingsLocationsPage> call, Throwable t) {
                 Log.d(TAG, "onFailure: called");
                 Constants.locations = new KfuBuildingLocation[0];
+            }
+        });
+    }
+
+    public void getTechGroups(){
+        Log.d(TAG, "getTechGroups: " + requestsApi.getTechGroups().request().url().toString());
+        requestsApi.getTechGroups().enqueue(new Callback<TechGroupsPage>() {
+            @Override
+            public void onResponse(Call<TechGroupsPage> call, Response<TechGroupsPage> response) {
+                Log.d(TAG, "onResponse: called");
+            }
+
+            @Override
+            public void onFailure(Call<TechGroupsPage> call, Throwable t) {
+                Log.d(TAG, "onFailure: called");
             }
         });
     }

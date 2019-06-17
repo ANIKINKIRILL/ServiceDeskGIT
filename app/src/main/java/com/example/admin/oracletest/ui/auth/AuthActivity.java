@@ -218,7 +218,7 @@ public class AuthActivity extends DaggerAppCompatActivity implements View.OnClic
      */
 
     private void getTechGroups(){
-
+        viewModel.getTechGroups();
     }
 
     @Override
