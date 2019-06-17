@@ -847,5 +847,53 @@ CREATE OR REPLACE PACKAGE BODY IAS$DB.SERVICEDESK_MOBILE_TEST AS
     HTP.p('}');
   END;
 
+  PROCEDURE get_tech_groups
+
+  /*****************************
+
+        Функция получает отделы с TECH_CENTER$DB.TECH_GROUP
+
+  ******************************/
+
+  AS
+
+  tech_groups_amount INTEGER; -- общее кол-во отделов
+  counter INTEGER := 0; -- счетчик, чтобы понять ставить запятую или не ствить ее после } в списке
+
+  BEGIN
+  OWA_UTIL.MIME_HEADER ('application/json;charset=windows-1251');
+  HTP.p('{');
+
+  SELECT COUNT(COD) INTO tech_groups_amount FROM TECH_CENTER$DB.TECH_GROUP WHERE PARENT_COD = -1 OR PARENT_COD = 4 OR PARENT_COD = 7;
+
+  HTP.p('     tech_groups_amount:' || tech_groups_amount || ',');
+
+  FOR tech_group_rec IN (SELECT * FROM TECH_CENTER$DB.TECH_GROUP WHERE PARENT_COD = -1 OR PARENT_COD = 4 OR PARENT_COD = 7) LOOP
+
+  counter := counter + 1;
+
+  HTP.p('     {');
+  HTP.p('         cod:' || tech_group_rec.cod || ',');
+  HTP.p('         name:"' || tech_group_rec.name || '",');
+  HTP.p('         status:' || tech_group_rec.status || ',');
+  HTP.p('         parent_cod:' || tech_group_rec.parent_cod || ',');
+  HTP.p('         office_id:' || tech_group_rec.office_id || ',');
+
+  IF(tech_group_rec.identity_cod IS NULL OR tech_group_rec.identity_cod = '') THEN
+    HTP.p('         identity_cod:"null"');
+  ELSE
+    HTP.p('         identity_cod:"' || tech_group_rec.identity_cod || '"');
+  END IF;
+
+  IF(counter = tech_groups_amount) THEN
+    HTP.p('     }');
+  ELSE
+    HTP.p('     },');
+  END IF;
+
+  END LOOP;
+  HTP.p('}');
+  END;
+
 END SERVICEDESK_MOBILE_TEST;
 /
