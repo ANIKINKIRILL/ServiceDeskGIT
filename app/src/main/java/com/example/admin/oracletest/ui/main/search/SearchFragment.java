@@ -94,7 +94,9 @@ public class SearchFragment extends DaggerFragment implements View.OnClickListen
         statusAdapter = new ArrayAdapter<>(view.getContext(), android.R.layout.simple_list_item_1, getActivity().getResources().getStringArray(R.array.requestStatusArrayWithEmptySelection));
         statusAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-        techGroupsAdapter = new TechGroupsAdapter(view.getContext(), android.R.layout.simple_list_item_1, techGroups);
+        ArrayList<TechGroup> techGroupArrayList = new ArrayList<>(Arrays.asList(techGroups));
+        techGroupArrayList.add(0, new TechGroup(0,"",0,0,0, ""));
+        techGroupsAdapter = new TechGroupsAdapter(view.getContext(), android.R.layout.simple_list_item_1, techGroupArrayList);
 
         init(view);
     }

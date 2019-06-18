@@ -10,6 +10,8 @@ import android.widget.TextView;
 import com.example.admin.oracletest.R;
 import com.example.admin.oracletest.models.TechGroup;
 
+import java.util.ArrayList;
+
 /**
  * Adapter for tech groups spinner in {@link com.example.admin.oracletest.ui.main.search.SearchFragment}
  */
@@ -17,9 +19,9 @@ import com.example.admin.oracletest.models.TechGroup;
 public class TechGroupsAdapter extends ArrayAdapter<TechGroup> {
 
     private Context context;
-    private TechGroup[] techGroups;
+    private ArrayList<TechGroup> techGroups;
 
-    public TechGroupsAdapter(Context context, int resource, TechGroup[] techGroups) {
+    public TechGroupsAdapter(Context context, int resource, ArrayList<TechGroup> techGroups) {
         super(context, resource, techGroups);
         this.context = context;
         this.techGroups = techGroups;
@@ -27,7 +29,7 @@ public class TechGroupsAdapter extends ArrayAdapter<TechGroup> {
 
     @Override
     public int getCount() {
-        return techGroups.length;
+        return techGroups.size();
     }
 
     @Override
@@ -37,14 +39,14 @@ public class TechGroupsAdapter extends ArrayAdapter<TechGroup> {
 
     @Override
     public TechGroup getItem(int position) {
-        return techGroups[position];
+        return techGroups.get(position);
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View view = convertView;
         TechGroupsAdapter.ViewHolder viewHolder;
-        TechGroup techGroup = techGroups[position];
+        TechGroup techGroup = techGroups.get(position);
         if(view != null){
             viewHolder = (TechGroupsAdapter.ViewHolder) view.getTag();
         }else{
