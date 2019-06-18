@@ -179,6 +179,8 @@ public class SearchFragment extends DaggerFragment implements View.OnClickListen
         &&
         roomNumber.getText().toString().trim().isEmpty()
         &&
+        otdel.getSelectedItem().toString().trim().isEmpty()
+        &&
         type.getText().toString().trim().isEmpty()
         &&
         info.getText().toString().trim().isEmpty()
@@ -397,7 +399,7 @@ public class SearchFragment extends DaggerFragment implements View.OnClickListen
             closing_date_from.setText("");
             closing_date_to.setText("");
             location.getText().clear();
-//            otdel.setSelection(0);
+            otdel.setSelection(0);
             status.setSelection(0);
         }catch (Exception e){
             Log.d(TAG, "clearAllWidgetsData: " + e.getMessage());
