@@ -27,7 +27,9 @@ import com.example.admin.oracletest.R;
 import com.example.admin.oracletest.models.EmployeeRequest;
 import com.example.admin.oracletest.models.KfuBuildingLocation;
 import com.example.admin.oracletest.models.RequestsPage;
+import com.example.admin.oracletest.models.TechGroup;
 import com.example.admin.oracletest.models.User;
+import com.example.admin.oracletest.utils.TechGroupsAdapter;
 import com.example.admin.oracletest.viewmodel.ViewModelProviderFactory;
 
 import java.net.URLEncoder;
@@ -70,9 +72,10 @@ public class SearchFragment extends DaggerFragment implements View.OnClickListen
     public static OnViewSearchRequestsFragmentSqlParams requestsFragmentSqlParams;
     public ArrayAdapter<String> locationsNamesAdapter;
     public ArrayAdapter<String> statusAdapter;
-    public ArrayAdapter techGroupsAdapter;
+    public TechGroupsAdapter techGroupsAdapter;
     private KfuBuildingLocation[] locations = Constants.locations;
     private String[] locationNames = new String[locations.length];
+    private TechGroup[] techGroups = Constants.techGroups;
 
     @Nullable
     @Override
@@ -85,11 +88,14 @@ public class SearchFragment extends DaggerFragment implements View.OnClickListen
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
         locationsNamesAdapter = new ArrayAdapter<>(view.getContext(), android.R.layout.simple_list_item_1, locationNames);
+
         statusAdapter = new ArrayAdapter<>(view.getContext(), android.R.layout.simple_list_item_1, getActivity().getResources().getStringArray(R.array.requestStatusArrayWithEmptySelection));
         statusAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//        techGroupsAdapter = new ArrayAdapter<>(view.getContext(), android.R.layout.simple_list_item_1, getActivity().getResources().getStringArray(R.array.tech_groups));
-//        techGroupsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        techGroupsAdapter = new TechGroupsAdapter(view.getContext(), android.R.layout.simple_list_item_1, techGroups);
+
         init(view);
     }
 
@@ -129,7 +135,7 @@ public class SearchFragment extends DaggerFragment implements View.OnClickListen
 
         location.setAdapter(locationsNamesAdapter);
 
-//        otdel.setAdapter(techGroupsAdapter);
+        otdel.setAdapter(techGroupsAdapter);
 
         status.setAdapter(statusAdapter);
 
