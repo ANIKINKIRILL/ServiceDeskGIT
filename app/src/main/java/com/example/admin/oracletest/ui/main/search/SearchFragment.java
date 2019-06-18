@@ -169,6 +169,7 @@ public class SearchFragment extends DaggerFragment implements View.OnClickListen
      */
 
     private boolean isValid(){
+        TechGroup selectedTechGroup = (TechGroup) otdel.getSelectedItem();
         if(code.getText().toString().trim().isEmpty()
         &&
         zaavitel.getText().toString().trim().isEmpty()
@@ -179,7 +180,7 @@ public class SearchFragment extends DaggerFragment implements View.OnClickListen
         &&
         roomNumber.getText().toString().trim().isEmpty()
         &&
-        otdel.getSelectedItem().toString().trim().isEmpty()
+        selectedTechGroup.getName().trim().isEmpty()
         &&
         type.getText().toString().trim().isEmpty()
         &&
@@ -337,6 +338,25 @@ public class SearchFragment extends DaggerFragment implements View.OnClickListen
                 sql_statement_count_rows += " AND ROOM_NUM = '" + getTextFromEditText(roomNumber) + "'";
             }else {
                 sql_statement_count_rows += "WHERE ROOM_NUM = '" + getTextFromEditText(roomNumber) + "'";
+            }
+        }
+
+        // TECH_GROUP
+
+        if(otdel.getSelectedItemPosition() != 0){
+            TechGroup selectedTechGroup = (TechGroup) otdel.getSelectedItem();
+            Log.d(TAG, "selectedTechGroup: " + selectedTechGroup.getCod());
+
+            if(sql_statement.contains("WHERE")) {
+                sql_statement += " AND ID IN (SELECT REQUEST_ID FROM TECH_CENTER$DB.REQUEST_WORKS WHERE TECH_GROUP_ID = " + selectedTechGroup.getCod() + ")";
+            }else {
+                sql_statement += "WHERE ID IN (SELECT REQUEST_ID FROM TECH_CENTER$DB.REQUEST_WORKS WHERE TECH_GROUP_ID = " + selectedTechGroup.getCod() + ")";
+            }
+
+            if(sql_statement_count_rows.contains("WHERE")) {
+                sql_statement_count_rows += " AND ID IN (SELECT REQUEST_ID FROM TECH_CENTER$DB.REQUEST_WORKS WHERE TECH_GROUP_ID = " + selectedTechGroup.getCod() + ")";
+            }else {
+                sql_statement_count_rows += "WHERE ID IN (SELECT REQUEST_ID FROM TECH_CENTER$DB.REQUEST_WORKS WHERE TECH_GROUP_ID = " + selectedTechGroup.getCod() + ")";
             }
         }
 
