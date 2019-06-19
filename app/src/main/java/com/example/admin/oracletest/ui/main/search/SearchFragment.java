@@ -32,6 +32,7 @@ import com.example.admin.oracletest.models.User;
 import com.example.admin.oracletest.utils.TechGroupsAdapter;
 import com.example.admin.oracletest.viewmodel.ViewModelProviderFactory;
 
+import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -374,6 +375,27 @@ public class SearchFragment extends DaggerFragment implements View.OnClickListen
                 sql_statement_count_rows += " AND STATUS_ID = " + status_id;
             }else {
                 sql_statement_count_rows += "WHERE STATUS_ID = " + status_id;
+            }
+        }
+
+        // REQUEST INFO
+
+        if(!getTextFromEditText(info).isEmpty()){
+            try {
+                if(sql_statement.contains("WHERE")) {
+
+                        sql_statement += " AND TECH_CENTER$DB.REQUEST.ID IN (SELECT REQUEST_ID FROM TECH_CENTER$DB.REQUEST_WORKS WHERE INSTR(TECH_CENTER$DB.REQUEST_WORKS.INFO, '" + URLEncoder.encode(getTextFromEditText(info), "Cp1251") + "') > 0 OR INSTR(TECH_CENTER$DB.REQUEST_WORKS.INFO, '" + URLEncoder.encode(getTextFromEditText(info).toLowerCase(), "Cp1251") + "') > 0)";
+                }else {
+                    sql_statement += "WHERE TECH_CENTER$DB.REQUEST.ID IN (SELECT REQUEST_ID FROM TECH_CENTER$DB.REQUEST_WORKS WHERE INSTR(TECH_CENTER$DB.REQUEST_WORKS.INFO, '" + URLEncoder.encode(getTextFromEditText(info), "Cp1251") + "') > 0 OR INSTR(TECH_CENTER$DB.REQUEST_WORKS.INFO, '" + URLEncoder.encode(getTextFromEditText(info).toLowerCase(), "Cp1251") + "') > 0)";
+                }
+
+                if(sql_statement_count_rows.contains("WHERE")) {
+                    sql_statement_count_rows += " AND TECH_CENTER$DB.REQUEST.ID IN (SELECT REQUEST_ID FROM TECH_CENTER$DB.REQUEST_WORKS WHERE INSTR(TECH_CENTER$DB.REQUEST_WORKS.INFO, '" + URLEncoder.encode(getTextFromEditText(info), "Cp1251") + "') > 0 OR INSTR(TECH_CENTER$DB.REQUEST_WORKS.INFO, '" + URLEncoder.encode(getTextFromEditText(info).toLowerCase(), "Cp1251") + "') > 0)";
+                }else {
+                    sql_statement_count_rows += "WHERE TECH_CENTER$DB.REQUEST.ID IN (SELECT REQUEST_ID FROM TECH_CENTER$DB.REQUEST_WORKS WHERE INSTR(TECH_CENTER$DB.REQUEST_WORKS.INFO, '" + URLEncoder.encode(getTextFromEditText(info), "Cp1251") + "') > 0 OR INSTR(TECH_CENTER$DB.REQUEST_WORKS.INFO, '" + URLEncoder.encode(getTextFromEditText(info).toLowerCase(), "Cp1251") + "') > 0)";
+                }
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
             }
         }
 
