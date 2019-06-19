@@ -421,6 +421,7 @@ public class SearchFragment extends DaggerFragment implements View.OnClickListen
             location.getText().clear();
             otdel.setSelection(0);
             status.setSelection(0);
+            info.getText().clear();
         }catch (Exception e){
             Log.d(TAG, "clearAllWidgetsData: " + e.getMessage());
         }
