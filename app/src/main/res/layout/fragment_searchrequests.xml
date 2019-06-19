@@ -313,9 +313,10 @@
         <EditText
             android:id="@+id/requestInfoValue"
             android:textSize="15sp"
+            android:hint="@string/request_info"
             android:textCursorDrawable="@drawable/edit_text_gray_color_cursor"
             android:layout_width="match_parent"
-            android:layout_height="50dp" />
+            android:layout_height="wrap_content" />
 
         <Button
             android:id="@+id/search_button"
@@ -323,6 +324,7 @@
             android:textColor="@android:color/white"
             android:text="@string/showResults"
             android:layout_width="match_parent"
+            android:layout_marginTop="15dp"
             android:layout_marginStart="15sp"
             android:layout_marginEnd="15sp"
             android:layout_marginBottom="15dp"
