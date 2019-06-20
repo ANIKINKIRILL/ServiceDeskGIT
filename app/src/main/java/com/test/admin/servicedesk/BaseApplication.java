@@ -2,6 +2,7 @@ package com.test.admin.servicedesk;
 
 
 import android.content.Context;
+import android.content.Intent;
 
 import com.test.admin.servicedesk.dependencyinjection.app.DaggerAppComponent;
 
@@ -21,6 +22,7 @@ public class BaseApplication extends DaggerApplication {
     public void onCreate() {
         super.onCreate();
         BaseApplication.context = getApplicationContext();
+        startService(new Intent(getApplicationContext(), NotificationsService.class));
     }
 
     public static Context getContext(){
