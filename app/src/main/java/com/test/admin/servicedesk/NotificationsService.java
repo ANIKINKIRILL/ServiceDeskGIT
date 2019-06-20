@@ -19,7 +19,7 @@ public class NotificationsService extends Service {
     private TimerTask mTimerTask = new TimerTask() {
         @Override
         public void run() {
-            // Here is some task
+            NotificationHelper.checkUserRequests();
             Log.d(LOG_TAG, "Timer update");
         }
     };
