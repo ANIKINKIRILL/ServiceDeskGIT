@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.example.admin.oracletest">
+    package="com.test.admin.servicedesk">
 
     <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
-        android:name=".BaseApplication"
+        android:name="com.test.admin.servicedesk.BaseApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -15,7 +15,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".ui.auth.AuthActivity"
+        <activity android:name="com.test.admin.servicedesk.ui.auth.AuthActivity"
             android:theme="@style/AppThemeNoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -23,21 +23,21 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".ui.forgetPassword.ForgetPasswordActivity">
+        <activity android:name="com.test.admin.servicedesk.ui.forgetPassword.ForgetPasswordActivity">
             <intent-filter>
                 <action android:name="android.intent.action.ForgetPasswordActivity"/>
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </activity>
 
-        <activity android:name=".ui.main.MainActivity">
+        <activity android:name="com.test.admin.servicedesk.ui.main.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MainActivity"/>
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </activity>
 
-        <activity android:name=".ui.request_details.DetailRequestActivity"
+        <activity android:name="com.test.admin.servicedesk.ui.request_details.DetailRequestActivity"
             android:theme="@style/AppThemeNoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.DetailRequestActivity"/>
