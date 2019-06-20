@@ -1,9 +1,14 @@
 package com.test.admin.servicedesk.ui.main.my_requests;
 
 import android.arch.lifecycle.ViewModel;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.util.Log;
 
+import com.test.admin.servicedesk.BaseApplication;
 import com.test.admin.servicedesk.Callback;
+import com.test.admin.servicedesk.NotificationHelper;
+import com.test.admin.servicedesk.R;
 import com.test.admin.servicedesk.models.RequestsPage;
 import com.test.admin.servicedesk.models.User;
 import com.test.admin.servicedesk.network.main.RequestsApi;
@@ -39,6 +44,7 @@ public class MyRequestsFragmentViewModel extends ViewModel {
             public void onResponse(Call<RequestsPage> call, Response<RequestsPage> response) {
                 Log.d(TAG, "onResponse: called");
                 User.myRequestsAmount = response.body().getRequests().length;
+                saveUserRequestsAmount(response.body().getRequests().length);
                 callback.result(response.body());
             }
 
@@ -50,5 +56,16 @@ public class MyRequestsFragmentViewModel extends ViewModel {
         });
     }
 
+    /**
+     * Put user requests amount to SharedPreferences
+     * @param amount    user requests amount
+     */
+
+    private void saveUserRequestsAmount(int amount){
+        SharedPreferences sharedPreferences = BaseApplication.getContext().getSharedPreferences(BaseApplication.getContext().getString(R.string.settings), Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putInt(BaseApplication.getContext().getString(R.string.userRequestsAmount), amount);
+        editor.apply();
+    }
 
 }
