@@ -67,6 +67,8 @@ public class NotificationHelper {
                                     .setContentTitle("Новые заявки")
                                     .setContentText("На Вас начислены новые заявки")
                                     .setSmallIcon(R.drawable.ic_fiber_new_white)
+                                    .setBadgeIconType(R.drawable.ic_fiber_new_white)
+                                    .setVibrate(new long[] { 1000, 1000, 1000, 1000, 1000 })
                                     .setPriority(NotificationCompat.PRIORITY_HIGH);
 
                             Intent intent = new Intent("android.intent.action.MainActivity");
