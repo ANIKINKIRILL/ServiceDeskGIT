@@ -10,9 +10,9 @@
     <application
         android:name="com.test.admin.servicedesk.BaseApplication"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/kfu_flag"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@drawable/kfu_flag"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
