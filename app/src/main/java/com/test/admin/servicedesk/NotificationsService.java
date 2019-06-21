@@ -19,7 +19,8 @@ public class NotificationsService extends Service {
     private TimerTask mTimerTask = new TimerTask() {
         @Override
         public void run() {
-            NotificationHelper.checkUserRequests();
+            NotificationHelper notificationHelper = new NotificationHelper();
+            notificationHelper.checkUserRequests();
             Log.d(LOG_TAG, "Timer update");
         }
     };
@@ -29,7 +30,11 @@ public class NotificationsService extends Service {
         super.onCreate();
         Log.d(LOG_TAG, "Service create");
         this.mTimer = new Timer();
-        mTimer.schedule(mTimerTask, 1000 * 10, 1000 * 60 * 30);
+        /*
+            delay - 10 sec
+            period - 18 sec
+        */
+        mTimer.schedule(mTimerTask, 1000 * 10, 100 * 60 * 3);
     }
 
     @Override

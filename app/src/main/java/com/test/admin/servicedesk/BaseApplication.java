@@ -22,7 +22,6 @@ public class BaseApplication extends DaggerApplication {
     public void onCreate() {
         super.onCreate();
         BaseApplication.context = getApplicationContext();
-        startService(new Intent(getApplicationContext(), NotificationsService.class));
     }
 
     public static Context getContext(){

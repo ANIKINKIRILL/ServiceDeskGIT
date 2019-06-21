@@ -5,6 +5,7 @@ import dagger.android.support.DaggerFragment;
 import android.app.ProgressDialog;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -16,7 +17,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.test.admin.servicedesk.BaseApplication;
 import com.test.admin.servicedesk.Callback;
+import com.test.admin.servicedesk.NotificationsService;
 import com.test.admin.servicedesk.R;
 import com.test.admin.servicedesk.dependencyinjection.app.SessionManager;
 import com.test.admin.servicedesk.models.EmployeeRequest;
@@ -64,6 +67,7 @@ public class MyRequestsFragment extends DaggerFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        BaseApplication.getContext().startService(new Intent(BaseApplication.getContext(), NotificationsService.class));
         requestList = new ArrayList<>();
         initViewModel();
     }

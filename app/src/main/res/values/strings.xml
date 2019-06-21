@@ -33,6 +33,7 @@
 
     <string name="settings">settings</string>
     <string name="userRequestsAmount">userRequestsAmount</string>
+    <string name="user_id">user_id</string>
     <string name="user_login">user_login</string>
     <string name="user_password">user_password</string>
     <string name="searchParams">Параметры поиска</string>

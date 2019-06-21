@@ -1,5 +1,6 @@
 package com.test.admin.servicedesk.dependencyinjection.app;
 
+import com.test.admin.servicedesk.NotificationHelper;
 import com.test.admin.servicedesk.dependencyinjection.auth.AuthModule;
 import com.test.admin.servicedesk.dependencyinjection.auth.AuthScope;
 import com.test.admin.servicedesk.dependencyinjection.auth.AuthViewModelModule;
@@ -42,5 +43,8 @@ public abstract class ActivityBuildersModule {
             }
     )
     abstract DetailRequestActivity contributeDetailRequestActivity();
+
+    @ContributesAndroidInjector
+    abstract NotificationHelper contributeNotificationHelper();
 
 }

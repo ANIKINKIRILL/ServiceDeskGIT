@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -145,6 +146,8 @@ public class AuthActivity extends DaggerAppCompatActivity implements View.OnClic
                             showProgressDialog(false);
                             if(userAuthResource.data.isSuccessful()){
                                 Log.d(TAG, "onChanged: logged in");
+                                // SAVE USER ID
+                                saveUserId(userAuthResource.data.getUserId());
                                 Intent intent = new Intent(AuthActivity.this, MainActivity.class);
                                 startActivity(intent);
                                 finish();
@@ -213,6 +216,13 @@ public class AuthActivity extends DaggerAppCompatActivity implements View.OnClic
 
     private void getTechGroups(){
         viewModel.getTechGroups();
+    }
+
+    private void saveUserId(int userId){
+        SharedPreferences sharedPreferences = getSharedPreferences(getString(R.string.settings), MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putInt(getString(R.string.user_id), userId);
+        editor.apply();
     }
 
     @Override

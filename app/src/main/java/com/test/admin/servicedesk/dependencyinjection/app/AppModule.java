@@ -3,6 +3,8 @@ package com.test.admin.servicedesk.dependencyinjection.app;
 import android.app.Application;
 
 import com.test.admin.servicedesk.Constants;
+import com.test.admin.servicedesk.NotificationHelper;
+import com.test.admin.servicedesk.NotificationsService;
 import com.test.admin.servicedesk.network.main.RequestsApi;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -34,5 +36,4 @@ public class AppModule {
     static RequestsApi provideRequestsApi(Retrofit retrofit){
         return retrofit.create(RequestsApi.class);
     }
-
 }
