@@ -44,7 +44,6 @@ public class MyRequestsFragmentViewModel extends ViewModel {
             public void onResponse(Call<RequestsPage> call, Response<RequestsPage> response) {
                 Log.d(TAG, "onResponse: called");
                 User.myRequestsAmount = response.body().getRequests().length;
-                saveUserRequestsAmount(response.body().getRequests_amount());
                 callback.result(response.body());
             }
 

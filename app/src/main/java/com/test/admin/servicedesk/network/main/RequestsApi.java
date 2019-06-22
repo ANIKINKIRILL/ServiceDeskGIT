@@ -1,6 +1,7 @@
 package com.test.admin.servicedesk.network.main;
 
 import com.test.admin.servicedesk.models.KfuBuildingsLocationsPage;
+import com.test.admin.servicedesk.models.NewProgressRequestsPage;
 import com.test.admin.servicedesk.models.RequestsPage;
 import com.test.admin.servicedesk.models.TechGroupsPage;
 
@@ -55,5 +56,12 @@ public interface RequestsApi {
 
     @GET("SERVICEDESK_MOBILE_TEST.GET_TECH_GROUPS")
     Call<TechGroupsPage> getTechGroups();
+
+    /**
+     * Get NEW, PROGRESS requests amount
+     */
+
+    @GET("SERVICEDESK_MOBILE_TEST.GET_NEW_PROGRESS_REQUESTS")
+    Call<NewProgressRequestsPage> getNewProgressRequests();
 
 }
