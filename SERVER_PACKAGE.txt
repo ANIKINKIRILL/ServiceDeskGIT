@@ -918,5 +918,44 @@ CREATE OR REPLACE PACKAGE BODY IAS$DB.SERVICEDESK_MOBILE_TEST AS
   HTP.p('}');
   END;
 
+  PROCEDURE get_new_progress_requests(p_emp_id IN INTEGER /* id исполнителя в ias$db.users  */)
+
+  /********************************
+
+        Функция получает кол-во НОВЫХ и ВЫПОЛНЯЮЩИХСЯ заявок
+
+  ********************************/
+
+  AS
+
+  new_requests_amount INTEGER;
+  progress_requests_amount INTEGER;
+  all_requests_amount INTEGER;
+
+  BEGIN
+    OWA_UTIL.MIME_HEADER ('application/json;charset=windows-1251');
+
+    SELECT COUNT(REQUEST_ID) INTO new_requests_amount FROM TECH_CENTER$DB.REQUEST_EMPLOYEES
+    INNER JOIN TECH_CENTER$DB.REQUEST
+    ON TECH_CENTER$DB.REQUEST.ID = TECH_CENTER$DB.REQUEST_EMPLOYEES.REQUEST_ID
+    WHERE EMPLOYEE_ID = p_emp_id AND STATUS_ID = 1;
+
+    SELECT COUNT(REQUEST_ID) INTO progress_requests_amount FROM TECH_CENTER$DB.REQUEST_EMPLOYEES
+    INNER JOIN TECH_CENTER$DB.REQUEST
+    ON TECH_CENTER$DB.REQUEST.ID = TECH_CENTER$DB.REQUEST_EMPLOYEES.REQUEST_ID
+    WHERE EMPLOYEE_ID = p_emp_id AND STATUS_ID = 3;
+
+    all_requests_amount := new_requests_amount + progress_requests_amount;
+
+    HTP.p('{');
+
+    HTP.p('     new_requests_amount:' || new_requests_amount || ',');
+    HTP.p('     progress_requests_amount:' || progress_requests_amount || ',');
+    HTP.p('     all_requests_amount:' || all_requests_amount);
+
+    HTP.p('}');
+
+  END;
+
 END SERVICEDESK_MOBILE_TEST;
 /

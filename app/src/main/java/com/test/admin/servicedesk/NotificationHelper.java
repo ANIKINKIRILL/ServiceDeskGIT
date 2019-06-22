@@ -57,6 +57,7 @@ public class NotificationHelper {
                     @Override
                     public void onResponse(Call<RequestsPage> call, Response<RequestsPage> response) {
                         Log.d(TAG, "onResponse: called");
+                        Log.d(TAG, "onResponse: " + response.body().getRequests_amount() + " / " + getUserRequestsAmount());
                         if (response.body().getRequests_amount() > getUserRequestsAmount()) {
                             Log.d(TAG, "onResponse: notification's been received");
 
