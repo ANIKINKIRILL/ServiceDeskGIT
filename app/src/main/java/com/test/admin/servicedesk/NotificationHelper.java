@@ -1,13 +1,9 @@
 package com.test.admin.servicedesk;
 
-import android.annotation.SuppressLint;
-import android.app.Application;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.support.v4.app.NotificationCompat;
@@ -15,13 +11,8 @@ import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.test.admin.servicedesk.dependencyinjection.app.SessionManager;
 import com.test.admin.servicedesk.models.RequestsPage;
 import com.test.admin.servicedesk.network.main.RequestsApi;
-import com.test.admin.servicedesk.ui.main.MainActivity;
-import com.test.admin.servicedesk.ui.main.my_requests.MyRequestsFragment;
-
-import javax.inject.Inject;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -66,7 +57,7 @@ public class NotificationHelper {
                     @Override
                     public void onResponse(Call<RequestsPage> call, Response<RequestsPage> response) {
                         Log.d(TAG, "onResponse: called");
-                        if (response.body().getRequests().length > getUserRequestsAmount()) {
+                        if (response.body().getRequests_amount() > getUserRequestsAmount()) {
                             Log.d(TAG, "onResponse: notification's been received");
 
                             if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
