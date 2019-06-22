@@ -27,7 +27,6 @@ public class NotificationsService extends Service {
 
     @Override
     public void onCreate() {
-        super.onCreate();
         Log.d(LOG_TAG, "Service create");
         this.mTimer = new Timer();
         /*

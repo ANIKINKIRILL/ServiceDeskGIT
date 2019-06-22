@@ -1,12 +1,15 @@
 package com.test.admin.servicedesk;
 
+import android.annotation.SuppressLint;
 import android.app.Application;
 import android.app.Notification;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
@@ -33,6 +36,8 @@ public class NotificationHelper {
 
     // Vars
     public static final String CHANNEL_ID = "Channel 1";
+    public static final String CHANNEL_NAME = "Заявки";
+    public static final String CHANNEL_DESC = "Новые назначенные заявки";
 
     public static int getUserRequestsAmount(){
         SharedPreferences sharedPreferences = BaseApplication.getContext().getSharedPreferences(BaseApplication.getContext().getString(R.string.settings), Context.MODE_PRIVATE);
@@ -62,25 +67,31 @@ public class NotificationHelper {
                     public void onResponse(Call<RequestsPage> call, Response<RequestsPage> response) {
                         Log.d(TAG, "onResponse: called");
                         if (response.body().getRequests().length > getUserRequestsAmount()) {
-                            Log.d(TAG, "onResponse: notification's received");
+                            Log.d(TAG, "onResponse: notification's been received");
+
+                            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+                                NotificationChannel notificationChannel = new NotificationChannel(CHANNEL_ID, CHANNEL_NAME, NotificationManager.IMPORTANCE_HIGH);
+                                notificationChannel.setDescription(CHANNEL_DESC);
+                                NotificationManager notificationManager = (NotificationManager) BaseApplication.getContext().getSystemService(Context.NOTIFICATION_SERVICE);
+                                notificationManager.createNotificationChannel(notificationChannel);
+                            }
+
                             NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(BaseApplication.getContext(), CHANNEL_ID)
+                                    .setSmallIcon(R.drawable.ic_fiber_new_white)
                                     .setContentTitle("Новые заявки")
                                     .setContentText("На Вас начислены новые заявки")
-                                    .setSmallIcon(R.drawable.ic_fiber_new_white)
-                                    .setBadgeIconType(R.drawable.ic_fiber_new_white)
-                                    .setVibrate(new long[] { 1000, 1000, 1000, 1000, 1000 })
-                                    .setPriority(NotificationCompat.PRIORITY_HIGH);
+                                    .setPriority(NotificationCompat.PRIORITY_DEFAULT);
 
-                            Intent intent = new Intent("android.intent.action.MainActivity");
-                            PendingIntent pendingIntent = PendingIntent.getActivity(BaseApplication.getContext(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-
-                            mBuilder.setContentIntent(pendingIntent);
+//                            Intent intent = new Intent("android.intent.action.MainActivity");
+//                            PendingIntent pendingIntent = PendingIntent.getActivity(BaseApplication.getContext(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+//
+//                            mBuilder.setContentIntent(pendingIntent);
 
                             Notification notification = mBuilder.build();
                             NotificationManager notificationManager = (NotificationManager) BaseApplication.getContext().getSystemService(Context.NOTIFICATION_SERVICE);
                             notificationManager.notify(1, notification);
                         }else{
-                            Log.d(TAG, "onResponse: notification's not received");
+                            Log.d(TAG, "onResponse: notification's not been received");
                         }
                     }
 
