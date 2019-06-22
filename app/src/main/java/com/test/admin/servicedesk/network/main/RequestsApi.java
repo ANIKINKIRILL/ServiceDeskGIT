@@ -62,6 +62,6 @@ public interface RequestsApi {
      */
 
     @GET("SERVICEDESK_MOBILE_TEST.GET_NEW_PROGRESS_REQUESTS")
-    Call<NewProgressRequestsPage> getNewProgressRequests();
+    Call<NewProgressRequestsPage> getNewProgressRequests(@Query("p_emp_id") int p_emp_id);
 
 }

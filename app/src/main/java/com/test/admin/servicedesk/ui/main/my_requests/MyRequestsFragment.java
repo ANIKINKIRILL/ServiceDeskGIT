@@ -6,6 +6,7 @@ import android.app.ProgressDialog;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -67,7 +68,6 @@ public class MyRequestsFragment extends DaggerFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        BaseApplication.getContext().startService(new Intent(BaseApplication.getContext(), NotificationsService.class));
         requestList = new ArrayList<>();
         initViewModel();
     }
@@ -83,6 +83,7 @@ public class MyRequestsFragment extends DaggerFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         initUiComponents(view);
+        get_new_progress_requests_amount();
         get_emp_requests();
     }
 
@@ -112,6 +113,13 @@ public class MyRequestsFragment extends DaggerFragment {
 
     private void initViewModel(){
         viewModel = ViewModelProviders.of(this, providerFactory).get(MyRequestsFragmentViewModel.class);
+    }
+
+    private void get_new_progress_requests_amount(){
+        SharedPreferences sharedPreferences = getContext().getSharedPreferences(getString(R.string.settings), Context.MODE_PRIVATE);
+        viewModel.get_new_progress_requests_amount(sharedPreferences.getInt(getString(R.string.user_id), 0));
+
+        BaseApplication.getContext().startService(new Intent(BaseApplication.getContext(), NotificationsService.class));
     }
 
     /**

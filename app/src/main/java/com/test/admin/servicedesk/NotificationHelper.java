@@ -11,6 +11,7 @@ import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.test.admin.servicedesk.models.NewProgressRequestsPage;
 import com.test.admin.servicedesk.models.RequestsPage;
 import com.test.admin.servicedesk.network.main.RequestsApi;
 
@@ -51,14 +52,14 @@ public class NotificationHelper {
 
         RequestsApi requestsApi = retrofit.create(RequestsApi.class);
 
-        Log.d(TAG, "checkUserRequests: " + requestsApi.getMyRequests(getUserId(), 1, 3).request().url().toString());
-        requestsApi.getMyRequests(getUserId(), 1, 3)
-                .enqueue(new Callback<RequestsPage>() {
+        Log.d(TAG, "checkUserRequests: " + requestsApi.getNewProgressRequests(getUserId()).request().url().toString());
+        requestsApi.getNewProgressRequests(getUserId())
+                .enqueue(new Callback<NewProgressRequestsPage>() {
                     @Override
-                    public void onResponse(Call<RequestsPage> call, Response<RequestsPage> response) {
+                    public void onResponse(Call<NewProgressRequestsPage> call, Response<NewProgressRequestsPage> response) {
                         Log.d(TAG, "onResponse: called");
-                        Log.d(TAG, "onResponse: " + response.body().getRequests_amount() + " / " + getUserRequestsAmount());
-                        if (response.body().getRequests_amount() > getUserRequestsAmount()) {
+                        Log.d(TAG, "onResponse: " + response.body().getAll_requests_amount());
+                        if (response.body().getAll_requests_amount() > getUserRequestsAmount()) {
                             Log.d(TAG, "onResponse: notification's been received");
 
                             if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
@@ -74,11 +75,6 @@ public class NotificationHelper {
                                     .setContentText("На Вас начислены новые заявки")
                                     .setPriority(NotificationCompat.PRIORITY_DEFAULT);
 
-//                            Intent intent = new Intent("android.intent.action.MainActivity");
-//                            PendingIntent pendingIntent = PendingIntent.getActivity(BaseApplication.getContext(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-//
-//                            mBuilder.setContentIntent(pendingIntent);
-
                             Notification notification = mBuilder.build();
                             NotificationManager notificationManager = (NotificationManager) BaseApplication.getContext().getSystemService(Context.NOTIFICATION_SERVICE);
                             notificationManager.notify(1, notification);
@@ -88,7 +84,7 @@ public class NotificationHelper {
                     }
 
                     @Override
-                    public void onFailure(Call<RequestsPage> call, Throwable t) {
+                    public void onFailure(Call<NewProgressRequestsPage> call, Throwable t) {
                         Log.d(TAG, "onFailure: called " + t.getMessage());
                     }
                 });

@@ -9,6 +9,7 @@ import com.test.admin.servicedesk.BaseApplication;
 import com.test.admin.servicedesk.Callback;
 import com.test.admin.servicedesk.NotificationHelper;
 import com.test.admin.servicedesk.R;
+import com.test.admin.servicedesk.models.NewProgressRequestsPage;
 import com.test.admin.servicedesk.models.RequestsPage;
 import com.test.admin.servicedesk.models.User;
 import com.test.admin.servicedesk.network.main.RequestsApi;
@@ -54,6 +55,26 @@ public class MyRequestsFragmentViewModel extends ViewModel {
             }
         });
     }
+
+    public void get_new_progress_requests_amount(int emp_id){
+        Log.d(TAG, "get_new_progress_requests_amount: called");
+        Log.d(TAG, "get_new_progress_requests_amount: " + requestsApi.getNewProgressRequests(emp_id).request().url().toString());
+        requestsApi.getNewProgressRequests(emp_id).enqueue(new retrofit2.Callback<NewProgressRequestsPage>() {
+            @Override
+            public void onResponse(Call<NewProgressRequestsPage> call, Response<NewProgressRequestsPage> response) {
+                Log.d(TAG, "onResponse: called");
+                Log.d(TAG, "onResponse: " + response.body().getAll_requests_amount());
+                saveUserRequestsAmount(response.body().getAll_requests_amount());
+            }
+
+            @Override
+            public void onFailure(Call<NewProgressRequestsPage> call, Throwable t) {
+                Log.d(TAG, "onFailure: called");
+                Log.d(TAG, "onFailure: " + t.getMessage());
+            }
+        });
+    }
+
 
     /**
      * Put user requests amount to SharedPreferences
